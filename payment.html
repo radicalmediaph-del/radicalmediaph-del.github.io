@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment — RadicalMediaPh</title>
+<meta name="description" content="How to pay for My Peste-Mistic Mind — GCash, Maya or bank transfer, then send your proof of payment.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="ebook">
+
+<div data-header>
+  <div class="container fallback-nav">
+    <a href="index.html">RadicalMediaPh</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="ebook.html">Ebook</a>
+    <a href="contact.html">Let's Talk</a>
+  </div>
+</div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Payment</span>
+      <h1>Complete Your Order</h1>
+      <p class="lead center">Pay with GCash, Maya or bank transfer, send your proof, and I'll email your download link.</p>
+      <p class="breadcrumbs"><a href="index.html">Home</a> / <a href="ebook.html">Ebook</a> / Payment</p>
+    </div>
+  </section>
+
+  <!-- what you're paying for -->
+  <section class="section">
+    <div class="container split" style="align-items:center">
+      <div class="reveal">
+        <span class="eyebrow">Your order</span>
+        <h2>My Peste-Mistic Mind</h2>
+        <p style="color:var(--muted)">How I Overcame the Negative Thoughts That Were Holding Me Back — the full ebook, delivered as a PDF you can read on any device.</p>
+        <p class="price-tag"><span data-text="price">(price not set)</span> <small>one-time</small></p>
+        <p style="color:var(--muted-2);font-size:.9rem">Buying more than one copy? Put the number in the form below and pay the matching total.</p>
+
+        <ol class="steps">
+          <li><strong>Send the payment</strong><span>Use any of the methods on the right. Send the exact amount.</span></li>
+          <li><strong>Screenshot your receipt</strong><span>You'll need the reference number from it.</span></li>
+          <li><strong>Fill in the form below</strong><span>Takes 30 seconds. I get it straight away.</span></li>
+          <li><strong>Check your inbox</strong><span>I send the download link personally, usually within a few hours.</span></li>
+        </ol>
+      </div>
+
+      <div class="media-frame reveal" style="background:linear-gradient(160deg,#2b2040,#1d1429);padding:34px;display:grid;place-items:center">
+        <img src="assets/img/ebook-cover.jpg" alt="Cover of the ebook My Peste-Mistic Mind by Ramuel Duculan" style="max-width:290px;border-radius:8px;box-shadow:0 24px 50px rgba(0,0,0,.55)">
+      </div>
+    </div>
+  </section>
+
+  <!-- payment methods -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Where to send it</span>
+        <h2>Payment Methods</h2>
+        <p class="lead">Pick whichever is easiest. The account name will match the details below.</p>
+      </div>
+
+      <div data-payment-methods style="margin-top:46px"></div>
+
+      <p class="notice" data-payment-pending hidden>
+        Payment details are being finalised. Message me on
+        <a data-link="whatsapp" href="#">WhatsApp</a> or email
+        <a data-link="email" href="#"><span data-text="email">radicalmediaph@gmail.com</span></a>
+        and I'll send them to you directly.
+      </p>
+
+      <p class="center" style="color:var(--muted-2);font-size:.88rem;margin-top:34px">
+        Always double-check the account name before you send. If anything looks off, message me first.
+      </p>
+    </div>
+  </section>
+
+  <!-- proof of payment -->
+  <section class="section" id="confirm">
+    <div class="container split" style="align-items:start">
+      <div class="reveal">
+        <span class="eyebrow">Last step</span>
+        <h2>Send Your Proof of Payment</h2>
+        <p class="lead">Once you've paid, fill this in so I know the payment is yours and can send the ebook to the right inbox.</p>
+        <ul class="pill-list" style="margin-top:28px">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Your details go straight to me</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download link sent by email</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Trouble paying? Just message me</li>
+        </ul>
+        <p style="color:var(--muted-2);font-size:.88rem;margin-top:26px">
+          Can't upload a screenshot here — send it over
+          <a data-link="whatsapp" href="#">WhatsApp</a> if I ask for it.
+        </p>
+      </div>
+
+      <div class="form-card form-card--accent reveal">
+        <h3>Confirm Your Payment</h3>
+        <form data-form data-subject="Ebook payment confirmation" novalidate>
+          <div class="form-row">
+            <div class="field"><label for="p-name">Full Name</label><input id="p-name" name="full_name" type="text" placeholder="Juan Dela Cruz" required><span class="error"></span></div>
+            <div class="field"><label for="p-email">Email Address</label><input id="p-email" name="email" type="email" placeholder="you@example.com" required><span class="error"></span></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="p-phone">Mobile Number</label><input id="p-phone" name="phone" type="tel" placeholder="09XX XXX XXXX"><span class="error"></span></div>
+            <div class="field">
+              <label for="p-method">Paid With</label>
+              <select id="p-method" name="payment_method">
+                <option value="GCash">GCash</option>
+                <option value="Maya">Maya</option>
+                <option value="Bank transfer">Bank transfer</option>
+              </select>
+              <span class="error"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="p-ref">Reference Number</label><input id="p-ref" name="reference" type="text" placeholder="From your receipt" required><span class="error"></span></div>
+            <div class="field"><label for="p-amount">Amount Sent</label><input id="p-amount" name="amount" type="text" placeholder="e.g. 499" required><span class="error"></span></div>
+          </div>
+          <div class="field"><label for="p-copies">Number of Copies</label><input id="p-copies" name="copies" type="number" min="1" value="1"><span class="error"></span></div>
+          <div class="field"><label for="p-note">Anything else?</label><textarea id="p-note" name="note" placeholder="Optional — a different email for delivery, a question, who it's for."></textarea><span class="error"></span></div>
+          <button class="btn btn--gold btn--block btn--lg" type="submit">Confirm My Payment</button>
+          <div class="form-success" role="status"></div>
+          <p class="form-note">You'll hear back within one business day.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-band">
+    <div class="container center narrow">
+      <h2>Something not working?</h2>
+      <p class="lead">Message me directly and I'll sort the payment out with you.</p>
+      <div class="hero-actions" style="margin-top:24px">
+        <a class="btn btn--gold btn--lg" data-link="whatsapp" href="#">WhatsApp me</a>
+        <a class="btn btn--ghost btn--lg" href="contact.html">Send a message</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-footer>
+  <div class="container fallback-nav" style="border:0;border-top:1px solid var(--line);text-align:center">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
