@@ -398,6 +398,23 @@ a.card:hover{color:inherit}
 .to-top:hover{background:var(--gold-soft)}
 .to-top svg{width:20px;height:20px}
 
+/* ---------- Messenger chat button ---------- */
+.chat-fab{
+  position:fixed;left:22px;bottom:22px;z-index:70;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:12px 18px 12px 14px;border-radius:999px;text-decoration:none;
+  background:#0084ff;color:#fff;font-weight:600;font-size:.95rem;
+  box-shadow:0 10px 26px rgba(0,0,0,.4);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+}
+.chat-fab:hover{background:#0a73db;transform:translateY(-2px);box-shadow:0 14px 32px rgba(0,0,0,.5)}
+.chat-fab:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.chat-fab svg{width:24px;height:24px;flex:none}
+@media (max-width:600px){
+  .chat-fab{left:16px;bottom:16px;padding:13px;gap:0}
+  .chat-fab__text{display:none}
+}
+
 /* ---------- reveal on scroll ---------- */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .reveal.is-in{opacity:1;transform:none}
