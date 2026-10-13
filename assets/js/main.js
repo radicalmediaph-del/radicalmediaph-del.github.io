@@ -17,6 +17,8 @@
     // shown anywhere on the site, so you can add platforms as you go.
     // These feed the footer on every page AND the Follow Me row on Contact.
     facebook:  "https://www.facebook.com/profile.php?id=61591158385146",
+    // Messenger chat link. Clear this to "" to remove the chat button everywhere.
+    messenger: "https://m.me/61591158385146",
     instagram: "https://www.instagram.com/radicalmediaph",
     tiktok:    "",
     youtube:   "",
@@ -62,6 +64,7 @@
   var ICON = {
     menu:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+    messenger: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.3 2 2 6.2 2 11.8c0 3.1 1.4 5.9 3.7 7.7v3.8l3.4-1.9c.9.3 1.9.4 2.9.4 5.7 0 10-4.2 10-9.8S17.7 2 12 2zm1 13.2-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7z"/></svg>',
     up:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>'
   };
 
@@ -70,6 +73,8 @@
   var SOCIALS = [
     { key: "facebook",  label: "Facebook",
       svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.7v8z"/></svg>' },
+    { key: "messenger", label: "Messenger",
+      svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.3 2 2 6.2 2 11.8c0 3.1 1.4 5.9 3.7 7.7v3.8l3.4-1.9c.9.3 1.9.4 2.9.4 5.7 0 10-4.2 10-9.8S17.7 2 12 2zm1 13.2-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7z"/></svg>' },
     { key: "instagram", label: "Instagram",
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>' },
     { key: "tiktok",    label: "TikTok",
@@ -244,7 +249,13 @@
           '<p class="copyright">&copy; ' + new Date().getFullYear() + " Radical Media PH. All rights reserved.</p>" +
         "</div>" +
       "</footer>" +
-      '<button class="to-top" id="toTop" type="button" aria-label="Back to top">' + ICON.up + "</button>";
+      '<button class="to-top" id="toTop" type="button" aria-label="Back to top">' + ICON.up + "</button>" +
+      (SITE.messenger
+        ? '<a class="chat-fab" href="' + SITE.messenger + '" target="_blank" rel="noopener" ' +
+            'aria-label="Chat with us on Messenger">' + ICON.messenger +
+            '<span class="chat-fab__text">Chat with us</span>' +
+          "</a>"
+        : "");
 
     var btn = document.getElementById("toTop");
     window.addEventListener("scroll", function () {
@@ -263,6 +274,12 @@
       if (kind === "phone") el.href = "tel:" + SITE.phoneIntl;
       if (kind === "whatsapp") {
         el.href = "https://wa.me/" + SITE.whatsappIntl;
+        el.target = "_blank";
+        el.rel = "noopener";
+      }
+      if (kind === "messenger") {
+        if (!SITE.messenger) { var li = el.closest("li"); (li || el).remove(); return; }
+        el.href = SITE.messenger;
         el.target = "_blank";
         el.rel = "noopener";
       }
@@ -420,6 +437,16 @@
     wa.rel = "noopener";
     wa.textContent = saved ? "Chat on WhatsApp" : "Send on WhatsApp";
     row.appendChild(wa);
+
+    if (SITE.messenger) {
+      var fb = document.createElement("a");
+      fb.className = "btn btn--ghost";
+      fb.href = SITE.messenger;
+      fb.target = "_blank";
+      fb.rel = "noopener";
+      fb.textContent = "Chat on Messenger";
+      row.appendChild(fb);
+    }
 
     if (!saved) {
       var copy = document.createElement("button");
