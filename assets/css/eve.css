@@ -367,3 +367,19 @@ p{margin:0 0 1rem}
   display:grid;place-items:center;font-family:var(--display);font-size:1.3rem;font-weight:700
 }
 @media (max-width:560px){.deposit{flex-direction:column;gap:14px;padding:24px}}
+
+/* ---------- next departure bar ---------- */
+.datebar{
+  display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-top:34px;
+  background:var(--sun);color:#fff;border-radius:var(--radius);padding:20px 28px
+}
+.datebar-label{display:block;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82}
+.datebar strong{font-family:var(--display);font-size:1.3rem;font-weight:700;line-height:1.2}
+.datebar-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.38)}
+.datebar .btn{margin-left:auto;background:#fff;color:var(--sun);box-shadow:none}
+.datebar .btn:hover{background:var(--sand);color:var(--sun)}
+@media (max-width:700px){
+  .datebar{gap:16px;padding:20px}
+  .datebar-sep{display:none}
+  .datebar .btn{margin-left:0;width:100%}
+}
