@@ -27,10 +27,18 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--sand);color:var(--body-ink);
+  margin:0;color:var(--body-ink);
+  background:
+    radial-gradient(1100px 620px at 6% -8%,  rgba(46,143,143,.14), transparent 62%),
+    radial-gradient(900px 560px at 101% 3%,  rgba(224,112,60,.07), transparent 60%),
+    radial-gradient(1000px 760px at 50% 104%,rgba(46,143,143,.10), transparent 66%),
+    linear-gradient(180deg,#faf7f1 0%,#f6f1e7 32%,#f1f2ec 66%,#ebf0ed 100%);
+  background-attachment:fixed;
   font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
+/* fixed backgrounds stutter on small touch screens */
+@media (max-width:700px){body{background-attachment:scroll}}
 img{max-width:100%;display:block}
 a{color:inherit}
 .wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:20px}
@@ -124,7 +132,7 @@ p{margin:0 0 1rem}
 }
 
 /* ---------- moving photo rail ---------- */
-.rail-section{padding:76px 0 56px;background:var(--sand-2);overflow:hidden}
+.rail-section{padding:76px 0 56px;background:rgba(236,227,212,.5);overflow:hidden}
 .rail-section h2{margin-bottom:8px}
 .rail{margin-top:38px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
       mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
@@ -477,3 +485,47 @@ p{margin:0 0 1rem}
 .notes ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .notes li{font-size:.95rem;color:var(--body-ink);padding-left:18px;position:relative}
 .notes li::before{content:"—";position:absolute;left:0;color:var(--sea)}
+
+
+/* ======================= collapsible detail pack ======================= */
+.detailpack{
+  margin-top:34px;background:var(--paper);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden
+}
+.detailpack details{border-bottom:1px solid var(--line)}
+.detailpack details:last-child{border-bottom:0}
+.detailpack summary{
+  cursor:pointer;list-style:none;padding:21px 52px 21px 26px;position:relative;
+  display:flex;flex-wrap:wrap;gap:3px 18px;align-items:baseline;
+  transition:background .2s var(--ease)
+}
+.detailpack summary::-webkit-details-marker{display:none}
+.detailpack summary:hover{background:var(--sand)}
+.detailpack summary:focus-visible{outline:2px solid var(--sea);outline-offset:-2px}
+.detailpack summary::after{
+  content:"+";position:absolute;right:24px;top:50%;transform:translateY(-50%);
+  color:var(--sun);font-size:1.5rem;font-family:var(--sans);line-height:1
+}
+.detailpack details[open] summary::after{content:"\2013"}
+.detailpack details[open] summary{background:var(--sand)}
+.dp-t{font-family:var(--display);font-size:1.07rem;font-weight:700;color:var(--ink)}
+.dp-s{font-size:.89rem;color:var(--muted)}
+.dp-body{padding:4px 26px 28px}
+.dp-lead{font-size:.93rem;margin:0 0 4px}
+.dp-foot{font-size:.9rem;margin:18px 0 0}
+@media (max-width:560px){
+  .detailpack summary{padding:18px 46px 18px 18px}
+  .dp-body{padding:4px 18px 24px}
+}
+
+/* inner blocks lose their own card chrome inside the pack */
+.dp-body .itin{margin-top:6px;gap:18px}
+.dp-body .itin-day{background:transparent;border:0;padding:0}
+.dp-body .bring{margin-top:6px}
+.dp-body .notelist{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:10px}
+.dp-body .notelist li{font-size:.95rem;color:var(--body-ink);padding-left:18px;position:relative}
+.dp-body .notelist li::before{content:"\2014";position:absolute;left:0;color:var(--sea)}
+.pick-list--light li{border-top-color:var(--line)}
+.pick-list--light li:last-child{border-bottom-color:var(--line)}
+.pick-list--light .time{color:var(--sun)}
+.pick-list--light .place{color:var(--body-ink)}
