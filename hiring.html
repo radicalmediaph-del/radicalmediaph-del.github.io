@@ -335,12 +335,24 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
             <div class="field"><label for="a-setup">Work setup</label>
               <select id="a-setup" name="setup" required>
                 <option value="">Choose one</option>
-                <option>Stay-in</option>
-                <option>Stay-out</option>
+                <option>Stay-in (live at the Paranaque house)</option>
+                <option>Stay-out (commute to Paranaque)</option>
                 <option>Work from home</option>
                 <option>Not sure yet</option>
               </select><span class="err"></span></div>
           </div>
+
+          <div class="field"><label for="a-when">Best time for an interview</label>
+            <select id="a-when" name="interview" required>
+              <option value="">Choose one</option>
+              <option>As soon as possible - today or tomorrow</option>
+              <option>Later this week</option>
+              <option>Next week</option>
+              <option>Weekday mornings</option>
+              <option>Weekday afternoons</option>
+              <option>Weekday evenings</option>
+              <option>Weekends only</option>
+            </select><span class="err"></span></div>
 
           <div class="field"><label for="a-about">Tell us about yourself</label>
             <textarea id="a-about" name="about" placeholder="Have you streamed before? What do you talk about? Anything you want me to know."></textarea>
@@ -390,7 +402,33 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
 (function () {
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbxLVRllqXiSZi6I5LkUnVzlfoM1I6uI3DE-esFeosN-wP6lk5lZj0Sjm4WBHZVFudhy/exec";
   var TOKEN = "rmph-2026-web";
+  var GFORM = "https://docs.google.com/forms/d/e/1FAIpQLSdL7Wmg5YKl9gbQ-_VD1WeYgugKlcV1Tn5XrchwuRfunMCPUg/formResponse";
+  var GMAP = {
+    name:      "entry.1337854504",
+    contact:   "entry.1788103746",
+    email:     "entry.1797258974",
+    country:   "entry.2121597291",
+    tiktok:    "entry.1456658447",
+    setup:     "entry.79520370",
+    interview: "entry.659110743",
+    about:     "entry.1443781010"
+  };
   var form = document.getElementById("apply-form");
+
+  function toSheet(p) {
+    var body = new URLSearchParams();
+    Object.keys(GMAP).forEach(function (k) {
+      if (p[k]) body.append(GMAP[k], p[k]);
+    });
+    var extra = "Confirmed 18 or over: " + (p.age_ok || "No");
+    body.set(GMAP.about, (p.about ? p.about + "\n\n" : "") + extra);
+    return fetch(GFORM, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString()
+    });
+  }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -414,15 +452,18 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
     payload.age_ok = form.querySelector("[name=age_ok]").checked ? "Yes" : "No";
 
     var box = form.querySelector(".form-done");
+
     fetch(ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
-    }).then(function (r) { return r.ok; })
-      .catch(function () {
-        return fetch(ENDPOINT, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
-          .then(function () { return true; });
-      })
+    }).catch(function () {
+      return fetch(ENDPOINT, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
+    }).catch(function () {});
+
+    toSheet(payload)
+      .then(function () { return true; })
+      .catch(function () { return false; })
       .then(function (sent) {
         btn.disabled = false; btn.textContent = label;
         box.classList.add("is-on");
