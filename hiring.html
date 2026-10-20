@@ -400,8 +400,6 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
 
 <script>
 (function () {
-  var ENDPOINT = "https://script.google.com/macros/s/AKfycbxLVRllqXiSZi6I5LkUnVzlfoM1I6uI3DE-esFeosN-wP6lk5lZj0Sjm4WBHZVFudhy/exec";
-  var TOKEN = "rmph-2026-web";
   var GFORM = "https://docs.google.com/forms/d/e/1FAIpQLSdL7Wmg5YKl9gbQ-_VD1WeYgugKlcV1Tn5XrchwuRfunMCPUg/formResponse";
   var GMAP = {
     name:      "entry.1337854504",
@@ -447,19 +445,11 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
     var label = btn.textContent;
     btn.disabled = true; btn.textContent = "Sending\u2026";
 
-    var payload = { token: TOKEN, form: "Avery Media PH3 host application", page: "hiring.html" };
+    var payload = {};
     new FormData(form).forEach(function (v, k) { payload[k] = v; });
     payload.age_ok = form.querySelector("[name=age_ok]").checked ? "Yes" : "No";
 
     var box = form.querySelector(".form-done");
-
-    fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    }).catch(function () {
-      return fetch(ENDPOINT, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
-    }).catch(function () {});
 
     toSheet(payload)
       .then(function () { return true; })
