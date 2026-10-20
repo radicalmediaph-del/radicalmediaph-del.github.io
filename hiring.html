@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Avery Media PH3 is hiring full-time TikTok LIVE hosts in Parañaque. ₱24,000 basic plus incentives, free accommodation, no fees ever.">
+<meta property="og:title" content="TikTok LIVE Host — ₱24,000 basic — Avery Media PH3">
+<meta property="og:description" content="Full-time TikTok LIVE hosts, Parañaque. ₱24,000 basic + incentives. Stay-in, stay-out or WFH. You pay nothing.">
+<title>TikTok LIVE Host — Now Hiring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#0d0b16; --ink-2:#17132a; --card:#1d1836; --line:rgba(255,255,255,.12);
+  --gold:#e8b04b; --gold-2:#f7cd7c; --rose:#ff5d7a;
+  --txt:#ece9f5; --soft:#a79fc4; --faint:#7d759b;
+  --display:"Sora",system-ui,sans-serif; --sans:"Inter",system-ui,sans-serif;
+  --r:14px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ink);color:var(--txt);font-family:var(--sans);
+  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden
+}
+.wrap{max-width:1060px;margin-inline:auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--display);line-height:1.12;margin:0;letter-spacing:-.02em}
+a{color:var(--gold)}
+.pvbar{background:#000;color:#fff;padding:12px 18px;font-size:.85rem;text-align:center;line-height:1.5}
+.pvbar b{color:var(--gold)}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;padding:68px 0 54px;
+  background:
+    radial-gradient(900px 480px at 15% -10%, rgba(232,176,75,.16), transparent 62%),
+    radial-gradient(760px 500px at 100% 10%, rgba(255,93,122,.12), transparent 60%),
+    linear-gradient(180deg,#0d0b16,#17132a)
+}
+.eyebrow{
+  font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  font-weight:600;margin:0 0 16px
+}
+.hero h1{font-size:clamp(2.1rem,6.2vw,3.5rem)}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .lede{color:var(--soft);font-size:1.08rem;max-width:46ch;margin:20px 0 0}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+.badges{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}
+.badge{
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:.85rem;color:var(--txt);
+  background:rgba(255,255,255,.04)
+}
+.badge b{color:var(--gold);font-weight:600}
+.cta{
+  display:inline-block;margin-top:30px;background:var(--gold);color:#17132a;font-weight:600;
+  text-decoration:none;padding:15px 34px;border-radius:999px;font-size:1rem;
+  transition:transform .2s ease,box-shadow .2s ease
+}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(232,176,75,.3)}
+
+/* ---------- recruiter ---------- */
+.rec{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:26px;text-align:center
+}
+.rec img{width:148px;height:148px;border-radius:50%;object-fit:cover;object-position:50% 22%;
+  border:3px solid var(--gold);display:block;margin:0 auto 16px}
+.rec h3{font-size:1.15rem}
+.rec .role{color:var(--gold);font-size:.84rem;letter-spacing:.08em;text-transform:uppercase;margin:6px 0 12px}
+.rec p{color:var(--soft);font-size:.92rem;margin:0}
+
+/* ---------- sections ---------- */
+section{padding:62px 0}
+.sec-head{margin-bottom:30px}
+.sec-head h2{font-size:clamp(1.5rem,3.6vw,2rem)}
+.sec-head p{color:var(--soft);margin:12px 0 0;max-width:56ch}
+
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:820px){.g3,.g2{grid-template-columns:1fr}}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px 24px
+}
+.card h3{font-size:1.05rem;margin-bottom:8px}
+.card p{color:var(--soft);font-size:.94rem;margin:0}
+.card .big{font-family:var(--display);font-size:1.7rem;color:var(--gold);display:block;margin-bottom:4px}
+
+.ticks{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ticks li{position:relative;padding-left:30px;color:var(--txt);font-size:.97rem}
+.ticks li::before{
+  content:"";position:absolute;left:0;top:.42em;width:16px;height:16px;border-radius:50%;
+  background:rgba(232,176,75,.18);border:1px solid var(--gold)
+}
+.ticks li::after{
+  content:"";position:absolute;left:5px;top:.72em;width:5px;height:9px;
+  border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(42deg)
+}
+
+.note{
+  border:1px solid rgba(232,176,75,.42);background:rgba(232,176,75,.08);
+  border-radius:var(--r);padding:22px 26px;margin-top:26px
+}
+.note h3{font-size:1.05rem;color:var(--gold);margin-bottom:8px}
+.note p{color:var(--txt);margin:0;font-size:.95rem}
+
+/* ---------- form ---------- */
+.formwrap{background:var(--ink-2);border-top:1px solid var(--line)}
+.form-card{
+  max-width:620px;margin:0 auto;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:34px 32px
+}
+@media (max-width:560px){.form-card{padding:26px 20px}}
+.field{display:flex;flex-direction:column;margin-bottom:16px}
+.field label{font-size:.82rem;letter-spacing:.04em;color:var(--soft);margin-bottom:7px}
+.field input,.field select,.field textarea{
+  font-family:var(--sans);font-size:.98rem;color:var(--txt);background:rgba(0,0,0,.28);
+  border:1px solid var(--line);border-radius:8px;padding:13px 15px;width:100%
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--gold);background:rgba(0,0,0,.4)
+}
+.field textarea{min-height:92px;resize:vertical}
+.field .err{color:var(--rose);font-size:.79rem;margin-top:5px;min-height:1em}
+.field.bad input,.field.bad select{border-color:var(--rose)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.row{grid-template-columns:1fr}}
+.confirm{
+  display:flex;gap:12px;align-items:flex-start;margin:6px 0 20px;padding:15px 16px;
+  background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:8px;
+  cursor:pointer;font-size:.9rem;line-height:1.5;color:var(--txt)
+}
+.confirm input{flex:none;width:18px;height:18px;margin-top:2px;accent-color:var(--gold);cursor:pointer}
+.btn-send{
+  width:100%;background:var(--gold);color:#17132a;font-family:var(--sans);font-weight:600;
+  font-size:1rem;border:0;border-radius:999px;padding:15px;cursor:pointer
+}
+.btn-send:hover{opacity:.92}
+.fineprint{font-size:.8rem;color:var(--faint);text-align:center;margin:14px 0 0}
+.form-done{display:none;margin-top:18px;padding:16px 18px;border-radius:8px;
+  background:rgba(232,176,75,.12);border:1px solid rgba(232,176,75,.4);font-size:.94rem}
+.form-done.is-on{display:block}
+
+footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-size:.88rem}
+</style>
+</head>
+<body>
+
+
+<!-- ======================= hero ======================= -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Avery Media PH3 &middot; Hiring champions, onboarding legends</p>
+      <h1>Get paid to talk.<br><em>TikTok LIVE Host</em>, full-time.</h1>
+      <p class="lede">Avery Media PH3 is a TikTok LIVE agency in Para&ntilde;aque looking for people
+      who are confident on camera, easy to talk to, and happy being the centre of attention.
+      No experience needed.</p>
+      <div class="badges">
+        <span class="badge"><b>&#8369;24,000</b> basic + incentives</span>
+        <span class="badge">Top hosts clear <b>&#8369;50,000+</b></span>
+        <span class="badge">Sunday rest day</span>
+        <span class="badge">Stay-in, stay-out or WFH</span>
+      </div>
+      <a class="cta" href="#apply">Apply now</a>
+    </div>
+
+    <aside class="rec">
+      <img src="assets/img/recruiter.jpg" alt="Ramuel Duculan, the recruiter you will be dealing with">
+      <h3>Ramuel Duculan</h3>
+      <p class="role">HR Recruiter &middot; Avery Media PH3</p>
+      <p>I read every application myself and reply to all of them. If you have questions before you
+      apply, message me &mdash; you are not going through a bot.</p>
+    </aside>
+  </div>
+</div>
+
+<!-- ======================= pay ======================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The money, plainly</h2>
+      <p>No joining fee, no training fee, no &ldquo;deposit for equipment&rdquo;. You never pay us
+      anything &mdash; we pay you.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card"><span class="big">&#8369;24,000</span><h3>Basic salary, monthly</h3>
+        <p>Paid whether or not it is a quiet month. Cut-off on the 15th and the 30th.</p></div>
+      <div class="card"><span class="big">+ incentives</span><h3>On top of basic</h3>
+        <p>Based on hours streamed and gifts received. Top hosts clear &#8369;50,000 and over.</p></div>
+      <div class="card"><span class="big">6 days</span><h3>A week</h3>
+        <p>9:00&nbsp;AM&ndash;3:00&nbsp;PM or 3:00&nbsp;PM&ndash;9:00&nbsp;PM. Sunday off.</p></div>
+    </div>
+    <div class="note">
+      <h3>About the &#8369;50,000 figure</h3>
+      <p>That is what the strongest hosts earn, not what everyone earns. Your first months will be
+      closer to the &#8369;24,000 basic while you build an audience, and the basic is yours either
+      way. We would rather tell you that now than have you find out on your first payslip.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= perks ======================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What comes with the job</h2>
+      <p>Location: Marina Seaview, Para&ntilde;aque City.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3>If you stay in</h3>
+        <ul class="ticks" style="margin-top:14px">
+          <li>Free accommodation</li>
+          <li>Free pool access</li>
+          <li>Free gym access</li>
+          <li>Kitchen appliances</li>
+          <li>Free WiFi</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>If you work from home</h3>
+        <ul class="ticks" style="margin-top:14px">
+          <li>You need your own streaming setup</li>
+          <li>Stable internet, decent lighting, quiet room</li>
+          <li>Same salary, same incentives, same shifts</li>
+          <li>We will check your setup before you start</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= fit ======================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Perfect ka dito, beshhh</h2>
+      <p>If you are madaldal, confident, and you light up on camera, this is your job. Here is the
+      honest version of what it takes.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3>You will do well if</h3>
+        <ul class="ticks" style="margin-top:14px">
+          <li>You can hold a conversation with strangers for hours</li>
+          <li>You are comfortable being watched and commented on</li>
+          <li>You turn up for your shift, every shift</li>
+          <li>You are 18 or over &mdash; TikTok&rsquo;s own rule for LIVE</li>
+          <li>You want to learn. Experience is not required.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>It is probably not for you if</h3>
+        <ul class="ticks" style="margin-top:14px">
+          <li>You go quiet when nobody replies in chat</li>
+          <li>You want a fixed &#8369;50,000 from month one</li>
+          <li>You cannot commit to six days a week</li>
+          <li>Reading comments about yourself would wreck your week</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= the job ======================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What the job actually involves</h2>
+      <p>So you know exactly what you are saying yes to.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3>On camera</h3>
+        <ul class="ticks" style="margin-top:14px">
+          <li>Run engaging, entertaining TikTok LIVE broadcasts</li>
+          <li>Build and hold an audience of your own</li>
+          <li>Keep the stream fun, positive and friendly</li>
+          <li>Talk with viewers, followers, supporters and gifters &mdash; professionally, every time</li>
+          <li>Join PK battles, viral challenges and whatever is trending</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Off camera</h3>
+        <ul class="ticks" style="margin-top:14px">
+          <li>Work with the team on content ideas and stream strategy</li>
+          <li>Turn up for your scheduled shifts</li>
+          <li>Follow the content guidelines</li>
+          <li>Stay inside TikTok&rsquo;s own platform policies &mdash; a ban costs you your income</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note">
+      <h3>Be seen. Be heard. Be you.</h3>
+      <p>We are not asking you to play a character. The hosts who last are the ones who are
+      recognisably themselves on camera for six hours and still enjoying it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= apply ======================= -->
+<div class="formwrap" id="apply">
+  <section>
+    <div class="wrap">
+      <div class="sec-head" style="text-align:center">
+        <h2>Apply</h2>
+        <p style="margin-inline:auto">Takes about a minute. I reply to every application, including
+        the ones I turn down.</p>
+      </div>
+
+      <div class="form-card">
+        <form id="apply-form" novalidate>
+          <div class="field"><label for="a-name">Full name</label>
+            <input id="a-name" name="name" type="text" required><span class="err"></span></div>
+
+          <div class="row">
+            <div class="field"><label for="a-mobile">Mobile or Telegram</label>
+              <input id="a-mobile" name="contact" type="text" placeholder="09XX XXX XXXX" required>
+              <span class="err"></span></div>
+            <div class="field"><label for="a-email">Email</label>
+              <input id="a-email" name="email" type="email" required><span class="err"></span></div>
+          </div>
+
+          <div class="field"><label for="a-tiktok">TikTok account</label>
+            <input id="a-tiktok" name="tiktok" type="text" placeholder="@yourhandle" required>
+            <span class="err"></span></div>
+
+          <div class="row">
+            <div class="field"><label for="a-country">Country</label>
+              <input id="a-country" name="country" type="text" value="Philippines" required>
+              <span class="err"></span></div>
+            <div class="field"><label for="a-setup">Work setup</label>
+              <select id="a-setup" name="setup" required>
+                <option value="">Choose one</option>
+                <option>Stay-in</option>
+                <option>Stay-out</option>
+                <option>Work from home</option>
+                <option>Not sure yet</option>
+              </select><span class="err"></span></div>
+          </div>
+
+          <div class="field"><label for="a-about">Tell us about yourself</label>
+            <textarea id="a-about" name="about" placeholder="Have you streamed before? What do you talk about? Anything you want me to know."></textarea>
+            <span class="err"></span></div>
+
+          <label class="confirm" for="a-age">
+            <input id="a-age" name="age_ok" type="checkbox" value="Yes" required>
+            <span>I confirm I am 18 years old or over. TikTok requires this to go LIVE.</span>
+          </label>
+
+          <button class="btn-send" type="submit">Send my application</button>
+          <p class="fineprint">Your details go to Ramuel only. You pay nothing at any stage.</p>
+          <div class="form-done" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= contact ======================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center">
+      <h2>Rather just message me?</h2>
+    </div>
+    <div class="grid g3">
+      <div class="card"><h3>Telegram</h3><p><a href="https://t.me/RamThreePointZero">@RamThreePointZero</a></p></div>
+      <div class="card"><h3>Facebook</h3><p><a href="https://www.facebook.com/ramyboi">facebook.com/ramyboi</a></p></div>
+      <div class="card"><h3>Email</h3><p><a href="mailto:ramuel03duculan@gmail.com">ramuel03duculan@gmail.com</a></p></div>
+    </div>
+    <div class="note">
+      <h3>How to tell this is real</h3>
+      <p>We never ask for a placement fee, a training fee, or a deposit of any kind. We will never
+      ask you to send money, load, or your bank password. If anyone claiming to be from Avery
+      Media PH3 asks you for money, it is not us &mdash; message me on the channels above and
+      tell me.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Avery Media PH3 &middot; Marina Seaview, Para&ntilde;aque City &middot;
+  Equal opportunity employer. We hire on confidence, personality and reliability.</div>
+</footer>
+
+<script>
+(function () {
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbxLVRllqXiSZi6I5LkUnVzlfoM1I6uI3DE-esFeosN-wP6lk5lZj0Sjm4WBHZVFudhy/exec";
+  var TOKEN = "rmph-2026-web";
+  var form = document.getElementById("apply-form");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var ok = true;
+    form.querySelectorAll("[required]").forEach(function (f) {
+      var wrap = f.closest(".field") || f.closest(".confirm");
+      var err  = wrap && wrap.querySelector(".err");
+      var bad  = f.type === "checkbox" ? !f.checked : !f.value.trim();
+      if (wrap && wrap.classList.contains("field")) wrap.classList.toggle("bad", bad);
+      if (err) err.textContent = bad ? "We need this one" : "";
+      if (bad && ok) { f.focus(); ok = false; }
+    });
+    if (!ok) return;
+
+    var btn = form.querySelector("button[type=submit]");
+    var label = btn.textContent;
+    btn.disabled = true; btn.textContent = "Sending\u2026";
+
+    var payload = { token: TOKEN, form: "Avery Media PH3 host application", page: "hiring.html" };
+    new FormData(form).forEach(function (v, k) { payload[k] = v; });
+    payload.age_ok = form.querySelector("[name=age_ok]").checked ? "Yes" : "No";
+
+    var box = form.querySelector(".form-done");
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.ok; })
+      .catch(function () {
+        return fetch(ENDPOINT, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
+          .then(function () { return true; });
+      })
+      .then(function (sent) {
+        btn.disabled = false; btn.textContent = label;
+        box.classList.add("is-on");
+        box.textContent = sent
+          ? "Got it \u2014 thank you. I read these myself and I will message you shortly."
+          : "That did not send. Please message me on Telegram @RamThreePointZero instead.";
+        if (sent) form.reset();
+      });
+  });
+})();
+</script>
+
+</body>
+</html>
