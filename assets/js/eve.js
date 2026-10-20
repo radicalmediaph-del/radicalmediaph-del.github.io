@@ -14,13 +14,19 @@
     // Same endpoint and token as the main site. Rows land in the Clients sheet
     // with Form = "Eve Wanderlust ..." so they can be filtered or moved to a tab.
     sheetEndpoint: "https://script.google.com/macros/s/AKfycbxLVRllqXiSZi6I5LkUnVzlfoM1I6uI3DE-esFeosN-wP6lk5lZj0Sjm4WBHZVFudhy/exec",
-    sheetToken:    "rmph-2026-web"
+    sheetToken:    "rmph-2026-web",
+
+    // Separate Apps Script that stores reviews and emails them for approval.
+    // Paste the /exec URL of the reviews deployment here. Until it is filled in,
+    // the review form explains itself instead of silently failing.
+    reviewEndpoint: ""
   };
 
   var LABELS = {
     full_name: "Name", email: "Email", phone: "Mobile", destination: "Destination",
     event_date: "Travel date", nights: "Nights", guests: "Travellers",
-    budget: "Budget per person", note: "Notes"
+    budget: "Budget per person", package: "Package", pickup: "Pickup point",
+    note: "Notes", newsletter: "Newsletter opt-in"
   };
 
   /* ----- hero slideshow ------------------------------------------------- */
@@ -164,6 +170,12 @@
         };
         new FormData(form).forEach(function (v, k) { payload[k] = v; });
 
+        // Unchecked boxes are absent from FormData. Record the answer either way,
+        // so an opt-in is a deliberate "Yes" and never an empty cell.
+        form.querySelectorAll("input[type=checkbox][name]").forEach(function (box) {
+          payload[box.name] = box.checked ? "Yes" : "No";
+        });
+
         send(payload).then(function (saved) {
           if (btn) { btn.disabled = false; btn.textContent = label; }
           done(form, payload, saved);
@@ -177,6 +189,104 @@
     document.querySelectorAll("input[name=event_date]").forEach(function (i) { i.min = today; });
   }
 
+  /* ----- reviews: show approved ones, send new ones for approval -------- */
+  function stars(n) {
+    n = Math.max(0, Math.min(5, Number(n) || 0));
+    return n ? "★".repeat(n) + "☆".repeat(5 - n) : "";
+  }
+
+  function showReviews() {
+    var list = document.getElementById("review-list");
+    if (!list || !EVE.reviewEndpoint) return;
+    fetch(EVE.reviewEndpoint)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.ok || !d.reviews || !d.reviews.length) return;
+        d.reviews.forEach(function (rv) {
+          var card = document.createElement("article");
+          card.className = "review";
+
+          if (rv.rating) {
+            var st = document.createElement("div");
+            st.className = "review-stars";
+            st.setAttribute("aria-label", rv.rating + " out of 5");
+            st.textContent = stars(rv.rating);
+            card.appendChild(st);
+          }
+
+          var p = document.createElement("p");
+          p.className = "review-text";
+          p.textContent = rv.review;          // textContent, never innerHTML
+          card.appendChild(p);
+
+          var who = document.createElement("div");
+          who.className = "review-who";
+          var b = document.createElement("b");
+          b.textContent = rv.name;
+          who.appendChild(b);
+          who.appendChild(document.createTextNode(
+            [rv.trip, rv.date].filter(Boolean).join(" · ")));
+          card.appendChild(who);
+
+          list.appendChild(card);
+        });
+        list.hidden = false;
+      })
+      .catch(function () { /* leave the section hidden */ });
+  }
+
+  function reviewForm() {
+    var form = document.querySelector("form[data-eve-review]");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var ok = true;
+      form.querySelectorAll("[required]").forEach(function (f) {
+        var wrap = f.closest(".field"), err = wrap && wrap.querySelector(".err");
+        var bad = !f.value.trim();
+        if (wrap) wrap.classList.toggle("bad", bad);
+        if (err) err.textContent = bad ? "We need this one" : "";
+        if (bad && ok) { f.focus(); ok = false; }
+      });
+      if (!ok) return;
+
+      var box = form.querySelector(".form-done");
+      var btn = form.querySelector("button[type=submit]");
+      var label = btn ? btn.textContent : "";
+
+      if (!EVE.reviewEndpoint) {
+        box.classList.add("is-on");
+        box.textContent = "Reviews are not switched on yet. Send it to " + EVE.email +
+                          " and we will put it up.";
+        return;
+      }
+
+      if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+      var payload = { token: EVE.sheetToken };
+      new FormData(form).forEach(function (v, k) { payload[k] = v; });
+
+      fetch(EVE.reviewEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      }).then(function (r) { return r.json(); })
+        .catch(function () {
+          return fetch(EVE.reviewEndpoint, {
+            method: "POST", mode: "no-cors", body: JSON.stringify(payload)
+          }).then(function () { return { ok: true }; });
+        })
+        .then(function (res) {
+          if (btn) { btn.disabled = false; btn.textContent = label; }
+          box.classList.add("is-on");
+          box.textContent = (res && res.ok)
+            ? "Thank you — that has gone to us for approval. Once we have read it, it goes up on this page."
+            : "That did not send. Please email it to " + EVE.email + " instead.";
+          if (res && res.ok) form.reset();
+        });
+    });
+  }
+
   function init() {
     var yr = document.getElementById("yr");
     if (yr) yr.textContent = new Date().getFullYear();
@@ -184,6 +294,8 @@
     rail();
     reveals();
     forms();
+    reviewForm();
+    showReviews();
   }
 
   if (document.readyState === "loading") {
