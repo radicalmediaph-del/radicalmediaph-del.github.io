@@ -347,3 +347,141 @@
   window.addEventListener("scroll", sync, { passive: true });
   sync();
 })();
+
+
+/* ---------- trip board, filled from the Trips sheet ---------- */
+(function () {
+  var SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzG8GZgQ0hmuok-" +
+              "IHtJTJcUZiVt_DFPBh6GorYvpOMmwwuf75qqMak8IVNVKBsECr1c5i2Hibtwpyi" +
+              "/pub?gid=0&single=true&output=csv";
+
+  var board = document.getElementById("tripboard");
+  if (!board || !window.fetch) return;
+  var head = document.getElementById("boardhead");
+
+  var MONTHS = ["January","February","March","April","May","June",
+                "July","August","September","October","November","December"];
+  var WORDS  = ["No trips","One trip","Two trips","Three trips","Four trips",
+                "Five trips","Six trips"];
+
+  function parseCsv(text) {
+    var rows = [], row = [], field = "", q = false, i, c;
+    for (i = 0; i < text.length; i++) {
+      c = text.charAt(i);
+      if (q) {
+        if (c === '"') {
+          if (text.charAt(i + 1) === '"') { field += '"'; i++; } else { q = false; }
+        } else { field += c; }
+      } else if (c === '"') { q = true; }
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+      else if (c !== "\r") { field += c; }
+    }
+    if (field !== "" || row.length) { row.push(field); rows.push(row); }
+    return rows;
+  }
+
+  function toDate(s) {
+    s = (s || "").trim();
+    if (!s) return null;
+    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);          // m/d/yyyy
+    if (m) return new Date(+m[3], +m[1] - 1, +m[2]);
+    var d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function range(a, b) {
+    if (!a) return "";
+    if (!b || a.getTime() === b.getTime()) {
+      return a.getDate() + " " + MONTHS[a.getMonth()];
+    }
+    if (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) {
+      return a.getDate() + " – " + b.getDate() + " " + MONTHS[a.getMonth()];
+    }
+    return a.getDate() + " " + MONTHS[a.getMonth()].slice(0, 3) + " – " +
+           b.getDate() + " " + MONTHS[b.getMonth()].slice(0, 3);
+  }
+
+  function span(cls, text) {
+    var s = document.createElement("span");
+    s.className = cls;
+    s.textContent = text;
+    return s;
+  }
+
+  function render(trips) {
+    board.textContent = "";
+    trips.forEach(function (t) {
+      var el = document.createElement(t.done || !t.link ? "div" : "a");
+      el.className = "tp-card" + (t.done ? " is-done" : t.full ? " is-full" : "");
+      if (el.tagName === "A") el.setAttribute("href", t.link);
+
+      el.appendChild(span("tp-when", t.when));
+      el.appendChild(span("tp-name", t.name));
+      var meta = [t.blurb, t.price].filter(Boolean).join(" · ");
+      if (meta) el.appendChild(span("tp-meta", meta));
+      if (t.done) el.appendChild(span("tp-badge", "✕ Completed"));
+      else if (t.full) el.appendChild(span("tp-badge", "Fully booked"));
+      board.appendChild(el);
+    });
+  }
+
+  fetch(SHEET, { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+    .then(function (text) {
+      var rows = parseCsv(text);
+      if (rows.length < 2) throw 0;
+
+      var head0 = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+      function col(name) { return head0.indexOf(name); }
+      var iName = col("trip"), iStart = col("start"), iEnd = col("end"),
+          iPrice = col("price"), iBlurb = col("blurb"),
+          iStatus = col("status"), iLink = col("link");
+      if (iName < 0) throw 0;
+
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var trips = [];
+
+      rows.slice(1).forEach(function (r) {
+        var name = (r[iName] || "").trim();
+        if (!name) return;
+        var status = ((r[iStatus] || "").trim() || "Open").toLowerCase();
+        if (status === "hidden") return;
+
+        var start = toDate(r[iStart]), end = toDate(r[iEnd]) || start;
+        var done = !!(end && end < today);
+        trips.push({
+          name:  name,
+          start: start,
+          done:  done,
+          full:  !done && status === "full",
+          when:  start ? range(start, end) : "Your dates",
+          price: done ? "" : (r[iPrice] || "").trim(),
+          blurb: (r[iBlurb] || "").trim(),
+          link:  (r[iLink] || "").trim()
+        });
+      });
+
+      if (!trips.length) throw 0;
+
+      trips.sort(function (a, b) {
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        if (!a.start) return 1;
+        if (!b.start) return -1;
+        return a.start - b.start;
+      });
+
+      render(trips);
+
+      if (head) {
+        var live = trips.filter(function (t) { return !t.done && t.start; }).length;
+        head.textContent = live
+          ? (WORDS[live] || live + " trips") + " leaving this season"
+          : "Trips on the board";
+      }
+    })
+    .catch(function () { /* sheet unreachable - the page keeps what is already there */ });
+})();
