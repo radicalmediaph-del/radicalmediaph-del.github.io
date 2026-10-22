@@ -262,6 +262,20 @@ p{margin:0 0 1rem}
 .foot-base{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;font-size:.84rem;color:rgba(255,255,255,.4)}
 .foot-base p{margin:0}
 
+/* ---------- footer socials ---------- */
+.foot-social{display:flex;gap:10px;margin-top:18px}
+.foot-social a{
+  display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;
+  color:rgba(255,255,255,.82);background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.15);text-decoration:none;
+  transition:background .2s var(--ease),border-color .2s var(--ease),
+             color .2s var(--ease),transform .2s var(--ease)
+}
+.foot-social a:hover,.foot-social a:focus-visible{
+  background:var(--sun);border-color:var(--sun);color:#fff;transform:translateY(-2px)
+}
+.foot-social svg{width:20px;height:20px;display:block}
+
 /* ---------- messenger button ---------- */
 .chat-fab{
   position:fixed;left:20px;bottom:20px;z-index:60;display:inline-flex;align-items:center;gap:10px;
