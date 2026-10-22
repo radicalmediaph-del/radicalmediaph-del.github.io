@@ -580,3 +580,48 @@
     init();
   }
 })();
+
+
+/* ---------- floating Home button (back to top) ---------- */
+(function () {
+  if (window.__rmHomeTop) return;
+  window.__rmHomeTop = true;
+
+  var css = document.createElement("style");
+  css.textContent = [
+    ".rm-hometop{position:fixed;top:70px;left:50%;z-index:9999;",
+    "transform:translate(-50%,-14px);opacity:0;pointer-events:none;",
+    "display:inline-flex;align-items:center;gap:9px;",
+    "padding:10px 20px 10px 16px;border-radius:999px;cursor:pointer;",
+    "font:600 15px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;",
+    "color:#fff;background:rgba(18,14,28,.86);",
+    "border:1px solid rgba(232,176,75,.55);",
+    "box-shadow:0 10px 30px rgba(0,0,0,.28);",
+    "-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);",
+    "transition:opacity .28s ease,transform .28s ease,box-shadow .2s ease,border-color .2s ease}",
+    ".rm-hometop.is-on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}",
+    ".rm-hometop:hover{box-shadow:0 14px 34px rgba(0,0,0,.36);border-color:rgba(232,176,75,.95)}",
+    ".rm-hometop:focus-visible{outline:2px solid #e8b04b;outline-offset:3px}",
+    ".rm-hometop .rm-e{font-size:19px;line-height:1}",
+    "@media (max-width:700px){.rm-hometop{top:62px;padding:9px 17px 9px 14px;font-size:14px}}",
+    "@media (prefers-reduced-motion:reduce){.rm-hometop{transition:none}}"
+  ].join("");
+  document.head.appendChild(css);
+
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "rm-hometop";
+  btn.setAttribute("aria-label", "Back to the top of the page");
+  btn.innerHTML = '<span class="rm-e" aria-hidden="true">🥾</span><span>Home</span>';
+  document.body.appendChild(btn);
+
+  btn.addEventListener("click", function () {
+    var reduce = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  });
+
+  function sync() { btn.classList.toggle("is-on", window.pageYOffset > 420); }
+  window.addEventListener("scroll", sync, { passive: true });
+  sync();
+})();
