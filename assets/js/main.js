@@ -589,21 +589,21 @@
 
   var css = document.createElement("style");
   css.textContent = [
-    ".rm-hometop{position:fixed;top:70px;left:50%;z-index:9999;",
-    "transform:translate(-50%,-14px);opacity:0;pointer-events:none;",
+    ".rm-hometop{position:fixed;top:72px;right:20px;z-index:9999;",
+    "transform:translateY(-14px);opacity:0;pointer-events:none;",
     "display:inline-flex;align-items:center;gap:9px;",
     "padding:10px 20px 10px 16px;border-radius:999px;cursor:pointer;",
     "font:600 15px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;",
-    "color:#fff;background:rgba(18,14,28,.86);",
+    "color:#fff;background:rgba(18,14,28,.88);",
     "border:1px solid rgba(232,176,75,.55);",
-    "box-shadow:0 10px 30px rgba(0,0,0,.28);",
+    "box-shadow:0 10px 30px rgba(0,0,0,.3);",
     "-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);",
     "transition:opacity .28s ease,transform .28s ease,box-shadow .2s ease,border-color .2s ease}",
-    ".rm-hometop.is-on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}",
-    ".rm-hometop:hover{box-shadow:0 14px 34px rgba(0,0,0,.36);border-color:rgba(232,176,75,.95)}",
+    ".rm-hometop.is-on{opacity:1;pointer-events:auto;transform:translateY(0)}",
+    ".rm-hometop:hover{box-shadow:0 14px 34px rgba(0,0,0,.38);border-color:rgba(232,176,75,.95)}",
     ".rm-hometop:focus-visible{outline:2px solid #e8b04b;outline-offset:3px}",
     ".rm-hometop .rm-e{font-size:19px;line-height:1}",
-    "@media (max-width:700px){.rm-hometop{top:62px;padding:9px 17px 9px 14px;font-size:14px}}",
+    "@media (max-width:700px){.rm-hometop{top:64px;right:12px;padding:9px 16px 9px 13px;font-size:14px}}",
     "@media (prefers-reduced-motion:reduce){.rm-hometop{transition:none}}"
   ].join("");
   document.head.appendChild(css);
