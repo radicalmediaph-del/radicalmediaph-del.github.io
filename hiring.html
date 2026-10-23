@@ -342,6 +342,13 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
               </select><span class="err"></span></div>
           </div>
 
+          <div class="field"><label for="a-shift">Shift you want</label>
+            <select id="a-shift" name="shift" required>
+              <option value="">Choose one</option>
+              <option>Morning Shift 9AM to 3PM</option>
+              <option>Night Shift 3PM to 9PM</option>
+            </select><span class="err"></span></div>
+
           <div class="field"><label for="a-when">Best time for an interview</label>
             <select id="a-when" name="interview" required>
               <option value="">Choose one</option>
@@ -407,7 +414,8 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
     email:     "entry.1797258974",
     country:   "entry.2121597291",
     tiktok:    "entry.1456658447",
-    setup:     "entry.79520370",
+    shift:     "entry.79520370",
+    setup:     "entry.611248748",
     interview: "entry.659110743",
     about:     "entry.1443781010"
   };
@@ -458,7 +466,9 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
         btn.disabled = false; btn.textContent = label;
         box.classList.add("is-on");
         box.textContent = sent
-          ? "Got it \u2014 thank you. I read these myself and I will message you shortly."
+          ? "Sent \u2014 thank you. I read every application myself. If you have not heard " +
+            "from me within 24 hours, message me on Telegram @RamThreePointZero so I can " +
+            "check nothing went missing."
           : "That did not send. Please message me on Telegram @RamThreePointZero instead.";
         if (sent) form.reset();
       });
