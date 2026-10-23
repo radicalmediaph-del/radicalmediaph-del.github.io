@@ -139,6 +139,10 @@ section{padding:62px 0}
 }
 .btn-send:hover{opacity:.92}
 .fineprint{font-size:.8rem;color:var(--faint);text-align:center;margin:14px 0 0}
+.field label .opt{
+  font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+  border:1px solid var(--line);border-radius:999px;padding:1px 7px;margin-left:7px
+}
 .form-done{display:none;margin-top:18px;padding:16px 18px;border-radius:8px;
   background:rgba(232,176,75,.12);border:1px solid rgba(232,176,75,.4);font-size:.94rem}
 .form-done.is-on{display:block}
@@ -329,6 +333,22 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
             <span class="err"></span></div>
 
           <div class="row">
+            <div class="field"><label for="a-age">Age <span class="opt">optional</span></label>
+              <input id="a-age" name="age" type="text" inputmode="numeric" placeholder="Leave blank if you prefer">
+              <span class="err"></span></div>
+            <div class="field"><label for="a-civil">Civil status</label>
+              <select id="a-civil" name="civil" required>
+                <option value="">Choose one</option>
+                <option>Single</option>
+                <option>Married</option>
+                <option>Widowed</option>
+                <option>Seperate</option>
+              </select><span class="err"></span></div>
+          </div>
+          <p class="fineprint" style="margin:-6px 0 18px">Age is optional and is not used to screen
+          applications &mdash; we hire on confidence, personality and reliability.</p>
+
+          <div class="row">
             <div class="field"><label for="a-country">Country</label>
               <input id="a-country" name="country" type="text" value="Philippines" required>
               <span class="err"></span></div>
@@ -410,6 +430,8 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
   var GFORM = "https://docs.google.com/forms/d/e/1FAIpQLSdL7Wmg5YKl9gbQ-_VD1WeYgugKlcV1Tn5XrchwuRfunMCPUg/formResponse";
   var GMAP = {
     name:      "entry.1337854504",
+    age:       "entry.1506201773",
+    civil:     "entry.1023108632",
     contact:   "entry.1788103746",
     email:     "entry.1797258974",
     country:   "entry.2121597291",
