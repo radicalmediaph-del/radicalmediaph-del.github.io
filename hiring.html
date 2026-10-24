@@ -337,7 +337,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
               <input id="a-age" name="age" type="text" inputmode="numeric" placeholder="Leave blank if you prefer">
               <span class="err"></span></div>
             <div class="field"><label for="a-civil">Civil status</label>
-              <select id="a-civil" name="civil" required>
+              <select id="a-civil" name="civil">
                 <option value="">Choose one</option>
                 <option>Single</option>
                 <option>Married</option>
@@ -350,7 +350,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
 
           <div class="row">
             <div class="field"><label for="a-country">Country</label>
-              <input id="a-country" name="country" type="text" value="Philippines" required>
+              <input id="a-country" name="country" type="text" value="Philippines">
               <span class="err"></span></div>
             <div class="field"><label for="a-setup">Work setup</label>
               <select id="a-setup" name="setup" required>
@@ -385,8 +385,17 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
             <textarea id="a-about" name="about" placeholder="Have you streamed before? What do you talk about? Anything you want me to know."></textarea>
             <span class="err"></span></div>
 
-          <label class="confirm" for="a-age">
-            <input id="a-age" name="age_ok" type="checkbox" value="Yes" required>
+          <div class="field"><label for="a-resume">Link to your resume <span class="opt">optional</span></label>
+            <input id="a-resume" name="resume" type="text"
+                   placeholder="Google Drive, Canva or Dropbox link">
+            <span class="err"></span></div>
+          <p class="fineprint" style="margin:-6px 0 18px">No link handy? Send your resume to
+          <a href="mailto:ramuel03duculan@gmail.com?subject=Resume%20%E2%80%94%20TikTok%20LIVE%20Host%20application">ramuel03duculan@gmail.com</a>
+          or Telegram <a href="https://t.me/RamThreePointZero" target="_blank" rel="noopener">@RamThreePointZero</a>
+          after you send this form &mdash; just put your full name in the message.</p>
+
+          <label class="confirm" for="a-18">
+            <input id="a-18" name="age_ok" type="checkbox" value="Yes" required>
             <span>I confirm I am 18 years old or over. TikTok requires this to go LIVE.</span>
           </label>
 
@@ -430,6 +439,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--faint);font-s
   var GFORM = "https://docs.google.com/forms/d/e/1FAIpQLSdL7Wmg5YKl9gbQ-_VD1WeYgugKlcV1Tn5XrchwuRfunMCPUg/formResponse";
   var GMAP = {
     name:      "entry.1337854504",
+    resume:    "entry.2092852162",
     age:       "entry.1506201773",
     civil:     "entry.1023108632",
     contact:   "entry.1788103746",
