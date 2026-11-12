@@ -160,3 +160,9 @@ body.is-locked .ad-lock{display:flex;min-height:100vh;align-items:center;justify
 .ad-lockcard .ad-logo em{color:var(--sun-dark)}
 .ad-lockcard h1{font-family:var(--display);font-size:1.7rem;color:var(--ink);margin:0 0 18px}
 .ad-lockcard .ad-btn{width:100%;margin-top:10px}
+
+/* save buttons near the work */
+.ad-placesave{align-items:center;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.ad-placesave .ad-muted{margin:0}
+.ad-float{position:fixed;right:20px;bottom:20px;z-index:20;box-shadow:0 10px 26px rgba(11,31,38,.28)}
+.ad-float[hidden],body.is-locked .ad-float{display:none}

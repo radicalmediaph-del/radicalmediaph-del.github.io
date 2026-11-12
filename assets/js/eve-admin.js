@@ -130,9 +130,15 @@
     });
   }
 
+  function saveNow() {
+    if (!dirty) { toast("Nothing new to save. Everything is already on the website."); return; }
+    save();
+  }
+
   function setSaveState(msg) {
     var bar = $("savebar"), st = $("savestate"), btn = $("savebtn");
     bar.classList.toggle("is-dirty", dirty);
+    $("floatsave").hidden = !dirty;
     btn.disabled = !dirty;
     if (msg) { st.textContent = msg; return; }
     if (dirty) st.textContent = "You have changes that are not on the website yet.";
@@ -498,6 +504,14 @@
         p.itinerary.push({ time: "", text: "" }); markDirty(); renderPlaces();
       }));
       body.appendChild(addI);
+
+      var sv = el("div", "ad-btnrow ad-placesave");
+      var svb = el("button", "ad-btn ad-btn--sun", "Save changes to website");
+      svb.type = "button";
+      svb.addEventListener("click", saveNow);
+      sv.appendChild(svb);
+      sv.appendChild(el("span", "ad-muted", "Saves every change on this page, not only this place."));
+      body.appendChild(sv);
 
       var del = el("div", "ad-btnrow");
       del.style.marginTop = "24px";
@@ -1384,6 +1398,7 @@
     });
   });
   $("savebtn").addEventListener("click", save);
+  $("floatsave").addEventListener("click", save);
   $("addplace").addEventListener("click", function () {
     newPlace(); markDirty(); renderPlaces();
     var boxes = document.querySelectorAll(".ad-place");
