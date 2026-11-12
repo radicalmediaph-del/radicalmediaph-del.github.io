@@ -6,24 +6,65 @@
       "name": "Mt. Sembrano",
       "tag": "Day hike",
       "blurb": "745 MASL · Pililla, Rizal · Laguna de Bay views",
-      "price": "",
-      "noteLabel": "Assembly",
+      "price": "1300",
+      "noteLabel": "1 Day Hike",
       "itinerary": [
-        { "time": "3:00 AM", "text": "Assembly and meetup — Cubao, Shaw Blvd or MOA" },
-        { "time": "3:30 AM", "text": "ETD to Tanay, Rizal by jeep or van" },
-        { "time": "5:30 AM", "text": "ETA Tanay; jeep transfer to Barangay Malaya, Pililla" },
-        { "time": "6:30 AM", "text": "Jump-off point: register, pay fees, meet your local guide" },
-        { "time": "7:00 AM", "text": "Start trekking" },
-        { "time": "8:00 AM", "text": "Manggahan Campsite: rest and hydration stop" },
-        { "time": "8:30 AM", "text": "Resume the hike toward the North Peak and South Peak" },
-        { "time": "10:30 AM", "text": "Summit: early lunch, rest and photos over Laguna de Bay" },
-        { "time": "11:30 AM", "text": "Start the descent (optional side trip to Manggahan Falls)" },
-        { "time": "2:30 PM", "text": "Back at the jump-off point; wash up" },
-        { "time": "3:30 PM", "text": "ETD back to Manila (optional side trip to Pililla Windmill Farm)" },
-        { "time": "6:30 PM", "text": "ETA Manila and drop-off" }
+        {
+          "time": "1:00 AM",
+          "text": "Assembly and meetup — Cubao, Shaw Blvd or MOA"
+        },
+        {
+          "time": "2:30 AM",
+          "text": "ETD to Tanay, Rizal by jeep or van"
+        },
+        {
+          "time": "4:30 AM",
+          "text": "ETA Tanay; jeep transfer to Barangay Malaya, Pililla"
+        },
+        {
+          "time": "5:30 AM",
+          "text": "Jump-off point: register, pay fees, meet your local guide"
+        },
+        {
+          "time": "7:00 AM",
+          "text": "Start trekking"
+        },
+        {
+          "time": "8:00 AM",
+          "text": "Manggahan Campsite: rest and hydration stop"
+        },
+        {
+          "time": "8:30 AM",
+          "text": "Resume the hike toward the North Peak and South Peak"
+        },
+        {
+          "time": "9:30 AM",
+          "text": "Summit: early lunch, rest and photos over Laguna de Bay"
+        },
+        {
+          "time": "10:30 AM",
+          "text": "Start the descent (optional side trip to Manggahan Falls)"
+        },
+        {
+          "time": "1:30 PM",
+          "text": "Back at the jump-off point; wash up"
+        },
+        {
+          "time": "2:30 PM",
+          "text": "ETD back to Manila (optional side trip to Pililla Windmill Farm)"
+        },
+        {
+          "time": "5:30 PM",
+          "text": "ETA Manila and drop-off"
+        }
       ],
       "dates": [
-        { "start": "2026-12-05", "end": "2026-12-05", "status": "open", "note": "3:00 AM · Cubao, Shaw Blvd or MOA" }
+        {
+          "start": "2026-12-05",
+          "end": "2026-12-05",
+          "status": "open",
+          "note": "3:00 AM · Cubao, Shaw Blvd or MOA"
+        }
       ]
     },
     {
@@ -34,21 +75,62 @@
       "price": "₱3,499 per head",
       "noteLabel": "Pickup",
       "itinerary": [
-        { "time": "Day 1, 7:00 AM", "text": "Banaue Arch, photos and a light breakfast" },
-        { "time": "Day 1, 8:00 AM", "text": "Banaue Rice Terraces view deck" },
-        { "time": "Day 1, 10–11 AM", "text": "Sagada; brunch at the Reversed House" },
-        { "time": "Day 1, 12:00 NN", "text": "Check in, drop bags, get ready" },
-        { "time": "Day 1, 1:00 PM", "text": "History tour: St. Mary's Church, Echo Valley, hanging coffins" },
-        { "time": "Day 1, 3:00 PM", "text": "Caves: Sumaguing, or the Lumiang connection" },
-        { "time": "Day 1, 7:00 PM", "text": "Dinner in town" },
-        { "time": "Day 2, 4:00 AM", "text": "Trek up Marlboro Hills in the dark" },
-        { "time": "Day 2, 5:00 AM", "text": "Sunrise over the sea of clouds" },
-        { "time": "Day 2, 7:30 AM", "text": "Blue Soil" },
-        { "time": "Day 2, 11:00 AM", "text": "Check out, lunch and pasalubong" },
-        { "time": "Day 2, 1:30 PM", "text": "Head home, arriving Manila around 2:00 AM" }
+        {
+          "time": "Day 1, 7:00 AM",
+          "text": "Banaue Arch, photos and a light breakfast"
+        },
+        {
+          "time": "Day 1, 8:00 AM",
+          "text": "Banaue Rice Terraces view deck"
+        },
+        {
+          "time": "Day 1, 10–11 AM",
+          "text": "Sagada; brunch at the Reversed House"
+        },
+        {
+          "time": "Day 1, 12:00 NN",
+          "text": "Check in, drop bags, get ready"
+        },
+        {
+          "time": "Day 1, 1:00 PM",
+          "text": "History tour: St. Mary's Church, Echo Valley, hanging coffins"
+        },
+        {
+          "time": "Day 1, 3:00 PM",
+          "text": "Caves: Sumaguing, or the Lumiang connection"
+        },
+        {
+          "time": "Day 1, 7:00 PM",
+          "text": "Dinner in town"
+        },
+        {
+          "time": "Day 2, 4:00 AM",
+          "text": "Trek up Marlboro Hills in the dark"
+        },
+        {
+          "time": "Day 2, 5:00 AM",
+          "text": "Sunrise over the sea of clouds"
+        },
+        {
+          "time": "Day 2, 7:30 AM",
+          "text": "Blue Soil"
+        },
+        {
+          "time": "Day 2, 11:00 AM",
+          "text": "Check out, lunch and pasalubong"
+        },
+        {
+          "time": "Day 2, 1:30 PM",
+          "text": "Head home, arriving Manila around 2:00 AM"
+        }
       ],
       "dates": [
-        { "start": "2026-12-05", "end": "2026-12-06", "status": "open", "note": "Evening of Friday 4 December" }
+        {
+          "start": "2026-12-05",
+          "end": "2026-12-06",
+          "status": "open",
+          "note": "Evening of Friday 4 December"
+        }
       ]
     },
     {
@@ -59,21 +141,62 @@
       "price": "from ₱2,499 per head",
       "noteLabel": "Pickup",
       "itinerary": [
-        { "time": "Stop 1", "text": "Namacpacan Cathedral" },
-        { "time": "Stop 2", "text": "Baluarte Watchtower" },
-        { "time": "Stop 3", "text": "Pebble Beach" },
-        { "time": "Stop 4", "text": "Bahay na Bato" },
-        { "time": "Stop 5", "text": "Man Made Forest" },
-        { "time": "Stop 6", "text": "San Juan Beach" },
-        { "time": "Stop 7", "text": "Ma-cho Temple" },
-        { "time": "Stop 8", "text": "Flotsam & Jetsam / Kabsat" },
-        { "time": "Stop 9", "text": "Food Park" },
-        { "time": "Stop 10", "text": "Grapes Farm" },
-        { "time": "Stop 11", "text": "Dried Fish Shop" },
-        { "time": "Stop 12", "text": "Pasalubong Stop" }
+        {
+          "time": "Stop 1",
+          "text": "Namacpacan Cathedral"
+        },
+        {
+          "time": "Stop 2",
+          "text": "Baluarte Watchtower"
+        },
+        {
+          "time": "Stop 3",
+          "text": "Pebble Beach"
+        },
+        {
+          "time": "Stop 4",
+          "text": "Bahay na Bato"
+        },
+        {
+          "time": "Stop 5",
+          "text": "Man Made Forest"
+        },
+        {
+          "time": "Stop 6",
+          "text": "San Juan Beach"
+        },
+        {
+          "time": "Stop 7",
+          "text": "Ma-cho Temple"
+        },
+        {
+          "time": "Stop 8",
+          "text": "Flotsam & Jetsam / Kabsat"
+        },
+        {
+          "time": "Stop 9",
+          "text": "Food Park"
+        },
+        {
+          "time": "Stop 10",
+          "text": "Grapes Farm"
+        },
+        {
+          "time": "Stop 11",
+          "text": "Dried Fish Shop"
+        },
+        {
+          "time": "Stop 12",
+          "text": "Pasalubong Stop"
+        }
       ],
       "dates": [
-        { "start": "2026-11-07", "end": "2026-11-08", "status": "cancelled", "note": "Late night 6 November" }
+        {
+          "start": "2026-11-07",
+          "end": "2026-11-08",
+          "status": "cancelled",
+          "note": "Late night 6 November"
+        }
       ]
     }
   ]
