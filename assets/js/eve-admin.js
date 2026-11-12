@@ -708,6 +708,15 @@
     var x = current();
     if (!x) { $("caption").value = ""; return; }
     $("caption").value = caption(x);
+    $("xcap").value = xText(x);
+    countX();
+    if (video && video.key !== videoKey(x)) {
+      video = null;
+      var pv = $("postvid");
+      if (pv.src) { URL.revokeObjectURL(pv.src); pv.removeAttribute("src"); pv.load(); }
+      $("dlvid").disabled = true;
+      $("vidmsg").textContent = "";
+    }
     var fonts = ["700 100px Fraunces", "italic 500 30px Fraunces", "700 24px Outfit", "500 24px Outfit"];
     var ready = document.fonts && document.fonts.load
       ? Promise.all(fonts.map(function (f) { return document.fonts.load(f); })).catch(function () {})
@@ -716,53 +725,519 @@
     ready.then(function () { drawPicture(x); });
   }
 
-  function pictureBlob() {
-    return new Promise(function (res) { $("postimg").toBlob(res, "image/png"); });
+  function pictureBlob(type) {
+    return new Promise(function (res) { $("postimg").toBlob(res, type || "image/png", 0.92); });
   }
 
-  function postToFacebook() {
+  /* ---------------- trip video (YouTube Shorts and TikTok) ---------------- */
+  var VID_W = 1080, VID_H = 1920, VID_SECONDS = 15;
+  var video = null;            // { blob, type, ext, key }
+
+  function videoKey(x) { return x ? JSON.stringify([x.place, x.date]) : ""; }
+
+  function drawVideo(g, x, t) {
+    var CREAM = "#F5EBDA", DEEP = "#0F3B4A", TEAL = "#3E7C83", SUN = "#E8734A", CORAL = "#C4502A", LIGHT = "#F2A98A";
+    var p = x.place, d = x.date;
+    function clamp(v) { return Math.max(0, Math.min(1, v)); }
+    function ease(v) { v = clamp(v); return 1 - Math.pow(1 - v, 3); }
+    function poly(pts, col) { g.beginPath(); g.moveTo(pts[0][0], pts[0][1]); pts.slice(1).forEach(function (q) { g.lineTo(q[0], q[1]); }); g.closePath(); g.fillStyle = col; g.fill(); }
+    function rrect(x0, y0, w, h, r) { g.beginPath(); g.moveTo(x0 + r, y0); g.arcTo(x0 + w, y0, x0 + w, y0 + h, r); g.arcTo(x0 + w, y0 + h, x0, y0 + h, r); g.arcTo(x0, y0 + h, x0, y0, r); g.arcTo(x0, y0, x0 + w, y0, r); g.closePath(); }
+    function fit(text, max) {
+      text = String(text || "");
+      if (g.measureText(text).width <= max) return text;
+      while (text.length > 1 && g.measureText(text + "…").width > max) text = text.slice(0, -1);
+      return text + "…";
+    }
+    function spacing(px) { if ("letterSpacing" in g) g.letterSpacing = px + "px"; }
+
+    g.globalAlpha = 1; spacing(0); g.textBaseline = "alphabetic";
+    g.fillStyle = CREAM; g.fillRect(0, 0, VID_W, VID_H);
+    g.beginPath(); g.arc(930, 520 - ease(t / 1.6) * 230, 84, 0, Math.PI * 2); g.fillStyle = SUN; g.fill();
+    poly([[540, 622], [800, 330], [1060, 622]], DEEP);
+    poly([[820, 622], [1000, 420], [1180, 622]], TEAL);
+    g.fillStyle = DEEP; g.fillRect(0, 620, VID_W, VID_H - 620);
+
+    // header
+    g.globalAlpha = ease(t / 0.8);
+    var dy = (1 - ease(t / 0.8)) * 24;
+    g.font = "700 40px Fraunces, Georgia, serif"; g.fillStyle = DEEP; g.fillText("Eve ", 80, 150 + dy);
+    var ew = g.measureText("Eve ").width;
+    g.font = "italic 500 40px Fraunces, Georgia, serif"; g.fillStyle = CORAL; g.fillText("Wanderlust", 80 + ew, 150 + dy);
+
+    var status = d.status === "cancelled" ? "CANCELLED · " : d.status === "full" ? "FULLY BOOKED · " : "";
+    g.font = "700 26px Outfit, sans-serif"; spacing(3);
+    var pill = fit((status + (p.tag ? p.tag + " · " : "") + range(x.start, x.end)).toUpperCase(), 760);
+    rrect(80, 184 + dy, g.measureText(pill).width + 52, 56, 28);
+    g.fillStyle = d.status === "cancelled" ? "#6d7b7e" : CORAL; g.fill();
+    g.fillStyle = CREAM; g.fillText(pill, 106, 222 + dy);
+    spacing(0);
+
+    var size = 120;
+    g.font = "700 " + size + "px Fraunces, Georgia, serif";
+    var words = String(p.name).split(/\s+/), lines = [], cur = "";
+    function wrapAt(max) {
+      lines = []; cur = "";
+      words.forEach(function (w) {
+        var tt = cur ? cur + " " + w : w;
+        if (g.measureText(tt).width > max && cur) { lines.push(cur); cur = w; } else cur = tt;
+      });
+      if (cur) lines.push(cur);
+    }
+    wrapAt(640);
+    while ((lines.length > 2 || lines.some(function (l) { return g.measureText(l).width > 660; })) && size > 50) {
+      size -= 6; g.font = "700 " + size + "px Fraunces, Georgia, serif"; wrapAt(640);
+    }
+    if (lines.length > 1 && size > 84) { size = 84; g.font = "700 " + size + "px Fraunces, Georgia, serif"; wrapAt(640); }
+    lines = lines.slice(0, 2);
+    g.fillStyle = DEEP;
+    var base = 290 + size * 0.82 + dy;
+    lines.forEach(function (l, i) { g.fillText(l, 80, base + i * size); });
+    var chipY = base + (lines.length - 1) * size + 34;
+    g.font = "700 26px Outfit, sans-serif";
+    var cx = 80;
+    String(p.blurb || "").split(/\s*·\s*/).filter(Boolean).slice(0, 3).forEach(function (ch) {
+      ch = fit(ch, 600 - (cx - 80));
+      var w = g.measureText(ch).width + 44;
+      if (cx + w > 720 || chipY + 54 > 600) return;
+      rrect(cx, chipY, w, 54, 27); g.lineWidth = 2.5; g.strokeStyle = DEEP; g.stroke();
+      g.fillStyle = DEEP; g.fillText(ch, cx + 22, chipY + 36);
+      cx += w + 12;
+    });
+
+    // itinerary, one stop at a time
+    var rows = (p.itinerary || []).filter(function (r) { return (r.time || "").trim() || (r.text || "").trim(); }).slice(0, 16);
+    var top = 700, bottom = 1540;
+    if (rows.length) {
+      var n = rows.length, rh = Math.min(66, (bottom - top) / n);
+      var fs = Math.max(20, Math.min(32, Math.floor(rh * 0.46)));
+      g.globalAlpha = 1;
+      g.font = "700 " + fs + "px Outfit, sans-serif";
+      var tw = 0;
+      rows.forEach(function (r) { tw = Math.max(tw, g.measureText(r.time || "").width); });
+      tw = Math.min(Math.max(tw, 70), 300);
+      var dotX = 80 + tw + 30, textX = dotX + 30, textW = 1030 - textX;
+      rows.forEach(function (r, i) {
+        var a = ease((t - (1.0 + i * (8 / n))) / 0.45);
+        if (a <= 0) return;
+        var cy = top + rh * i + rh / 2, sx = (1 - a) * 36;
+        g.globalAlpha = a;
+        if (i > 0) { g.strokeStyle = TEAL; g.lineWidth = 3; g.beginPath(); g.moveTo(dotX, cy - rh); g.lineTo(dotX, cy); g.stroke(); }
+        g.font = "700 " + fs + "px Outfit, sans-serif"; g.fillStyle = LIGHT;
+        g.fillText(fit(r.time, tw), 80 + sx, cy + fs * 0.35);
+        g.beginPath(); g.arc(dotX, cy, 9, 0, Math.PI * 2); g.fillStyle = DEEP; g.fill();
+        g.lineWidth = 3.5; g.strokeStyle = LIGHT; g.stroke();
+        g.font = "500 " + fs + "px Outfit, sans-serif"; g.fillStyle = CREAM;
+        g.fillText(fit(r.text, textW), textX + sx, cy + fs * 0.35);
+      });
+    } else {
+      g.globalAlpha = ease((t - 1) / 0.6);
+      g.font = "500 40px Outfit, sans-serif"; g.fillStyle = CREAM;
+      g.fillText("Message us for the full itinerary.", 80, 820);
+    }
+
+    // call to action
+    var ca = ease((t - 10.2) / 0.6);
+    if (ca > 0) {
+      g.globalAlpha = ca;
+      g.fillStyle = TEAL; g.fillRect(80, 1600, 920, 3);
+      var pulse = 1 + Math.sin(Math.max(0, t - 10.8) * 4) * 0.025;
+      g.save(); g.translate(80, 1700); g.scale(pulse, pulse);
+      g.font = "700 72px Fraunces, Georgia, serif"; g.fillStyle = LIGHT;
+      g.fillText(d.status === "cancelled" ? "Message us" : d.status === "full" ? "Fully booked!" : "Reserve na!", 0, 0);
+      g.restore();
+      g.font = "700 42px Outfit, sans-serif"; g.fillStyle = CREAM;
+      g.fillText("radicalmediaph.com/travel", 80, 1780);
+      g.font = "500 36px Outfit, sans-serif"; g.fillStyle = "#C9D6D4";
+      g.fillText(SITE.phone + " · Messenger: Eve Wanderlust", 80, 1838);
+    }
+    g.globalAlpha = 1;
+  }
+
+  function videoType() {
+    if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return null;
+    var list = ["video/mp4;codecs=avc1.42E01E", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"];
+    for (var i = 0; i < list.length; i++) if (MediaRecorder.isTypeSupported(list[i])) return list[i];
+    return null;
+  }
+
+  function makeVideo() {
+    var x = current(), msg = $("vidmsg");
+    msg.className = "ad-msg";
+    if (!x) { msg.textContent = "Pick a trip first."; return Promise.reject(new Error("no trip")); }
+    var key = videoKey(x);
+    if (video && video.key === key) return Promise.resolve(video);
+    var type = videoType();
+    var c = document.createElement("canvas");
+    if (!type || !c.captureStream) {
+      msg.textContent = "This browser can't make videos. Open the back office in Chrome on a computer.";
+      msg.classList.add("is-bad");
+      return Promise.reject(new Error("no recorder"));
+    }
+    c.width = VID_W; c.height = VID_H;
+    c.style.cssText = "position:fixed;left:-99999px;top:0;width:10px;height:10px";
+    document.body.appendChild(c);
+    var g = c.getContext("2d");
+    $("mkvid").disabled = true; $("dlvid").disabled = true;
+    return (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
+      return new Promise(function (resolve, reject) {
+        var stream = c.captureStream(30), chunks = [];
+        var rec = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 6000000 });
+        rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+        rec.onerror = function (e) { reject(e.error || new Error("recording failed")); };
+        rec.onstop = function () {
+          var mime = type.split(";")[0];
+          resolve({ blob: new Blob(chunks, { type: mime }), type: mime, ext: mime === "video/mp4" ? "mp4" : "webm", key: key });
+        };
+        drawVideo(g, x, 0);
+        rec.start(250);
+        var t0 = performance.now();
+        (function tick() {
+          var t = (performance.now() - t0) / 1000;
+          drawVideo(g, x, Math.min(t, VID_SECONDS));
+          msg.textContent = "Recording the video… " + Math.min(VID_SECONDS, Math.floor(t)) + " of " + VID_SECONDS + " seconds";
+          if (t < VID_SECONDS) requestAnimationFrame(tick);
+          else setTimeout(function () { rec.stop(); stream.getTracks().forEach(function (k) { k.stop(); }); }, 120);
+        })();
+      });
+    }).then(function (v) {
+      video = v;
+      var el2 = $("postvid");
+      if (el2.src) URL.revokeObjectURL(el2.src);
+      el2.src = URL.createObjectURL(v.blob);
+      msg.textContent = "Video ready (" + Math.round(v.blob.size / 1024 / 102.4) / 10 + " MB).";
+      msg.classList.add("is-ok");
+      return v;
+    }, function (e) {
+      msg.textContent = "Couldn't make the video: " + (e.message || e) + ".";
+      msg.classList.add("is-bad");
+      throw e;
+    }).then(function (v) {
+      c.remove(); $("mkvid").disabled = false; $("dlvid").disabled = false; return v;
+    }, function (e) { c.remove(); $("mkvid").disabled = false; throw e; });
+  }
+
+  function download(blob, name) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  }
+  function fileName(x, ext) { return "eve-" + (x ? x.place.id + "-" + iso(x.start) : "post") + "." + ext; }
+
+  /* ---------------- YouTube Shorts ---------------- */
+  var ytTok = null, ytExp = 0, ytClient = null, ytWaiting = null;
+  var YT_SCOPE = "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly";
+
+  function loadGis() {
+    if (window.google && google.accounts && google.accounts.oauth2) return;
+    if (document.getElementById("gis")) return;
+    var s = document.createElement("script");
+    s.id = "gis"; s.src = "https://accounts.google.com/gsi/client"; s.async = true;
+    document.head.appendChild(s);
+  }
+
+  // must be called straight from a click, so the Google sign-in window isn't blocked
+  function ytToken() {
+    if (ytTok && Date.now() < ytExp - 60000) return Promise.resolve(ytTok);
+    var id = read("eve.ytclient");
+    if (!id) return Promise.reject(new Error("Connect YouTube in Settings first"));
+    if (!(window.google && google.accounts && google.accounts.oauth2)) {
+      loadGis();
+      return Promise.reject(new Error("Google sign-in is still loading; press the button again"));
+    }
+    if (!ytClient) {
+      ytClient = google.accounts.oauth2.initTokenClient({
+        client_id: id, scope: YT_SCOPE,
+        callback: function (r) {
+          var w = ytWaiting; ytWaiting = null;
+          if (!w) return;
+          if (r.error) w.reject(new Error(r.error_description || r.error));
+          else { ytTok = r.access_token; ytExp = Date.now() + (r.expires_in || 3600) * 1000; w.resolve(ytTok); }
+        },
+        error_callback: function (e) {
+          var w = ytWaiting; ytWaiting = null;
+          if (w) w.reject(new Error(e && e.type === "popup_closed" ? "the Google window was closed" : "Google sign-in was blocked"));
+        }
+      });
+    }
+    return new Promise(function (resolve, reject) {
+      ytWaiting = { resolve: resolve, reject: reject };
+      ytClient.requestAccessToken({ prompt: ytTok ? "" : "select_account" });
+    });
+  }
+
+  function ytFetch(url, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({ "Authorization": "Bearer " + ytTok }, opts.headers || {});
+    return fetch(url, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok || j.error) throw new Error((j.error && j.error.message) || ("YouTube said " + r.status));
+        return j;
+      });
+    });
+  }
+
+  function uploadShort(v, x, text, when) {
+    var p = x.place;
+    var title = (p.name + " — " + range(x.start, x.end) + " #Shorts").slice(0, 100);
+    var meta = {
+      snippet: {
+        title: title.replace(/[<>]/g, ""),
+        description: (text + "\n\n#Shorts").replace(/[<>]/g, "").slice(0, 4900),
+        tags: ["Eve Wanderlust", "Philippines travel", p.name, "joiners"].filter(Boolean),
+        categoryId: "19"
+      },
+      status: { privacyStatus: when ? "private" : "public", selfDeclaredMadeForKids: false }
+    };
+    if (when) meta.status.publishAt = new Date(when * 1000).toISOString();
+    var B = "eve" + Date.now();
+    var body = new Blob([
+      "--" + B + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" + JSON.stringify(meta) +
+      "\r\n--" + B + "\r\nContent-Type: " + v.type + "\r\n\r\n", v.blob, "\r\n--" + B + "--\r\n"]);
+    return ytFetch("https://www.googleapis.com/upload/youtube/v3/videos?uploadType=multipart&part=snippet,status",
+                   { method: "POST", headers: { "Content-Type": "multipart/related; boundary=" + B }, body: body });
+  }
+
+  function ytState() {
+    var s = $("ytstate"), id = read("eve.ytclient");
+    s.textContent = id ? "Connected" + (read("eve.ytname") ? ": " + read("eve.ytname") : "") : "Not connected";
+    s.classList.toggle("is-ok", !!id);
+    $("to-yt").disabled = !id;
+    $("to-yt").checked = !!id;
+    $("ytnote").hidden = !!id;
+    if (id) loadGis();
+  }
+
+  function connectYouTube() {
+    var id = $("ytclient").value.trim() || read("eve.ytclient");
+    if (!/\.apps\.googleusercontent\.com$/.test(id)) { toast("Paste the client ID; it ends in .apps.googleusercontent.com"); return; }
+    if (id !== read("eve.ytclient")) { ytClient = null; ytTok = null; }
+    store("eve.ytclient", id);
+    if (!(window.google && google.accounts && google.accounts.oauth2)) {
+      loadGis();
+      toast("Loading Google sign-in… press Connect again in a moment.");
+      return;
+    }
+    ytToken().then(function () {
+      return ytFetch("https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true");
+    }).then(function (j) {
+      var ch = j.items && j.items[0];
+      store("eve.ytname", ch ? ch.snippet.title : "");
+      $("ytclient").value = "";
+      ytState();
+      toast(ch ? "YouTube connected: " + ch.snippet.title : "Signed in, but that Google account has no YouTube channel yet.");
+    }).catch(function (e) { toast("YouTube didn't connect: " + e.message); ytState(); });
+  }
+
+  /* ---------------- X and TikTok, one tap ---------------- */
+  function xText(x) {
+    var p = x.place, d = x.date, e = icon(p), L = [];
+    if (d.status === "cancelled") {
+      L.push("📢 " + p.name + " (" + range(x.start, x.end) + ") is cancelled. Paid joiners: we'll message you about your refund.");
+    } else {
+      L.push(e + " " + p.name + " — " + range(x.start, x.end));
+      if (p.blurb) L.push("📍 " + p.blurb);
+      if (p.price) L.push("💰 " + p.price);
+      L.push(d.status === "full" ? "🔥 Fully booked! Message us for the next date." : "Reserve na! 👉 radicalmediaph.com/travel");
+    }
+    var tags = "#EveWanderlust #TravelPH #" + camel(p.name);
+    var out = L.concat(["", tags]).join("\n");
+    if (out.length > 270 && p.blurb) out = L.filter(function (l) { return l.indexOf("📍") !== 0; }).concat(["", tags]).join("\n");
+    return out.slice(0, 280);
+  }
+
+  function countX() {
+    var n = $("xcap").value.replace(/https?:\/\/\S+|\b[\w.-]+\.(com|ph|net|org)(\/\S*)?/g, "xxxxxxxxxxxxxxxxxxxxxxx").length;
+    $("xcount").textContent = n + " of 280 characters" + (n > 280 ? " — too long for X" : "");
+  }
+
+  function phone() { return window.matchMedia && matchMedia("(pointer: coarse)").matches; }
+  function canShareFile(type) {
+    try { return !!(navigator.canShare && navigator.canShare({ files: [new File(["x"], "a", { type: type })] })); }
+    catch (e) { return false; }
+  }
+
+  function shareX() {
+    var x = current(), msg = $("sharemsg");
+    msg.className = "ad-msg";
+    if (!x) { msg.textContent = "Pick a trip first."; return; }
+    var text = $("xcap").value;
+    if (phone() && canShareFile("image/jpeg")) {
+      pictureBlob("image/jpeg").then(function (b) {
+        return navigator.share({ files: [new File([b], fileName(x, "jpg"), { type: "image/jpeg" })], text: text });
+      }).then(function () { msg.textContent = "Pick X in the share menu, then press Post."; },
+              function () { window.open("https://x.com/intent/post?text=" + encodeURIComponent(text), "_blank", "noopener"); });
+      return;
+    }
+    window.open("https://x.com/intent/post?text=" + encodeURIComponent(text), "_blank", "noopener");
+    pictureBlob("image/jpeg").then(function (b) { download(b, fileName(x, "jpg")); });
+    msg.textContent = "X is open in a new tab with the caption. The picture just downloaded; add it with the picture button in X, then press Post.";
+    msg.classList.add("is-ok");
+  }
+
+  function shareTikTok() {
+    var x = current(), msg = $("sharemsg");
+    msg.className = "ad-msg";
+    if (!x) { msg.textContent = "Pick a trip first."; return; }
+    var text = $("caption").value;
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function () {});
+    var ready = video && video.key === videoKey(x);
+    if (phone() && canShareFile(ready ? video.type : "video/mp4")) {
+      if (!ready) {
+        msg.textContent = "Making the video first (about 15 seconds). Then tap Post on TikTok again.";
+        makeVideo().then(function () { msg.textContent = "Video ready. Tap Post on TikTok again to send it to the TikTok app."; }, function () {});
+        return;
+      }
+      navigator.share({ files: [new File([video.blob], fileName(x, video.ext), { type: video.type })], text: text })
+        .then(function () { msg.textContent = "Pick TikTok in the share menu. The caption is copied; paste it in TikTok."; msg.classList.add("is-ok"); },
+              function () {});
+      return;
+    }
+    window.open("https://www.tiktok.com/tiktokstudio/upload", "_blank", "noopener");
+    msg.textContent = ready ? "" : "Making the video (about 15 seconds)…";
+    (ready ? Promise.resolve(video) : makeVideo()).then(function (v) {
+      download(v.blob, fileName(x, v.ext));
+      msg.textContent = "TikTok is open in a new tab. The video downloaded and the caption is copied: upload the video there and paste the caption.";
+      msg.classList.add("is-ok");
+    }, function () {});
+  }
+
+  function graph(path, params, method) {
+    var token = read("eve.fbtoken");
+    if (method === "POST") {
+      var fd = params instanceof FormData ? params : new FormData();
+      if (!(params instanceof FormData)) Object.keys(params || {}).forEach(function (k) { fd.append(k, params[k]); });
+      fd.append("access_token", token);
+      return fetch(GRAPH + path, { method: "POST", body: fd }).then(unwrap);
+    }
+    var q = Object.keys(params || {}).map(function (k) { return k + "=" + encodeURIComponent(params[k]); });
+    q.push("access_token=" + encodeURIComponent(token));
+    return fetch(GRAPH + path + "?" + q.join("&")).then(unwrap);
+  }
+  function unwrap(r) {
+    return r.json().then(function (j) { if (j.error) throw new Error(j.error.message); return j; });
+  }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  // Instagram needs the picture at a public web address, so it is first put on
+  // the Facebook page (as the post itself, or hidden if only Instagram is
+  // ticked) and Instagram takes it from there.
+  function photoUrl(photoId) {
+    return graph(encodeURIComponent(photoId), { fields: "images" }).then(function (j) {
+      var img = (j.images || []).sort(function (a, b) { return b.width - a.width; })[0];
+      if (!img) throw new Error("Facebook did not return the picture");
+      return img.source;
+    });
+  }
+
+  function postInstagram(url, text) {
+    var ig = read("eve.igid");
+    return graph(encodeURIComponent(ig) + "/media", { image_url: url, caption: text }, "POST")
+      .then(function (c) {
+        var tries = 0;
+        function check() {
+          return graph(encodeURIComponent(c.id), { fields: "status_code" }).then(function (s) {
+            if (s.status_code === "FINISHED") return c.id;
+            if (s.status_code === "ERROR" || s.status_code === "EXPIRED") throw new Error("Instagram could not use the picture");
+            if (++tries > 15) throw new Error("Instagram is taking too long; try again in a minute");
+            return wait(2000).then(check);
+          });
+        }
+        return check();
+      })
+      .then(function (id) { return graph(encodeURIComponent(ig) + "/media_publish", { creation_id: id }, "POST"); })
+      .then(function (m) {
+        return graph(encodeURIComponent(m.id), { fields: "permalink" }).catch(function () { return {}; });
+      });
+  }
+
+  function link(text, href) {
+    var a = el("a", null, text);
+    a.href = href; a.target = "_blank"; a.rel = "noopener";
+    return a;
+  }
+
+  function postSocial() {
     var msg = $("fbmsg");
     msg.className = "ad-msg";
-    var page = read("eve.fbpage"), token = read("eve.fbtoken");
-    if (!page || !token) { msg.textContent = "Connect the Facebook page in Settings first."; msg.classList.add("is-bad"); return; }
+    msg.textContent = "";
+    function bad(t) { msg.textContent = t; msg.classList.add("is-bad"); }
     var x = current();
-    if (!x) { msg.textContent = "Pick a trip first."; msg.classList.add("is-bad"); return; }
+    if (!x) return bad("Pick a trip first.");
+    var hasFb = !!(read("eve.fbpage") && read("eve.fbtoken"));
+    var toFb = $("to-fb").checked && hasFb, toIg = $("to-ig").checked && !!read("eve.igid") && hasFb;
+    var toYt = $("to-yt").checked && !!read("eve.ytclient");
+    if ($("to-fb").checked && !hasFb) return bad("Connect the Facebook page in Settings first, or untick Facebook.");
+    if (!toFb && !toIg && !toYt) return bad("Tick at least one place to post to.");
     var later = document.querySelector("input[name=when]:checked").value === "later";
     var when = null;
     if (later) {
+      if (toIg) return bad("Instagram posts go up straight away. Untick Instagram to schedule, or choose Post now.");
       var v = $("schedat").value ? new Date($("schedat").value) : null;
       var mins = v ? (v - new Date()) / 60000 : 0;
-      if (!v || mins < 10 || mins > 60 * 24 * 30) {
-        msg.textContent = "Pick a time between 10 minutes and 30 days from now."; msg.classList.add("is-bad"); return;
-      }
+      if (!v || mins < 10 || mins > 60 * 24 * 30) return bad("Pick a time between 10 minutes and 30 days from now.");
       when = Math.floor(v.getTime() / 1000);
     }
-    var btn = $("fbpost");
+
+    var text = $("caption").value, btn = $("fbpost"), done = [], fails = [];
+    var ytAuth = toYt ? ytToken() : Promise.resolve(null);   // asks Google now, while the click counts
     btn.disabled = true;
-    msg.textContent = later ? "Scheduling on Facebook…" : "Posting to Facebook…";
-    pictureBlob().then(function (blob) {
-      var fd = new FormData();
-      fd.append("source", blob, "eve-" + x.place.id + "-" + iso(x.start) + ".png");
-      fd.append("caption", $("caption").value);
-      fd.append("access_token", token);
-      if (when) { fd.append("published", "false"); fd.append("scheduled_publish_time", String(when)); }
-      return fetch(GRAPH + encodeURIComponent(page) + "/photos", { method: "POST", body: fd });
-    }).then(function (r) { return r.json(); }).then(function (j) {
-      if (j.error) throw new Error(j.error.message);
+    msg.textContent = "Posting…";
+
+    var chain = Promise.resolve();
+    if (toFb || toIg) {
+      chain = pictureBlob("image/jpeg").then(function (blob) {
+        var fd = new FormData();
+        fd.append("source", blob, fileName(x, "jpg"));
+        if (toFb) {
+          fd.append("caption", text);
+          if (when) { fd.append("published", "false"); fd.append("scheduled_publish_time", String(when)); }
+        } else {
+          fd.append("published", "false");
+          fd.append("temporary", "true");
+        }
+        return graph(encodeURIComponent(read("eve.fbpage")) + "/photos", fd, "POST").then(function (j) {
+          if (toFb) done.push(when ? ["Facebook: scheduled for " + new Date(when * 1000).toLocaleString()]
+                                   : ["Facebook: posted", j.post_id ? "https://www.facebook.com/" + j.post_id : ""]);
+          return j.id;
+        }, function (e) { fails.push("Facebook said: " + e.message); throw e; });
+      }).then(function (photoId) {
+        if (!toIg) return;
+        msg.textContent = "Posting to Instagram…";
+        return photoUrl(photoId)
+          .then(function (url) { return postInstagram(url, text); })
+          .then(function (m) { done.push(["Instagram: posted", m.permalink || ""]); },
+                function (e) { fails.push("Instagram said: " + e.message); });
+      }).catch(function () {});
+    }
+    if (toYt) {
+      chain = chain.then(function () {
+        return ytAuth.then(function () {
+          msg.textContent = "Making the YouTube video…";
+          return makeVideo();
+        }).then(function (v) {
+          msg.textContent = "Uploading to YouTube…";
+          return uploadShort(v, x, text, when);
+        }).then(function (j) {
+          done.push([when ? "YouTube: scheduled for " + new Date(when * 1000).toLocaleString() : "YouTube Shorts: posted",
+                     j.id ? "https://www.youtube.com/shorts/" + j.id : ""]);
+        }, function (e) { fails.push("YouTube said: " + (e.message || e)); });
+      });
+    }
+    chain.then(function () {
       msg.textContent = "";
-      if (when) msg.textContent = "Scheduled. It goes up on " + new Date(when * 1000).toLocaleString() + ". ";
-      else msg.textContent = "Posted. ";
-      if (j.post_id && !when) {
-        var a = el("a", null, "Open the post on Facebook");
-        a.href = "https://www.facebook.com/" + j.post_id; a.target = "_blank"; a.rel = "noopener";
-        msg.appendChild(a);
-      }
-      msg.classList.add("is-ok");
-    }).catch(function (e) {
-      msg.textContent = "Facebook said: " + (e.message || "something went wrong") +
-        ". If it mentions the token, get a new one in Settings.";
-      msg.classList.add("is-bad");
-    }).then(function () { btn.disabled = false; });
+      done.forEach(function (d) {
+        var line = el("span", null, d[0] + ". ");
+        if (d[1]) line.appendChild(link("Open it", d[1]));
+        msg.appendChild(line);
+        msg.appendChild(el("br"));
+      });
+      fails.forEach(function (f) { msg.appendChild(el("span", null, f + " ")); msg.appendChild(el("br")); });
+      if (fails.length) msg.appendChild(el("span", null, "If it mentions a token, sign-in or permission, reconnect in Settings."));
+      msg.classList.add(fails.length ? "is-bad" : "is-ok");
+      btn.disabled = false;
+    });
   }
 
   /* ---------------- settings ---------------- */
@@ -795,11 +1270,20 @@
     });
   }
 
+  function igState() {
+    var s = $("igstate"), ok = !!read("eve.igid");
+    s.textContent = ok ? "Connected: " + read("eve.igname") : (read("eve.fbtoken") ? "Not linked to the page" : "Not connected");
+    s.classList.toggle("is-ok", ok);
+    $("to-ig").disabled = !ok;
+    $("to-ig").checked = ok;
+    $("ignote").hidden = ok;
+  }
+
   function connectFacebook() {
     var page = $("fbpage").value.trim(), token = $("fbtoken").value.trim();
     if (!page || !token) { toast("Fill in both the page ID and the token."); return; }
     fbState(false, "Checking…");
-    fetch(GRAPH + encodeURIComponent(page) + "?fields=name&access_token=" + encodeURIComponent(token))
+    fetch(GRAPH + encodeURIComponent(page) + "?fields=name,instagram_business_account%7Bid,username%7D&access_token=" + encodeURIComponent(token))
       .then(function (r) { return r.json(); })
       .then(function (j) {
         if (j.error) throw new Error(j.error.message);
@@ -807,9 +1291,81 @@
         $("fbtoken").value = "";
         fbState(true, "Connected: " + (j.name || page));
         store("eve.fbname", j.name || page);
-        toast("Facebook page connected.");
+        var ig = j.instagram_business_account;
+        store("eve.igid", ig ? ig.id : null);
+        store("eve.igname", ig ? "@" + (ig.username || ig.id) : null);
+        igState();
+        toast(ig ? "Facebook and Instagram connected." : "Facebook connected. No Instagram account is linked to this page yet.");
       })
       .catch(function (e) { fbState(false, "Didn't work"); toast("Facebook said: " + e.message); });
+  }
+
+  /* ---------------- password lock ----------------
+     The page stays hidden until the password matches the hash in
+     assets/data/admin.json. Saving and posting still need the keys kept on
+     this device, so the lock keeps visitors out of the screens while the
+     keys keep them from changing anything.                                */
+  var ADMIN_FILE = "assets/data/admin.json";
+  function hex(buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ("0" + b.toString(16)).slice(-2); }).join(""); }
+  function unhex(h) { var a = new Uint8Array(h.length / 2); for (var i = 0; i < a.length; i++) a[i] = parseInt(h.substr(i * 2, 2), 16); return a; }
+  function derive(pw, salt, iter) {
+    return crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"])
+      .then(function (k) { return crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: unhex(salt), iterations: iter }, k, 256); })
+      .then(hex);
+  }
+  function readSession(k) { try { return sessionStorage.getItem(k) || ""; } catch (e) { return ""; } }
+  function writeSession(k, v) { try { if (v == null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} }
+
+  function gate(start) {
+    var form = $("lockform"), msg = $("lockmsg"), started = false;
+    function open() {
+      document.body.classList.remove("is-locked");
+      if (!started) { started = true; start(); }
+    }
+    fetch(ADMIN_FILE + "?v=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (cfg) {
+      var saved = readSession("eve.unlock") || read("eve.unlock");
+      if (saved && saved === cfg.hash) return open();
+      $("lockpw").focus();
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        msg.className = "ad-msg"; msg.textContent = "Checking…";
+        $("lockbtn").disabled = true;
+        derive($("lockpw").value, cfg.salt, cfg.iter).then(function (h) {
+          $("lockbtn").disabled = false;
+          if (h !== cfg.hash) { msg.textContent = "That password is not right."; msg.classList.add("is-bad"); $("lockpw").select(); return; }
+          writeSession("eve.unlock", h);
+          if ($("lockremember").checked) store("eve.unlock", h);
+          $("lockpw").value = ""; msg.textContent = "";
+          open();
+        });
+      });
+    }).catch(function () {
+      msg.textContent = "Couldn't check the password right now. Refresh the page.";
+      msg.classList.add("is-bad");
+    });
+  }
+
+  function changePassword() {
+    var a = $("pwnew").value, b = $("pwnew2").value;
+    if (a.length < 8) { toast("Use at least 8 characters."); return; }
+    if (a !== b) { toast("The two passwords don't match."); return; }
+    if (!read("eve.ghkey")) { toast("Connect the website key first; the password is saved to the website."); return; }
+    var salt = hex(crypto.getRandomValues(new Uint8Array(16))), iter = 150000;
+    derive(a, salt, iter).then(function (h) {
+      var body = JSON.stringify({ salt: salt, iter: iter, hash: h }, null, 2) + "\n";
+      var url = "/repos/" + REPO.owner + "/" + REPO.name + "/contents/" + ADMIN_FILE;
+      return gh("GET", url + "?ref=" + REPO.branch).then(function (j) { return j.sha; }, function () { return null; })
+        .then(function (cur) {
+          var req = { message: "Back office: change password", content: b64enc(body), branch: REPO.branch };
+          if (cur) req.sha = cur;
+          return gh("PUT", url, req);
+        }).then(function () {
+          writeSession("eve.unlock", h);
+          if (read("eve.unlock")) store("eve.unlock", h);
+          $("pwnew").value = ""; $("pwnew2").value = "";
+          toast("Password changed. It works everywhere in about a minute.");
+        });
+    }).catch(function (e) { toast("Password not changed: " + e.message); });
   }
 
   /* ---------------- wire up ---------------- */
@@ -851,19 +1407,36 @@
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
     });
   });
-  $("fbpost").addEventListener("click", postToFacebook);
+  $("fbpost").addEventListener("click", postSocial);
+  $("pwsave").addEventListener("click", changePassword);
+  $("lockout").addEventListener("click", function () {
+    if (dirty && !window.confirm("You have changes that are not saved. Lock anyway?")) return;
+    dirty = false; writeSession("eve.unlock", null); store("eve.unlock", null); location.reload();
+  });
+  $("mkvid").addEventListener("click", function () { makeVideo().catch(function () {}); });
+  $("dlvid").addEventListener("click", function () { if (video) download(video.blob, fileName(current(), video.ext)); });
+  $("xshare").addEventListener("click", shareX);
+  $("ttshare").addEventListener("click", shareTikTok);
+  $("xcap").addEventListener("input", countX);
+  $("ytsave").addEventListener("click", connectYouTube);
+  $("ytforget").addEventListener("click", function () {
+    ["eve.ytclient", "eve.ytname"].forEach(function (k) { store(k, null); });
+    ytTok = null; ytClient = null; ytState(); toast("YouTube removed from this device.");
+  });
   $("ghsave").addEventListener("click", connectGitHub);
   $("ghforget").addEventListener("click", function () { store("eve.ghkey", null); ghState(false); setSaveState(); toast("Website key removed from this device."); });
   $("fbsave").addEventListener("click", connectFacebook);
   $("fbforget").addEventListener("click", function () {
-    ["eve.fbpage", "eve.fbtoken", "eve.fbname"].forEach(function (k) { store(k, null); });
-    fbState(false); toast("Facebook token removed from this device.");
+    ["eve.fbpage", "eve.fbtoken", "eve.fbname", "eve.igid", "eve.igname"].forEach(function (k) { store(k, null); });
+    fbState(false); igState(); toast("Facebook and Instagram removed from this device.");
   });
   window.addEventListener("beforeunload", function (e) { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
 
   if (read("eve.ghkey")) ghState(true);
   if (read("eve.fbtoken")) { fbState(true, "Connected: " + (read("eve.fbname") || read("eve.fbpage"))); $("fbpage").value = read("eve.fbpage"); }
+  igState();
+  ytState();
   var sd = new Date(Date.now() + 60 * 60000); sd.setMinutes(0, 0, 0);
   $("schedat").value = iso(sd) + "T" + String(sd.getHours()).padStart(2, "0") + ":00";
-  load();
+  gate(load);
 })();

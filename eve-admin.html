@@ -11,7 +11,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500;1,9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/eve-admin.css">
 </head>
-<body>
+<body class="is-locked">
+
+<div class="ad-lock" id="lock">
+  <form class="ad-lockcard" id="lockform">
+    <p class="ad-logo">Eve <em>Wanderlust</em></p>
+    <h1>Back office</h1>
+    <div class="ad-field">
+      <label for="lockpw">Password</label>
+      <input id="lockpw" type="password" autocomplete="current-password" required>
+    </div>
+    <label class="ad-check"><input type="checkbox" id="lockremember"> Keep me signed in on this device</label>
+    <button class="ad-btn ad-btn--sun" type="submit" id="lockbtn">Open the back office</button>
+    <p class="ad-msg" id="lockmsg" role="alert"></p>
+  </form>
+</div>
 
 <header class="ad-top">
   <div class="ad-wrap ad-top-row">
@@ -97,15 +111,65 @@
         </div>
       </div>
     </div>
+    <div class="ad-videobox">
+      <div>
+        <p class="ad-label">Video for YouTube Shorts and TikTok (vertical, 15 seconds)</p>
+        <video id="postvid" class="ad-vid" controls playsinline muted aria-label="Trip video preview"></video>
+      </div>
+      <div>
+        <p class="ad-muted">The video shows the place, the date and the itinerary one stop at a time,
+        then how to book. It is silent, so you can add a trending sound inside TikTok or YouTube.
+        Keep this tab open while it records; it takes about 15 seconds.</p>
+        <div class="ad-btnrow">
+          <button type="button" class="ad-btn ad-btn--sun" id="mkvid">Make the video</button>
+          <button type="button" class="ad-btn" id="dlvid" disabled>Download video</button>
+        </div>
+        <p class="ad-msg" id="vidmsg" role="status"></p>
+      </div>
+    </div>
+
     <div class="ad-fbbox">
-      <h3>Post to the Eve Wanderlust Facebook page</h3>
+      <h3>Post automatically</h3>
+      <div class="ad-row3">
+        <label class="ad-check"><input type="checkbox" id="to-fb" checked> Facebook page</label>
+        <label class="ad-check"><input type="checkbox" id="to-ig" checked> Instagram @eve.wanderlust.ph</label>
+        <label class="ad-check"><input type="checkbox" id="to-yt" checked> YouTube Shorts</label>
+      </div>
+      <p class="ad-muted" id="ignote">Instagram turns on once it is linked; see Settings.</p>
+      <p class="ad-muted" id="ytnote">YouTube turns on once you connect it in Settings.</p>
       <div class="ad-row2">
         <label class="ad-check"><input type="radio" name="when" value="now" checked> Post now</label>
         <label class="ad-check"><input type="radio" name="when" value="later"> Schedule for
           <input type="datetime-local" id="schedat" aria-label="Schedule date and time"></label>
       </div>
-      <button type="button" class="ad-btn ad-btn--sun" id="fbpost">Post to Facebook</button>
+      <p class="ad-muted">Scheduling works for Facebook and YouTube. Instagram posts go up straight away.</p>
+      <button type="button" class="ad-btn ad-btn--sun" id="fbpost">Post it</button>
       <p class="ad-msg" id="fbmsg" role="status"></p>
+    </div>
+
+    <div class="ad-fbbox">
+      <h3>One tap: X and TikTok</h3>
+      <p class="ad-muted">These two open with everything ready; you press their Post button.</p>
+      <div class="ad-onetap">
+        <div>
+          <h4>X</h4>
+          <p class="ad-muted">Opens X with the short caption below. On a phone the picture goes
+          along too; on a computer it downloads so you can attach it.</p>
+          <button type="button" class="ad-btn ad-btn--sun" id="xshare">Share on X</button>
+        </div>
+        <div>
+          <h4>TikTok</h4>
+          <p class="ad-muted">On a phone it sends the video straight to the TikTok app. On a
+          computer it downloads the video, copies the caption and opens TikTok's upload page.</p>
+          <button type="button" class="ad-btn ad-btn--sun" id="ttshare">Post on TikTok</button>
+        </div>
+      </div>
+      <div class="ad-field" style="margin-top:16px">
+        <label for="xcap">Short caption for X</label>
+        <textarea id="xcap" rows="4"></textarea>
+        <p class="ad-muted" id="xcount" aria-live="polite"></p>
+      </div>
+      <p class="ad-msg" id="sharemsg" role="status"></p>
     </div>
   </section>
 
@@ -145,7 +209,9 @@
 
     <div class="ad-setting">
       <h3>Facebook page <span class="ad-pill" id="fbstate">Not connected</span></h3>
-      <p class="ad-muted">Lets this page post to your Eve Wanderlust page.</p>
+      <p class="ad-muted">Lets this page post to your Eve Wanderlust page and, through it, to Instagram.</p>
+      <p class="ad-muted">Instagram: <span class="ad-pill" id="igstate">Not connected</span>
+      It connects by itself when @eve.wanderlust.ph is a Professional account linked to the Eve Wanderlust page.</p>
       <div class="ad-row2">
         <div class="ad-field">
           <label for="fbpage">Page ID</label>
@@ -164,12 +230,57 @@
         <summary>How to get the page token (once)</summary>
         <ol>
           <li>Open <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener">developers.facebook.com/apps</a> and create an app (type <b>Business</b>), named <b>Eve back office</b>.</li>
-          <li>Open <a href="https://developers.facebook.com/tools/explorer" target="_blank" rel="noopener">Graph API Explorer</a>, pick that app, then <b>Get Page Access Token</b> and tick <b>pages_manage_posts</b>, <b>pages_read_engagement</b> and <b>pages_show_list</b>.</li>
+          <li>Open <a href="https://developers.facebook.com/tools/explorer" target="_blank" rel="noopener">Graph API Explorer</a>, pick that app, then <b>Get Page Access Token</b> and tick <b>pages_manage_posts</b>, <b>pages_read_engagement</b>, <b>pages_show_list</b>, <b>instagram_basic</b> and <b>instagram_content_publish</b>.</li>
           <li>Choose the <b>Eve Wanderlust</b> page in the "User or Page" box and copy the token.</li>
           <li>To stop it expiring in an hour, paste it into the <a href="https://developers.facebook.com/tools/debug/accesstoken/" target="_blank" rel="noopener">Access Token Debugger</a> and press <b>Extend Access Token</b>; use the new token.</li>
-          <li>Paste it above and press Connect. The page name appears when it works.</li>
+          <li>Paste it above and press Connect. The page name appears when it works, and the Instagram account if it is linked.</li>
+          <li>Instagram says "Not linked"? In the Instagram app go to <b>Settings → Account type and tools → Switch to professional account</b>, then on the Eve Wanderlust Facebook page go to <b>Settings → Linked accounts → Instagram</b> and connect it. Press Connect here again.</li>
         </ol>
       </details>
+    </div>
+
+    <div class="ad-setting">
+      <h3>YouTube <span class="ad-pill" id="ytstate">Not connected</span></h3>
+      <p class="ad-muted">Lets this page upload the trip video to your YouTube channel as a Short.
+      You sign in with Google each time you post; nothing is stored but the ID below.</p>
+      <div class="ad-field">
+        <label for="ytclient">Google OAuth client ID</label>
+        <input id="ytclient" type="text" autocomplete="off" placeholder="1234…apps.googleusercontent.com">
+      </div>
+      <div class="ad-btnrow">
+        <button type="button" class="ad-btn ad-btn--sun" id="ytsave">Connect</button>
+        <button type="button" class="ad-btn" id="ytforget">Forget on this device</button>
+      </div>
+      <details class="ad-how">
+        <summary>How to get the client ID (once, about 5 minutes)</summary>
+        <ol>
+          <li>Open <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">console.cloud.google.com/projectcreate</a> with the Google account that owns your YouTube channel. Name the project <b>Eve back office</b> and press Create.</li>
+          <li>Open <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">YouTube Data API v3</a> and press <b>Enable</b>.</li>
+          <li>Open <a href="https://console.cloud.google.com/auth/overview" target="_blank" rel="noopener">Google Auth Platform</a>, press <b>Get started</b>, name the app <b>Eve back office</b>, pick your email, choose <b>External</b>, and finish. Under <b>Audience</b>, add your own Gmail as a <b>Test user</b>.</li>
+          <li>Under <b>Clients</b>, press <b>Create client</b>, choose <b>Web application</b>, and under <b>Authorised JavaScript origins</b> add <b>https://radicalmediaph.com</b>. Press Create.</li>
+          <li>Copy the <b>Client ID</b>, paste it above and press Connect. Pick your channel when Google asks. If Google says the app isn't verified, press <b>Continue</b>; it's your own app.</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="ad-setting">
+      <h3>Back office password</h3>
+      <p class="ad-muted">Change the password for this page. It is saved to the website, so it
+      works on every device. Needs the website key above.</p>
+      <div class="ad-row2">
+        <div class="ad-field">
+          <label for="pwnew">New password</label>
+          <input id="pwnew" type="password" autocomplete="new-password">
+        </div>
+        <div class="ad-field">
+          <label for="pwnew2">Type it again</label>
+          <input id="pwnew2" type="password" autocomplete="new-password">
+        </div>
+      </div>
+      <div class="ad-btnrow">
+        <button type="button" class="ad-btn ad-btn--sun" id="pwsave">Change password</button>
+        <button type="button" class="ad-btn" id="lockout">Lock this page now</button>
+      </div>
     </div>
   </section>
 
