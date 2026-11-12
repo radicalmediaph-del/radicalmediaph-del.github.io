@@ -621,3 +621,110 @@ p{margin:0 0 1rem}
   text-align:center;padding:9px 2px 11px
 }
 @media (max-width:760px){.vanintro{gap:28px}}
+
+/* ======================= trips with no date yet =======================
+   eve.js adds .is-quiet to a trip section whose place has no upcoming date
+   in assets/data/trips.json. It folds to one line (never crossed out) and
+   the button re-opens the itinerary.                                      */
+.itin--single{grid-template-columns:1fr;max-width:760px;margin-inline:auto}
+.trip-price{margin:22px auto 0;color:var(--ink);font-family:var(--display);font-size:1.4rem}
+.trip.is-quiet{padding:48px 0}
+.trip.is-quiet + .trip.is-quiet{padding-top:0}
+.trip.is-quiet .trip-head h2{font-size:clamp(1.5rem,3vw,2.1rem)}
+.trip.is-quiet .trip-head .lead{display:none}
+.trip.is-quiet .trip-body{display:none}
+.trip.is-quiet.is-open .trip-body{display:block}
+.trip-quietbar{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 16px;margin-top:18px
+}
+.trip-badge{
+  display:inline-block;padding:5px 12px;border-radius:999px;background:rgba(11,31,38,.07);
+  color:var(--body-ink);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600
+}
+.trip-toggle{
+  font:inherit;font-size:.9rem;min-height:44px;padding:10px 20px;border-radius:999px;cursor:pointer;
+  background:var(--paper);border:1px solid var(--line);color:var(--ink)
+}
+.trip-toggle:hover{border-color:var(--sun);color:var(--sun)}
+.trip-toggle:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.trip-ask{font-size:.9rem;color:#b9501f;font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+
+/* ======================= travel calendar ======================= */
+.tourpick .tp-go{display:block;margin-top:14px;font-size:.85rem;font-weight:600;color:var(--sun)}
+.tourpick{grid-template-columns:repeat(4,1fr)}
+@media (max-width:1080px){.tourpick{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.tourpick{grid-template-columns:1fr}}
+
+.tripcal{
+  margin-top:40px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:30px 30px 26px;scroll-margin-top:90px
+}
+.tripcal-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px;margin-bottom:22px}
+.tripcal-head h3{font-size:1.45rem;margin-bottom:4px}
+.tripcal-head .muted{margin:0}
+.tripcal-nav{display:flex;align-items:center;gap:10px}
+.tripcal-month{margin:0;min-width:10.5ch;text-align:center;font-family:var(--display);font-size:1.25rem;font-weight:700;color:var(--ink)}
+.tripcal-btn{
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
+  font:inherit;font-size:1.1rem;color:var(--ink);cursor:pointer
+}
+.tripcal-btn:hover{border-color:var(--sun);color:var(--sun)}
+.tripcal-btn:focus-visible,.tripcal-day:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+
+.tripcal-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:6px}
+.tripcal-dow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 8px 4px}
+.tripcal-cell{min-width:0}
+.tripcal-day{
+  display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;min-height:86px;
+  padding:8px;border:1px solid transparent;border-radius:var(--radius);background:var(--sand);
+  font:inherit;text-align:left;color:var(--body-ink)
+}
+.tripcal-num{font-size:.95rem;line-height:1}
+button.tripcal-day{cursor:pointer}
+.tripcal-day.has-trip{background:rgba(224,112,60,.12);border-color:rgba(224,112,60,.55)}
+.tripcal-day.has-trip .tripcal-num{font-weight:700;color:#b9501f}
+.tripcal-day.has-trip:hover{border-color:var(--sun)}
+.tripcal-day.is-done{background:transparent;border:1px dashed var(--line)}
+.tripcal-day.is-done .tripcal-num{color:var(--muted);text-decoration:line-through;font-weight:500}
+.tripcal-day.is-today{box-shadow:inset 0 0 0 2px var(--sea)}
+.tripcal-day.is-focus{border-color:var(--sun);border-width:2px}
+.tripcal-day.is-selected{background:#b9501f;border-color:#b9501f}
+.tripcal-day.is-selected .tripcal-num{color:#fff}
+.tripcal-day.is-selected .tripcal-tag{background:#fff;color:#b9501f}
+.tripcal-tags{display:flex;flex-direction:column;gap:3px;width:100%}
+.tripcal-tag{
+  display:block;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  font-size:.7rem;font-weight:600;line-height:1.3;padding:2px 6px;border-radius:2px;
+  background:#b9501f;color:#fff
+}
+.tripcal-tag.is-done{background:rgba(11,31,38,.08);color:var(--muted);text-decoration:line-through}
+@media (max-width:700px){
+  .tripcal{padding:22px 14px 18px}
+  .tripcal-row{gap:4px;margin-bottom:4px}
+  .tripcal-dow{text-align:center;padding:0 0 4px;letter-spacing:.04em}
+  .tripcal-day{min-height:46px;align-items:center;justify-content:center;padding:4px}
+  .tripcal-tags{display:none}
+  .tripcal-day.has-trip::after{
+    content:"";width:6px;height:6px;border-radius:50%;background:var(--sun)
+  }
+  .tripcal-day.is-done::after{background:var(--muted)}
+  .tripcal-day.is-selected::after{background:#fff}
+}
+
+.tripcal-legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:14px;font-size:.84rem;color:var(--muted)}
+.tripcal-legend span{display:inline-flex;align-items:center;gap:8px}
+.lg{display:inline-block;width:14px;height:14px;border-radius:2px}
+.lg--trip{background:rgba(224,112,60,.12);border:1px solid rgba(224,112,60,.55)}
+.lg--done{border:1px dashed var(--muted)}
+.lg--today{box-shadow:inset 0 0 0 2px var(--sea);background:var(--sand)}
+
+.tripcal-panel:not(:empty){margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+.tripcal-paneldate{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sun);font-weight:600;margin:0 0 6px}
+.tripcal-item{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:12px 0;border-top:1px solid var(--line)}
+.tripcal-paneldate + .tripcal-item{border-top:0}
+.tripcal-item > div{flex:1 1 220px;min-width:0}
+.tripcal-name{font-family:var(--display);font-size:1.2rem;font-weight:700;color:var(--ink);margin:0}
+.tripcal-when{margin:2px 0 0;font-size:.9rem;color:var(--muted)}
+.tripcal-item.is-done .tripcal-name,.tripcal-item.is-done .tripcal-when{color:var(--muted);text-decoration:line-through}
+.btn--glass-dark{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn--glass-dark:hover{border-color:var(--sun);color:var(--sun)}

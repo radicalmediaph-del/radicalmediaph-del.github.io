@@ -349,139 +349,347 @@
 })();
 
 
-/* ---------- trip board, filled from the Trips sheet ---------- */
+/* ---------- trips: place cards, travel calendar and trip sections ----------
+   Everything below reads assets/data/trips.json, the file the back office
+   (eve-admin.html) edits. Places are never crossed out: a place with no
+   upcoming date says so and folds its section to one line until a date is
+   added. Calendar days that have passed, or were cancelled, show faded.     */
 (function () {
-  var SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzG8GZgQ0hmuok-" +
-              "IHtJTJcUZiVt_DFPBh6GorYvpOMmwwuf75qqMak8IVNVKBsECr1c5i2Hibtwpyi" +
-              "/pub?gid=0&single=true&output=csv";
-
-  var board = document.getElementById("tripboard");
-  if (!board || !window.fetch) return;
-  var head = document.getElementById("boardhead");
-
+  var DATA_URL = "assets/data/trips.json";
   var MONTHS = ["January","February","March","April","May","June",
                 "July","August","September","October","November","December"];
-  var WORDS  = ["No trips","One trip","Two trips","Three trips","Four trips",
-                "Five trips","Six trips"];
+  var DAYS   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  var LONG   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var TODAY  = (function () { var d = new Date(); d.setHours(0, 0, 0, 0); return d; })();
 
-  function parseCsv(text) {
-    var rows = [], row = [], field = "", q = false, i, c;
-    for (i = 0; i < text.length; i++) {
-      c = text.charAt(i);
-      if (q) {
-        if (c === '"') {
-          if (text.charAt(i + 1) === '"') { field += '"'; i++; } else { q = false; }
-        } else { field += c; }
-      } else if (c === '"') { q = true; }
-      else if (c === ",") { row.push(field); field = ""; }
-      else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
-      else if (c !== "\r") { field += c; }
-    }
-    if (field !== "" || row.length) { row.push(field); rows.push(row); }
-    return rows;
+  var places = [], trips = [];
+
+  function parse(s) {
+    var m = String(s || "").trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
   }
-
-  function toDate(s) {
-    s = (s || "").trim();
-    if (!s) return null;
-    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
-    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);          // m/d/yyyy
-    if (m) return new Date(+m[3], +m[1] - 1, +m[2]);
-    var d = new Date(s);
-    return isNaN(d.getTime()) ? null : d;
+  function same(a, b) { return !!(a && b && a.getTime() === b.getTime()); }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
   }
-
   function range(a, b) {
-    if (!a) return "";
-    if (!b || a.getTime() === b.getTime()) {
-      return a.getDate() + " " + MONTHS[a.getMonth()];
-    }
+    if (!b || same(a, b)) return a.getDate() + " " + MONTHS[a.getMonth()] + " " + a.getFullYear();
     if (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) {
-      return a.getDate() + " – " + b.getDate() + " " + MONTHS[a.getMonth()];
+      return a.getDate() + " – " + b.getDate() + " " + MONTHS[a.getMonth()] + " " + a.getFullYear();
     }
     return a.getDate() + " " + MONTHS[a.getMonth()].slice(0, 3) + " – " +
-           b.getDate() + " " + MONTHS[b.getMonth()].slice(0, 3);
+           b.getDate() + " " + MONTHS[b.getMonth()].slice(0, 3) + " " + b.getFullYear();
+  }
+  function longDate(t) {
+    return same(t.start, t.end) ? LONG[t.start.getDay()] + " " + range(t.start) : range(t.start, t.end);
+  }
+  function upcoming(t) { return t.status !== "cancelled" && t.end >= TODAY; }
+  function label(t) {
+    if (t.status === "cancelled") return "Cancelled";
+    if (t.end < TODAY) return "Completed";
+    return "";
+  }
+  function nextFor(id) {
+    return trips.filter(function (t) { return t.place.id === id && upcoming(t); })
+                .sort(function (a, b) { return a.start - b.start; })[0] || null;
+  }
+  function placeById(id) {
+    return places.filter(function (p) { return p.id === id; })[0] || null;
   }
 
-  function span(cls, text) {
-    var s = document.createElement("span");
-    s.className = cls;
-    s.textContent = text;
-    return s;
-  }
-
-  function render(trips) {
+  /* ---- place cards (no dates on them) ---- */
+  function renderCards() {
+    var board = document.getElementById("tripboard");
+    if (!board) return;
+    var van = board.querySelector('a[href="#van"]');
     board.textContent = "";
-    trips.forEach(function (t) {
-      var el = document.createElement(t.done || !t.link ? "div" : "a");
-      el.className = "tp-card" + (t.done ? " is-done" : t.full ? " is-full" : "");
-      if (el.tagName === "A") el.setAttribute("href", t.link);
+    places.forEach(function (p) {
+      var next = nextFor(p.id);
+      var a = el("a", "tp-card");
+      a.href = "#" + p.id;
+      a.setAttribute("data-place", p.id);
+      a.appendChild(el("span", "tp-when", p.tag || "Trip"));
+      a.appendChild(el("span", "tp-name", p.name));
+      var meta = [p.blurb, p.price].filter(Boolean).join(" · ");
+      if (meta) a.appendChild(el("span", "tp-meta", meta));
+      var go = el("span", "tp-go", next ? "See the dates " : "Dates coming soon ");
+      var arrow = el("span", null, "→");
+      arrow.setAttribute("aria-hidden", "true");
+      go.appendChild(arrow);
+      a.appendChild(go);
+      board.appendChild(a);
+    });
+    if (van) board.appendChild(van);
+  }
 
-      el.appendChild(span("tp-when", t.when));
-      el.appendChild(span("tp-name", t.name));
-      var meta = [t.blurb, t.price].filter(Boolean).join(" · ");
-      if (meta) el.appendChild(span("tp-meta", meta));
-      if (t.done) el.appendChild(span("tp-badge", "✕ Completed"));
-      else if (t.full) el.appendChild(span("tp-badge", "Fully booked"));
-      board.appendChild(el);
+  /* ---- a section for each place the page has no hand-built section for ---- */
+  function renderMoreSections() {
+    var host = document.getElementById("moretrips");
+    if (!host) return;
+    host.textContent = "";
+    places.forEach(function (p) {
+      if (document.querySelector('section.trip[data-place="' + p.id + '"]')) return;
+      var sec = el("section", "section trip");
+      sec.id = p.id;
+      sec.setAttribute("data-place", p.id);
+      var wrap = el("div", "wrap");
+      var head = el("div", "trip-head center narrow");
+      head.appendChild(el("p", "eyebrow", p.tag || "Trip"));
+      head.appendChild(el("h2", null, p.name));
+      if (p.blurb) head.appendChild(el("p", "lead", p.blurb));
+      wrap.appendChild(head);
+
+      var body = el("div", "trip-body");
+      var bar = el("div", "datebar");
+      var c1 = el("div");
+      c1.appendChild(el("span", "datebar-label", "Next date"));
+      var s1 = el("strong"); s1.setAttribute("data-next", ""); c1.appendChild(s1);
+      var sep = el("div", "datebar-sep"); sep.setAttribute("aria-hidden", "true");
+      var c2 = el("div");
+      c2.appendChild(el("span", "datebar-label", p.noteLabel || "Details"));
+      var s2 = el("strong"); s2.setAttribute("data-next-note", ""); c2.appendChild(s2);
+      var btn = el("a", "btn btn--sun", "Reserve a seat"); btn.href = "#plan";
+      bar.appendChild(c1); bar.appendChild(sep); bar.appendChild(c2); bar.appendChild(btn);
+      body.appendChild(bar);
+      if (p.price) body.appendChild(el("p", "center lead trip-price", p.price));
+
+      var rows = (p.itinerary || []).filter(function (r) { return r && (r.time || r.text); });
+      if (rows.length) {
+        var h = el("div", "center"); h.style.marginTop = "56px";
+        h.appendChild(el("p", "eyebrow", "The itinerary"));
+        h.appendChild(el("h2", null, "How it runs"));
+        body.appendChild(h);
+        var itin = el("div", "itin itin--single");
+        var day = el("div", "itin-day");
+        rows.forEach(function (r) {
+          var row = el("div", "itin-row");
+          row.appendChild(el("span", "t", r.time || ""));
+          row.appendChild(el("span", "w", r.text || ""));
+          day.appendChild(row);
+        });
+        itin.appendChild(day);
+        body.appendChild(itin);
+      }
+      wrap.appendChild(body);
+      sec.appendChild(wrap);
+      host.appendChild(sec);
     });
   }
 
-  fetch(SHEET, { cache: "no-store" })
-    .then(function (r) { if (!r.ok) throw 0; return r.text(); })
-    .then(function (text) {
-      var rows = parseCsv(text);
-      if (rows.length < 2) throw 0;
-
-      var head0 = rows[0].map(function (h) { return h.trim().toLowerCase(); });
-      function col(name) { return head0.indexOf(name); }
-      var iName = col("trip"), iStart = col("start"), iEnd = col("end"),
-          iPrice = col("price"), iBlurb = col("blurb"),
-          iStatus = col("status"), iLink = col("link");
-      if (iName < 0) throw 0;
-
-      var today = new Date();
-      today.setHours(0, 0, 0, 0);
-      var trips = [];
-
-      rows.slice(1).forEach(function (r) {
-        var name = (r[iName] || "").trim();
-        if (!name) return;
-        var status = ((r[iStatus] || "").trim() || "Open").toLowerCase();
-        if (status === "hidden") return;
-
-        var start = toDate(r[iStart]), end = toDate(r[iEnd]) || start;
-        var done = !!(end && end < today);
-        trips.push({
-          name:  name,
-          start: start,
-          done:  done,
-          full:  !done && status === "full",
-          when:  start ? range(start, end) : "Your dates",
-          price: done ? "" : (r[iPrice] || "").trim(),
-          blurb: (r[iBlurb] || "").trim(),
-          link:  (r[iLink] || "").trim()
-        });
+  /* ---- next date in every trip section; quiet fold when there is none ---- */
+  function fillSections() {
+    document.querySelectorAll("section.trip[data-place]").forEach(function (sec, n) {
+      var p = placeById(sec.getAttribute("data-place"));
+      var t = p ? nextFor(p.id) : null;
+      sec.querySelectorAll("[data-next]").forEach(function (s) {
+        s.textContent = t ? longDate(t) : "To be announced";
+      });
+      sec.querySelectorAll("[data-next-note]").forEach(function (s) {
+        s.textContent = t ? ((t.status === "full" ? "Fully booked · " : "") + (t.note || "We send the details when you book"))
+                          : "We tell you when a date is set";
       });
 
-      if (!trips.length) throw 0;
+      var head = sec.querySelector(".trip-head");
+      var body = sec.querySelector(".trip-body");
+      var old = sec.querySelector(".trip-quietbar");
+      if (old) old.remove();
+      sec.classList.remove("is-quiet", "is-open");
+      if (t || !head || !body) return;
 
-      trips.sort(function (a, b) {
-        if (a.done !== b.done) return a.done ? 1 : -1;
-        if (!a.start) return 1;
-        if (!b.start) return -1;
-        return a.start - b.start;
+      sec.classList.add("is-quiet");
+      if (!body.id) body.id = (sec.id || "trip" + n) + "-details";
+      var bar = el("div", "trip-quietbar");
+      bar.appendChild(el("span", "trip-badge", "No date on the calendar yet"));
+      var b = el("button", "trip-toggle", "Show the itinerary");
+      b.type = "button";
+      b.setAttribute("aria-expanded", "false");
+      b.setAttribute("aria-controls", body.id);
+      b.addEventListener("click", function () {
+        var open = sec.classList.toggle("is-open");
+        b.setAttribute("aria-expanded", open ? "true" : "false");
+        b.textContent = open ? "Hide the itinerary" : "Show the itinerary";
+        if (open) body.querySelectorAll(".reveal").forEach(function (e) { e.classList.add("in"); });
       });
+      bar.appendChild(b);
+      var ask = el("a", "trip-ask", "Ask us about a date");
+      ask.href = "#plan";
+      bar.appendChild(ask);
+      head.appendChild(bar);
+    });
+  }
 
-      render(trips);
+  /* ---- hero line and the booking form's trip list ---- */
+  function fillHero() {
+    var k = document.getElementById("nextup");
+    if (!k) return;
+    var live = trips.filter(function (t) { return upcoming(t) && t.status !== "full" && t.start >= TODAY; })
+                    .sort(function (a, b) { return a.start - b.start; });
+    if (!live.length) { k.textContent = "Philippine tours & custom itineraries"; return; }
+    var first = live[0];
+    var sameDay = live.filter(function (t) { return same(t.start, first.start); });
+    var names = sameDay.map(function (t) { return t.place.name; });
+    var when = first.start.getDate() + " " + MONTHS[first.start.getMonth()] + " " + first.start.getFullYear();
+    k.textContent = "Next up: " + (names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names.slice(-1) : names[0]) +
+                    " · " + when + " · seats open";
+  }
 
-      if (head) {
-        var live = trips.filter(function (t) { return !t.done && t.start; }).length;
-        head.textContent = live
-          ? (WORDS[live] || live + " trips") + " leaving this season"
-          : "Trips on the board";
+  function fillPackages() {
+    var g = document.getElementById("pkg-trips");
+    if (!g) return;
+    g.textContent = "";
+    trips.filter(function (t) { return upcoming(t) && t.status !== "full"; })
+         .sort(function (a, b) { return a.start - b.start; })
+         .forEach(function (t) {
+           var o = el("option", null, t.place.name + " — " + range(t.start, t.end) + (t.place.price ? " · " + t.place.price : ""));
+           g.appendChild(o);
+         });
+    if (!g.children.length) g.remove();
+  }
+
+  /* ---- the travel calendar ---- */
+  var grid = document.getElementById("calgrid");
+  var cal = document.getElementById("calendar");
+  var monthEl = document.getElementById("calmonth");
+  var panel = document.getElementById("calpanel");
+  var view = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1), selected = null, focusId = null;
+
+  function tripsOn(d) { return trips.filter(function (t) { return d >= t.start && d <= t.end; }); }
+
+  function render() {
+    if (!grid) return;
+    monthEl.textContent = MONTHS[view.getMonth()] + " " + view.getFullYear();
+    grid.textContent = "";
+    var head = el("div", "tripcal-row tripcal-row--head");
+    head.setAttribute("role", "row");
+    DAYS.forEach(function (d) {
+      var h = el("div", "tripcal-dow", d);
+      h.setAttribute("role", "columnheader");
+      head.appendChild(h);
+    });
+    grid.appendChild(head);
+
+    var y = view.getFullYear(), m = view.getMonth();
+    var lead = new Date(y, m, 1).getDay(), count = new Date(y, m + 1, 0).getDate(), row = null;
+    for (var i = 0; i < lead + count; i++) {
+      if (i % 7 === 0) { row = el("div", "tripcal-row"); row.setAttribute("role", "row"); grid.appendChild(row); }
+      var cell = el("div", "tripcal-cell");
+      cell.setAttribute("role", "gridcell");
+      row.appendChild(cell);
+      if (i < lead) continue;
+
+      var d = new Date(y, m, i - lead + 1), on = tripsOn(d), day;
+      if (on.length) {
+        var allDone = on.every(function (t) { return !!label(t); });
+        day = el("button", "tripcal-day has-trip" + (allDone ? " is-done" : ""));
+        day.type = "button";
+        day.setAttribute("aria-label", d.getDate() + " " + MONTHS[m] + ": " + on.map(function (t) {
+          var l = label(t) || (t.status === "full" ? "Fully booked" : "");
+          return t.place.name + (l ? " (" + l.toLowerCase() + ")" : "");
+        }).join(", "));
+        day.setAttribute("aria-pressed", same(d, selected) ? "true" : "false");
+        (function (dd) { day.addEventListener("click", function () { select(dd); }); })(d);
+        if (focusId && on.some(function (t) { return t.place.id === focusId; })) day.classList.add("is-focus");
+      } else {
+        day = el("span", "tripcal-day");
       }
-    })
-    .catch(function () { /* sheet unreachable - the page keeps what is already there */ });
+      if (same(d, TODAY)) day.classList.add("is-today");
+      if (same(d, selected)) day.classList.add("is-selected");
+      day.appendChild(el("span", "tripcal-num", String(d.getDate())));
+      if (on.length) {
+        var tags = el("span", "tripcal-tags");
+        on.forEach(function (t) { tags.appendChild(el("span", "tripcal-tag" + (label(t) ? " is-done" : ""), t.place.name)); });
+        day.appendChild(tags);
+      }
+      cell.appendChild(day);
+    }
+  }
+
+  function showPanel() {
+    if (!panel) return;
+    panel.textContent = "";
+    if (!selected) return;
+    var on = tripsOn(selected);
+    if (!on.length) return;
+    panel.appendChild(el("p", "tripcal-paneldate", LONG[selected.getDay()] + ", " + range(selected)));
+    on.forEach(function (t) {
+      var l = label(t);
+      var item = el("div", "tripcal-item" + (l ? " is-done" : ""));
+      var text = el("div");
+      text.appendChild(el("p", "tripcal-name", t.place.name));
+      text.appendChild(el("p", "tripcal-when", range(t.start, t.end) + (t.note && !l ? " · " + t.place.noteLabel + ": " + t.note : "")));
+      item.appendChild(text);
+      if (l) item.appendChild(el("span", "trip-badge", l));
+      else if (t.status === "full") item.appendChild(el("span", "trip-badge", "Fully booked"));
+      var a = el("a", "btn " + (l ? "btn--glass-dark" : "btn--sun"), "See the itinerary");
+      a.href = "#" + t.place.id;
+      item.appendChild(a);
+      panel.appendChild(item);
+    });
+  }
+
+  function select(d) {
+    selected = d;
+    if (d.getMonth() !== view.getMonth() || d.getFullYear() !== view.getFullYear()) {
+      view = new Date(d.getFullYear(), d.getMonth(), 1);
+    }
+    render();
+    showPanel();
+    var b = grid && grid.querySelector(".tripcal-day.is-selected");
+    if (b && b.focus) b.focus({ preventScroll: true });
+  }
+
+  if (cal) {
+    cal.querySelectorAll("[data-cal]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        view = new Date(view.getFullYear(), view.getMonth() + (b.getAttribute("data-cal") === "next" ? 1 : -1), 1);
+        render();
+      });
+    });
+  }
+
+  // a place card jumps to its next date on the calendar; with no date it opens the place itself
+  document.addEventListener("click", function (e) {
+    var card = e.target.closest && e.target.closest("#tripboard [data-place]");
+    if (!card || !grid) return;
+    var t = nextFor(card.getAttribute("data-place"));
+    if (!t) return;
+    e.preventDefault();
+    focusId = t.place.id;
+    select(t.start);
+    cal.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  function build(data) {
+    places = (data && data.places || []).filter(function (p) { return p && p.id && p.name; });
+    trips = [];
+    places.forEach(function (p) {
+      (p.dates || []).forEach(function (d) {
+        var start = parse(d.start);
+        if (!start) return;
+        var end = parse(d.end) || start;
+        if (end < start) end = start;
+        trips.push({ place: p, start: start, end: end,
+                     status: String(d.status || "open").toLowerCase(), note: d.note || "" });
+      });
+    });
+    renderCards();
+    renderMoreSections();
+    fillSections();
+    fillHero();
+    fillPackages();
+    var first = trips.filter(upcoming).sort(function (a, b) { return a.start - b.start; })[0];
+    if (first) view = new Date(first.start.getFullYear(), first.start.getMonth(), 1);
+    render();
+  }
+
+  render();
+  if (!window.fetch) return;
+  fetch(DATA_URL + "?v=" + Date.now(), { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    .then(build)
+    .catch(function () { /* data file unreachable: the page keeps its written-in content */ });
 })();
+

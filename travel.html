@@ -42,10 +42,10 @@
   </div>
   <div class="hero-veil"></div>
   <div class="wrap hero-inner">
-    <p class="kicker">La Union &middot; 7&ndash;8 November 2026 &middot; seats open</p>
+    <p class="kicker" id="nextup">Mt. Sembrano day hike &middot; 5 December 2026 &middot; seats open</p>
     <h1>Tell us where you want<br>to <em>wake up</em>.</h1>
-    <p class="sub">Overnight van out of Manila, wake up in La Union. The route, the rooms, the permits
-    and the photographer are handled. You just show up and look at things.</p>
+    <p class="sub">Day hikes, beach weekends and mountain trips out of Manila. The route, the
+    schedule and the coordinator are handled. You just show up and look at things.</p>
     <div class="cta-row">
       <a class="btn btn--sun" href="#plan">Plan my trip <span aria-hidden="true">&rarr;</span></a>
       <a class="btn btn--glass" href="#destinations">See where we go</a>
@@ -97,173 +97,134 @@
 <section class="section" id="destinations">
   <div class="wrap">
     <div class="center narrow reveal">
-      <p class="eyebrow">Now boarding</p>
-      <h2 id="boardhead">Two trips leaving this season</h2>
-      <p class="lead">Pick the one that fits your leave credits. Both run on the same promise:
-      one van, one group, a coordinator who travels with you, and every cost written down
+      <p class="eyebrow">Where we go</p>
+      <h2>Pick a place, then pick a date</h2>
+      <p class="lead">Tap a place to see its dates on the calendar. Each trip runs on the same
+      promise: one group, a coordinator who travels with you, and every cost written down
       before you decide.</p>
     </div>
 
     <div class="tourpick reveal" id="tripboard">
-      <a href="#launion">
-        <span class="tp-when">7 &ndash; 8 November</span>
-        <span class="tp-name">La Union</span>
-        <span class="tp-meta">Surfing capital of the north &middot; 12 stops &middot; from &#8369;2,499</span>
+      <a class="tp-card" href="#sembrano" data-place="sembrano">
+        <span class="tp-when">Day hike</span>
+        <span class="tp-name">Mt. Sembrano</span>
+        <span class="tp-meta">745 MASL &middot; Pililla, Rizal &middot; Laguna de Bay views</span>
+        <span class="tp-go">See the dates <span aria-hidden="true">&rarr;</span></span>
       </a>
-      <a href="#sagada">
-        <span class="tp-when">5 &ndash; 6 December</span>
+      <a class="tp-card" href="#sagada" data-place="sagada">
+        <span class="tp-when">2 days, 1 night</span>
         <span class="tp-name">Sagada &amp; Banaue</span>
         <span class="tp-meta">Caves, rice terraces, sea of clouds &middot; &#8369;3,499</span>
+        <span class="tp-go">See the dates <span aria-hidden="true">&rarr;</span></span>
       </a>
-      <a href="#van">
-        <span class="tp-when">Your dates</span>
+      <a class="tp-card" href="#launion" data-place="launion">
+        <span class="tp-when">Beach weekend</span>
+        <span class="tp-name">La Union</span>
+        <span class="tp-meta">Surfing capital of the north</span>
+        <span class="tp-go">See the dates <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a class="tp-card" href="#van">
+        <span class="tp-when">Any date you pick</span>
         <span class="tp-name">Van Exclusive</span>
         <span class="tp-meta">Anywhere you name &middot; your group only &middot; quoted</span>
+        <span class="tp-go">Get a quote <span aria-hidden="true">&rarr;</span></span>
       </a>
     </div>
 
-    <div class="center narrow reveal" id="launion" style="margin-top:84px">
+    <div class="tripcal reveal" id="calendar">
+      <div class="tripcal-head">
+        <div>
+          <p class="eyebrow">Travel calendar</p>
+          <h3>Highlighted days have a trip leaving</h3>
+          <p class="muted">Tap a highlighted day to see where we are going.</p>
+        </div>
+        <div class="tripcal-nav">
+          <button type="button" class="tripcal-btn" data-cal="prev" aria-label="Previous month">&larr;</button>
+          <p class="tripcal-month" id="calmonth" aria-live="polite">December 2026</p>
+          <button type="button" class="tripcal-btn" data-cal="next" aria-label="Next month">&rarr;</button>
+        </div>
+      </div>
+      <div class="tripcal-grid" id="calgrid" role="grid" aria-labelledby="calmonth"></div>
+      <div class="tripcal-legend" aria-hidden="true">
+        <span><i class="lg lg--trip"></i>Trip leaving</span>
+        <span><i class="lg lg--done"></i>Finished or cancelled</span>
+        <span><i class="lg lg--today"></i>Today</span>
+      </div>
+      <div class="tripcal-panel" id="calpanel" aria-live="polite"></div>
+      <noscript><p class="muted">The calendar needs JavaScript. Scroll down for each trip and its dates.</p></noscript>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Mt. Sembrano day hike ======================= -->
+<section class="section trip" id="sembrano" data-place="sembrano">
+  <div class="wrap">
+    <div class="trip-head center narrow reveal">
       <p class="eyebrow">Trip one</p>
-      <h2>La Union &mdash; the Surfing Capital of the North</h2>
-      <p class="lead">An overnight van leaves Manila, you sleep through the drive, and you wake up
-      to the sea. One group, one van, twelve stops and nobody herding you onto a schedule you
-      did not agree to.</p>
+      <h2>Mt. Sembrano &mdash; a day hike above Laguna de Bay</h2>
+      <p class="lead">Out of Manila at 3 AM, on the trail by 7, and on the summit by mid-morning
+      with Laguna de Bay spread out below you. Back in the city in time for dinner.</p>
     </div>
 
+    <div class="trip-body">
     <div class="datebar reveal">
       <div>
-        <span class="datebar-label">Next departure</span>
-        <strong>7 &ndash; 8 November 2026</strong>
+        <span class="datebar-label">Hike date</span>
+        <strong data-next>Saturday 5 December 2026</strong>
       </div>
       <div class="datebar-sep" aria-hidden="true"></div>
       <div>
-        <span class="datebar-label">Pickup</span>
-        <strong>Late night 6 November</strong>
+        <span class="datebar-label">Assembly</span>
+        <strong data-next-note>3:00 AM &middot; Cubao, Shaw Blvd or MOA</strong>
       </div>
       <a class="btn btn--sun" href="#plan">Reserve a seat</a>
     </div>
 
-    <div class="tiers reveal">
-      <article class="tier">
-        <h3>2D1N</h3><p class="tier-sub">Two days, one night</p>
-        <p class="tier-price">₱2,499 <small>per head</small></p>
-        <p class="tier-note">Out on the night of 6 Nov, back on the 8th.</p>
-        <a class="btn btn--sun btn--block" href="#plan">Reserve this</a>
-      </article>
-      <article class="tier tier--best">
-        <h3>3D2N</h3><p class="tier-sub">Three days, two nights</p>
-        <p class="tier-price">₱3,499 <small>per head</small></p>
-        <p class="tier-note">An extra day on the coast. More surf, less rushing.</p>
-        <a class="btn btn--sun btn--block" href="#plan">Reserve this</a>
-      </article>
-      <article class="tier tier--plain">
-        <h3>Private group</h3><p class="tier-sub">Your barkada only</p>
-        <p class="tier-price">Quoted <small>per trip</small></p>
-        <p class="tier-note">Own van, own dates, own pace. Tell us how many of you.</p>
-        <a class="btn btn--glass btn--block" href="#plan">Get a quote</a>
-      </article>
-    </div>
-
-    
-
-    
-
-    <div class="inex reveal">
-      <div class="inex-col">
-        <h3>What's included</h3>
-        <ul class="ticks">
-          <li>Road-trip van, gas and toll fees</li>
-          <li>Air-conditioned accommodation</li>
-          <li>Permits</li>
-          <li>Coordinator and photographer</li>
-          <li>Exclusive tour &mdash; your group only</li>
-          <li>Quality service, start to finish</li>
-        </ul>
-      </div>
-      <div class="inex-col inex-col--out">
-        <h3>Not included</h3>
-        <ul class="crosses">
-          <li>Surfing lesson and board &mdash; ₱500 per pax</li>
-          <li>Eco fee &mdash; ₱40</li>
-          <li>Entrance fees &mdash; ₱50 per pax</li>
-          <li>Other meals</li>
-          <li>Room upgrade</li>
-        </ul>
-        <p class="muted" style="margin-top:16px">Listed openly so nothing lands as a surprise at the van door.</p>
-      </div>
-    </div>
-
-    <div class="detailpack reveal">
-
-      <details>
-        <summary>
-          <span class="dp-t">Deposit and terms</span>
-          <span class="dp-s">&#8369;1,000 per head &middot; non-refundable but transferable &middot; closes 1 November</span>
-        </summary>
-        <div class="dp-body">
-          <div class="deposit">
-<div>
-        <h3>&#8369;1,000 per head confirms your slot</h3>
-        <p>Accommodation is booked and paid per head, so we cannot hold a room on a promise.
-        Enquiries are free and unlimited &mdash; but the van fills in the order deposits land.</p>
-        <ul class="terms">
-          <li><strong>&#8369;1,000 per head</strong> secures your seat and your bed. The rest is the balance.</li>
-          <li><strong>Non-refundable, but transferable.</strong> If you cannot come, send someone in your slot.</li>
-          <li><strong>Balance due 3 days before departure</strong> &mdash; so nobody is counting cash in a carpark at midnight.</li>
-          <li><strong>Deposits close 1 November</strong> for the 7&ndash;8 November trip, so rooms can be confirmed.</li>
-          <li><strong>If we cancel,</strong> for weather, van trouble or too few travellers, your deposit comes back in full.</li>
-        </ul>
-        <p class="deposit-note">GCash, Maya or bank transfer. Payment details come with your
-        booking confirmation &mdash; always check the account name before you send, and if anything
-        looks off, message us first.</p>
-      </div>
-          </div>
-        </div>
-      </details>
-
-      <details>
-        <summary>
-          <span class="dp-t">Pickup points</span>
-          <span class="dp-s">5 points &middot; 11:30 PM to 2:00 AM &middot; night of 6 November</span>
-        </summary>
-        <div class="dp-body">
-          <p class="muted dp-lead">The van rolls out the night before so you wake up in La Union. Pick whichever point is closest and be there fifteen minutes early &mdash; it does not wait long.</p>
-          <ol class="pick-list pick-list--light">
-        <li><span class="time">11:30 PM</span><span class="place">MOA Eye &mdash; Giligan's (Ferris wheel)</span></li>
-        <li><span class="time">12:00 AM</span><span class="place">Greenfield, Shaw (parking lot)</span></li>
-        <li><span class="time">12:30 AM</span><span class="place">McDonald's Panay Avenue</span></li>
-        <li><span class="time">1:00 AM</span><span class="place">Bulacan exits</span></li>
-        <li><span class="time">2:00 AM</span><span class="place">Final pickup &mdash; location to confirm</span></li>
-          </ol>
-        </div>
-      </details>
-    </div>
+    <ul class="places reveal" style="margin-top:30px">
+      <li>745 MASL</li>
+      <li>Pililla, Rizal</li>
+      <li>Difficulty 3/9</li>
+      <li>Day hike &middot; no overnight</li>
+    </ul>
 
     <div class="center reveal" style="margin-top:72px">
-      <p class="eyebrow">The route</p>
-      <h2>Twelve stops, one weekend</h2>
+      <p class="eyebrow">The itinerary</p>
+      <h2>How the day runs</h2>
     </div>
-    <div class="stops reveal">
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/church.jpg')"></div><div class="stop-body"><h3>Namacpacan Cathedral</h3><p>The centuries-old church in Luna. First stop, before the heat.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/kiln.jpg')"></div><div class="stop-body"><h3>Baluarte Watchtower</h3><p>Spanish-era watchtower. Step inside and look straight up.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/shore.jpg')"></div><div class="stop-body"><h3>Pebble Beach</h3><p>No sand — just smooth grey stones and open sea.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/batobato.jpg')"></div><div class="stop-body"><h3>Bahay na Bato</h3><p>Bato de Luna. Coral-stone house, driftwood shutters, pebble yard.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/forest.jpg')"></div><div class="stop-body"><h3>Man Made Forest</h3><p>A kilometre of trees arching over the highway.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/surf.jpg')"></div><div class="stop-body"><h3>San Juan Beach</h3><p>The surf break La Union is famous for.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/pillar.jpg')"></div><div class="stop-body"><h3>Ma-cho Temple</h3><p>Taoist temple on the hill above San Fernando.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/lanterns.jpg')"></div><div class="stop-body"><h3>Flotsam &amp; Jetsam / Kabsat</h3><p>Where the surf crowd ends up after the water.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/canopy.jpg')"></div><div class="stop-body"><h3>Food Park</h3><p>Dinner under the bulbs, everyone ordering something different.</p></div></article>
-        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/grapes.jpg')"></div><div class="stop-body"><h3>Grapes Farm</h3><p>Grape picking and wine tasting, straight off the vine.</p></div></article>
-        <article class="stop"><div class="stop-art stop-art--empty"><span>photo to follow</span></div><div class="stop-body"><h3>Dried Fish Shop</h3><p>Stock up before the drive home.</p></div></article>
-        <article class="stop"><div class="stop-art stop-art--empty"><span>photo to follow</span></div><div class="stop-body"><h3>Pasalubong Stop</h3><p>The obligatory last stop.</p></div></article>
+    <div class="itin itin--single reveal">
+      <div class="itin-day">
+        <h3>Day hike</h3>
+        <p class="itin-sub">Saturday 5 December 2026</p>
+        <div class="itin-row"><span class="t">3:00 AM</span><span class="w">Assembly and meetup &mdash; Cubao, Shaw Blvd or MOA.</span></div>
+        <div class="itin-row"><span class="t">3:30 AM</span><span class="w">ETD to Tanay, Rizal by jeep or van.</span></div>
+        <div class="itin-row"><span class="t">5:30 AM</span><span class="w">ETA Tanay. Transfer by jeep to Barangay Malaya, Pililla.</span></div>
+        <div class="itin-row"><span class="t">6:30 AM</span><span class="w">Barangay Malaya jump-off point. Register, pay the fees and meet your local guide.</span></div>
+        <div class="itin-row"><span class="t">7:00 AM</span><span class="w">Start trekking.</span></div>
+        <div class="itin-row"><span class="t">8:00 AM</span><span class="w">Manggahan Campsite. Rest and hydration stop.</span></div>
+        <div class="itin-row"><span class="t">8:30 AM</span><span class="w">Resume the hike toward the North Peak and South Peak.</span></div>
+        <div class="itin-row"><span class="t">10:30 AM</span><span class="w">Summit. Early lunch, rest and photos overlooking Laguna de Bay.</span></div>
+        <div class="itin-row"><span class="t">11:30 AM</span><span class="w">Start the descent, with an optional side trip to Manggahan Falls.</span></div>
+        <div class="itin-row"><span class="t">2:30 PM</span><span class="w">Back at the jump-off point. Wash up.</span></div>
+        <div class="itin-row"><span class="t">3:30 PM</span><span class="w">ETD back to Manila, with an optional side trip to the Pililla Windmill Farm.</span></div>
+        <div class="itin-row"><span class="t">6:30 PM</span><span class="w">ETA Manila and drop-off.</span></div>
+      </div>
+    </div>
+    <p class="center muted reveal" style="margin-top:22px">Times can shift with the weather, the
+    trail and the pace of the group. We tell you when they do.</p>
+
+    <div class="center reveal" style="margin-top:40px">
+      <p class="lead" style="max-width:46ch;margin-inline:auto">Rate, inclusions and deposit: message us
+      and we send the full breakdown before you pay anything.</p>
+      <a class="btn btn--sun" href="#plan">Ask for the rate</a>
+    </div>
     </div>
   </div>
 </section>
 
 <!-- ======================= Sagada + Banaue ======================= -->
-<section class="section" id="sagada">
+<section class="section trip" id="sagada" data-place="sagada">
   <div class="wrap">
-    <div class="center narrow reveal">
+    <div class="trip-head center narrow reveal">
       <p class="eyebrow">Trip two</p>
       <h2>Sagada &mdash; with a Banaue Rice Terraces sidetrip</h2>
       <p class="lead">Twelve hours north while you sleep, and the morning opens on terraces carved
@@ -271,15 +232,17 @@
       sunrise watched from above the clouds. Bring the jacket &mdash; you will want it.</p>
     </div>
 
+    <div class="trip-body">
+
     <div class="datebar reveal">
       <div>
         <span class="datebar-label">Departure</span>
-        <strong>5 &ndash; 6 December 2026</strong>
+        <strong data-next>5 &ndash; 6 December 2026</strong>
       </div>
       <div class="datebar-sep" aria-hidden="true"></div>
       <div>
         <span class="datebar-label">Pickup</span>
-        <strong>Evening of Friday 4 December</strong>
+        <strong data-next-note>Evening of Friday 4 December</strong>
       </div>
       <a class="btn btn--sun" href="#plan">Reserve a seat</a>
     </div>
@@ -501,15 +464,19 @@
       </details>
 
     </div>
+    </div>
   </div>
 </section>
+
+<!-- trips added in the back office that have no hand-built section render here -->
+<div id="moretrips"></div>
 
 <!-- ======================= Van Exclusive ======================= -->
 <section class="section" id="van">
   <div class="wrap">
     <div class="vanintro reveal">
       <div class="vanintro-text">
-        <p class="eyebrow">Trip three</p>
+        <p class="eyebrow">Your own trip</p>
         <h2>Van Exclusive &mdash; anywhere you name</h2>
         <p class="lead">No fixed date, no strangers in the next row. Tell us where you want to go
         and who is coming, and we build the trip around it &mdash; the same van, the same
@@ -588,6 +555,149 @@
         give you a range.</p>
         <div class="form-done" role="status"></div>
       </form>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= La Union (cancelled) ======================= -->
+<section class="section trip" id="launion" data-place="launion">
+  <div class="wrap">
+    <div class="trip-head center narrow">
+      <p class="eyebrow">Trip three</p>
+      <h2>La Union &mdash; the Surfing Capital of the North</h2>
+      <p class="lead">An overnight van leaves Manila, you sleep through the drive, and you wake up
+      to the sea. One group, one van, twelve stops and nobody herding you onto a schedule you
+      did not agree to.</p>
+    </div>
+
+    <div class="trip-body">
+    <div class="datebar reveal">
+      <div>
+        <span class="datebar-label">Next departure</span>
+        <strong data-next>To be announced</strong>
+      </div>
+      <div class="datebar-sep" aria-hidden="true"></div>
+      <div>
+        <span class="datebar-label">Pickup</span>
+        <strong data-next-note>We tell you when a date is set</strong>
+      </div>
+      <a class="btn btn--sun" href="#plan">Reserve a seat</a>
+    </div>
+
+    <div class="tiers reveal">
+      <article class="tier">
+        <h3>2D1N</h3><p class="tier-sub">Two days, one night</p>
+        <p class="tier-price">₱2,499 <small>per head</small></p>
+        <p class="tier-note">Out on the night of 6 Nov, back on the 8th.</p>
+        <a class="btn btn--sun btn--block" href="#plan">Reserve this</a>
+      </article>
+      <article class="tier tier--best">
+        <h3>3D2N</h3><p class="tier-sub">Three days, two nights</p>
+        <p class="tier-price">₱3,499 <small>per head</small></p>
+        <p class="tier-note">An extra day on the coast. More surf, less rushing.</p>
+        <a class="btn btn--sun btn--block" href="#plan">Reserve this</a>
+      </article>
+      <article class="tier tier--plain">
+        <h3>Private group</h3><p class="tier-sub">Your barkada only</p>
+        <p class="tier-price">Quoted <small>per trip</small></p>
+        <p class="tier-note">Own van, own dates, own pace. Tell us how many of you.</p>
+        <a class="btn btn--glass btn--block" href="#plan">Get a quote</a>
+      </article>
+    </div>
+
+    
+
+    
+
+    <div class="inex reveal">
+      <div class="inex-col">
+        <h3>What's included</h3>
+        <ul class="ticks">
+          <li>Road-trip van, gas and toll fees</li>
+          <li>Air-conditioned accommodation</li>
+          <li>Permits</li>
+          <li>Coordinator and photographer</li>
+          <li>Exclusive tour &mdash; your group only</li>
+          <li>Quality service, start to finish</li>
+        </ul>
+      </div>
+      <div class="inex-col inex-col--out">
+        <h3>Not included</h3>
+        <ul class="crosses">
+          <li>Surfing lesson and board &mdash; ₱500 per pax</li>
+          <li>Eco fee &mdash; ₱40</li>
+          <li>Entrance fees &mdash; ₱50 per pax</li>
+          <li>Other meals</li>
+          <li>Room upgrade</li>
+        </ul>
+        <p class="muted" style="margin-top:16px">Listed openly so nothing lands as a surprise at the van door.</p>
+      </div>
+    </div>
+
+    <div class="detailpack reveal">
+
+      <details>
+        <summary>
+          <span class="dp-t">Deposit and terms</span>
+          <span class="dp-s">&#8369;1,000 per head &middot; non-refundable but transferable &middot; closes 1 November</span>
+        </summary>
+        <div class="dp-body">
+          <div class="deposit">
+<div>
+        <h3>&#8369;1,000 per head confirms your slot</h3>
+        <p>Accommodation is booked and paid per head, so we cannot hold a room on a promise.
+        Enquiries are free and unlimited &mdash; but the van fills in the order deposits land.</p>
+        <ul class="terms">
+          <li><strong>&#8369;1,000 per head</strong> secures your seat and your bed. The rest is the balance.</li>
+          <li><strong>Non-refundable, but transferable.</strong> If you cannot come, send someone in your slot.</li>
+          <li><strong>Balance due 3 days before departure</strong> &mdash; so nobody is counting cash in a carpark at midnight.</li>
+          <li><strong>Deposits close 1 November</strong> for the 7&ndash;8 November trip, so rooms can be confirmed.</li>
+          <li><strong>If we cancel,</strong> for weather, van trouble or too few travellers, your deposit comes back in full.</li>
+        </ul>
+        <p class="deposit-note">GCash, Maya or bank transfer. Payment details come with your
+        booking confirmation &mdash; always check the account name before you send, and if anything
+        looks off, message us first.</p>
+      </div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="dp-t">Pickup points</span>
+          <span class="dp-s">5 points &middot; 11:30 PM to 2:00 AM &middot; night of 6 November</span>
+        </summary>
+        <div class="dp-body">
+          <p class="muted dp-lead">The van rolls out the night before so you wake up in La Union. Pick whichever point is closest and be there fifteen minutes early &mdash; it does not wait long.</p>
+          <ol class="pick-list pick-list--light">
+        <li><span class="time">11:30 PM</span><span class="place">MOA Eye &mdash; Giligan's (Ferris wheel)</span></li>
+        <li><span class="time">12:00 AM</span><span class="place">Greenfield, Shaw (parking lot)</span></li>
+        <li><span class="time">12:30 AM</span><span class="place">McDonald's Panay Avenue</span></li>
+        <li><span class="time">1:00 AM</span><span class="place">Bulacan exits</span></li>
+        <li><span class="time">2:00 AM</span><span class="place">Final pickup &mdash; location to confirm</span></li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <div class="center reveal" style="margin-top:72px">
+      <p class="eyebrow">The route</p>
+      <h2>Twelve stops, one weekend</h2>
+    </div>
+    <div class="stops reveal">
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/church.jpg')"></div><div class="stop-body"><h3>Namacpacan Cathedral</h3><p>The centuries-old church in Luna. First stop, before the heat.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/kiln.jpg')"></div><div class="stop-body"><h3>Baluarte Watchtower</h3><p>Spanish-era watchtower. Step inside and look straight up.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/shore.jpg')"></div><div class="stop-body"><h3>Pebble Beach</h3><p>No sand — just smooth grey stones and open sea.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/batobato.jpg')"></div><div class="stop-body"><h3>Bahay na Bato</h3><p>Bato de Luna. Coral-stone house, driftwood shutters, pebble yard.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/forest.jpg')"></div><div class="stop-body"><h3>Man Made Forest</h3><p>A kilometre of trees arching over the highway.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/surf.jpg')"></div><div class="stop-body"><h3>San Juan Beach</h3><p>The surf break La Union is famous for.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/pillar.jpg')"></div><div class="stop-body"><h3>Ma-cho Temple</h3><p>Taoist temple on the hill above San Fernando.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/lanterns.jpg')"></div><div class="stop-body"><h3>Flotsam &amp; Jetsam / Kabsat</h3><p>Where the surf crowd ends up after the water.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/canopy.jpg')"></div><div class="stop-body"><h3>Food Park</h3><p>Dinner under the bulbs, everyone ordering something different.</p></div></article>
+        <article class="stop"><div class="stop-art" style="background-image:url('assets/img/grapes.jpg')"></div><div class="stop-body"><h3>Grapes Farm</h3><p>Grape picking and wine tasting, straight off the vine.</p></div></article>
+        <article class="stop"><div class="stop-art stop-art--empty"><span>photo to follow</span></div><div class="stop-body"><h3>Dried Fish Shop</h3><p>Stock up before the drive home.</p></div></article>
+        <article class="stop"><div class="stop-art stop-art--empty"><span>photo to follow</span></div><div class="stop-body"><h3>Pasalubong Stop</h3><p>The obligatory last stop.</p></div></article>
+    </div>
     </div>
   </div>
 </section>
@@ -675,12 +785,9 @@
         <div class="field"><label for="t-pkg">Which package</label>
           <select id="t-pkg" name="package" required>
             <option value="">Choose one</option>
-            <optgroup label="La Union — 7–8 November">
-              <option>La Union 2D1N &mdash; ₱2,499 per head</option>
-              <option>La Union 3D2N &mdash; ₱3,499 per head</option>
-            </optgroup>
-            <optgroup label="Sagada &amp; Banaue — 5–6 December">
-              <option>Sagada 2D1N &mdash; ₱3,499 per head</option>
+            <optgroup label="Trips on the calendar" id="pkg-trips">
+              <option>Mt. Sembrano &mdash; 5 December 2026</option>
+              <option>Sagada &amp; Banaue &mdash; 5&ndash;6 December 2026</option>
             </optgroup>
             <option>Private group &mdash; get a quote</option>
             <option>Somewhere else in the Philippines</option>
@@ -688,11 +795,10 @@
         <div class="field"><label for="t-pick">Pickup point</label>
           <select id="t-pick" name="pickup">
             <option value="">Decide later</option>
-            <optgroup label="La Union — late night 6 November">
-              <option>MOA Eye / Giligan's &mdash; 11:30 PM</option>
-              <option>Greenfield Shaw &mdash; 12:00 AM</option>
-              <option>McDonald's Panay Avenue &mdash; 12:30 AM</option>
-              <option>Bulacan exits &mdash; 1:00 AM</option>
+            <optgroup label="Mt. Sembrano — 3:00 AM, 5 December">
+              <option>Sembrano: Cubao &mdash; 3:00 AM</option>
+              <option>Sembrano: Shaw Blvd &mdash; 3:00 AM</option>
+              <option>Sembrano: MOA &mdash; 3:00 AM</option>
             </optgroup>
             <optgroup label="Sagada — evening of 4 December">
               <option>Sto. Tomas &mdash; 6:00 PM</option>
@@ -712,7 +818,7 @@
           </select><span class="err"></span></div>
         <div class="row">
           <div class="field"><label for="t-date">Travel date</label>
-            <input id="t-date" name="event_date" type="date" value="2026-11-07"><span class="err"></span></div>
+            <input id="t-date" name="event_date" type="date" value="2026-12-05"><span class="err"></span></div>
           <div class="field"><label for="t-nights">Nights</label>
             <input id="t-nights" name="nights" type="number" min="1" placeholder="4"><span class="err"></span></div>
         </div>
@@ -752,8 +858,8 @@
       <details><summary>Why do you need a deposit?</summary>
         <p>Because we pay for the rooms up front, per head. A deposit is what turns an enquiry
         into a confirmed seat &mdash; without it the slot stays open to the next person. It is
-        &#8369;1,000 for La Union and &#8369;1,500 for Sagada, and in both cases it comes off the
-        package rate rather than being charged on top. Ask as many questions as you like first;
+        &#8369;1,500 for Sagada, and for every trip it comes off the package rate rather than
+        being charged on top; we tell you the amount for each trip before you pay. Ask as many questions as you like first;
         nothing is owed until you decide to go.</p></details>
       <details><summary>Why does Sagada cost more on the day?</summary>
         <p>Because Sagada's caves, trails and viewpoints are run by the community and charged
@@ -802,6 +908,7 @@
           <div class="field"><label for="r-trip">Which trip</label>
             <select id="r-trip" name="trip">
               <option value="">Choose one</option>
+              <option>Mt. Sembrano</option>
               <option>La Union</option>
               <option>Sagada &amp; Banaue</option>
               <option>Van Exclusive</option>

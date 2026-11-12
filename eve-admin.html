@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Eve Wanderlust — Back office</title>
+<link rel="icon" href="assets/img/favicon-eve.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500;1,9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/eve-admin.css">
+</head>
+<body>
+
+<header class="ad-top">
+  <div class="ad-wrap ad-top-row">
+    <p class="ad-logo">Eve <em>Wanderlust</em> <span>Back office</span></p>
+    <nav class="ad-nav" aria-label="Back office">
+      <a href="#calendar">Calendar</a>
+      <a href="#places">Places</a>
+      <a href="#social">Social post</a>
+      <a href="#settings">Settings</a>
+      <a href="travel.html" target="_blank" rel="noopener">View travel page</a>
+    </nav>
+  </div>
+  <div class="ad-savebar" id="savebar">
+    <div class="ad-wrap ad-savebar-row">
+      <p id="savestate" role="status">Loading your trips…</p>
+      <button type="button" class="ad-btn ad-btn--sun" id="savebtn" disabled>Save to website</button>
+    </div>
+  </div>
+</header>
+
+<main class="ad-wrap">
+
+  <!-- ===================== calendar ===================== -->
+  <section class="ad-card" id="calendar">
+    <div class="ad-head">
+      <div>
+        <h2>Calendar</h2>
+        <p class="ad-muted">Tap any day to put a place on it, change its status or take it off.
+        Highlighted days are what visitors see on the travel page.</p>
+      </div>
+      <div class="ad-calnav">
+        <button type="button" class="ad-round" data-cal="prev" aria-label="Previous month">&larr;</button>
+        <p class="ad-month" id="admonth" aria-live="polite"></p>
+        <button type="button" class="ad-round" data-cal="next" aria-label="Next month">&rarr;</button>
+      </div>
+    </div>
+    <div class="ad-calgrid" id="adgrid" role="grid" aria-labelledby="admonth"></div>
+    <div class="ad-daypanel" id="daypanel" aria-live="polite"></div>
+  </section>
+
+  <!-- ===================== places ===================== -->
+  <section class="ad-card" id="places">
+    <div class="ad-head">
+      <div>
+        <h2>Places</h2>
+        <p class="ad-muted">Each place gets a card on the travel page. Open one to change its
+        details, its dates and its itinerary.</p>
+      </div>
+      <button type="button" class="ad-btn ad-btn--sun" id="addplace">+ Add a place</button>
+    </div>
+    <div id="placelist" class="ad-places"></div>
+  </section>
+
+  <!-- ===================== social ===================== -->
+  <section class="ad-card" id="social">
+    <div class="ad-head">
+      <div>
+        <h2>Social post</h2>
+        <p class="ad-muted">Pick a trip date. The caption and the itinerary picture are made for
+        you; change anything, then post it to Facebook or download it.</p>
+      </div>
+    </div>
+    <div class="ad-field">
+      <label for="posttrip">Trip</label>
+      <select id="posttrip"></select>
+    </div>
+    <div class="ad-social">
+      <div>
+        <div class="ad-field">
+          <label for="caption">Caption</label>
+          <textarea id="caption" rows="18"></textarea>
+        </div>
+        <div class="ad-btnrow">
+          <button type="button" class="ad-btn" id="regen">Write it again from the trip</button>
+          <button type="button" class="ad-btn" id="copycap">Copy caption</button>
+        </div>
+      </div>
+      <div>
+        <p class="ad-label">Picture (1080 × 1350)</p>
+        <canvas id="postimg" width="1080" height="1350" class="ad-canvas" role="img" aria-label="Itinerary picture preview"></canvas>
+        <div class="ad-btnrow">
+          <button type="button" class="ad-btn" id="dlimg">Download picture</button>
+        </div>
+      </div>
+    </div>
+    <div class="ad-fbbox">
+      <h3>Post to the Eve Wanderlust Facebook page</h3>
+      <div class="ad-row2">
+        <label class="ad-check"><input type="radio" name="when" value="now" checked> Post now</label>
+        <label class="ad-check"><input type="radio" name="when" value="later"> Schedule for
+          <input type="datetime-local" id="schedat" aria-label="Schedule date and time"></label>
+      </div>
+      <button type="button" class="ad-btn ad-btn--sun" id="fbpost">Post to Facebook</button>
+      <p class="ad-msg" id="fbmsg" role="status"></p>
+    </div>
+  </section>
+
+  <!-- ===================== settings ===================== -->
+  <section class="ad-card" id="settings">
+    <div class="ad-head">
+      <div>
+        <h2>Settings</h2>
+        <p class="ad-muted">These keys are kept only in this browser on this device. Nobody who
+        opens this page elsewhere can save or post without them.</p>
+      </div>
+    </div>
+
+    <div class="ad-setting">
+      <h3>Website key <span class="ad-pill" id="ghstate">Not connected</span></h3>
+      <p class="ad-muted">Lets this page save your trips to radicalmediaph.com. It is a GitHub
+      access key that can only change this one website.</p>
+      <div class="ad-field">
+        <label for="ghkey">GitHub access key</label>
+        <input id="ghkey" type="password" autocomplete="off" placeholder="github_pat_…">
+      </div>
+      <div class="ad-btnrow">
+        <button type="button" class="ad-btn ad-btn--sun" id="ghsave">Connect</button>
+        <button type="button" class="ad-btn" id="ghforget">Forget on this device</button>
+      </div>
+      <details class="ad-how">
+        <summary>How to get the key (once, about 2 minutes)</summary>
+        <ol>
+          <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> while signed in as <b>radicalmediaph-del</b>.</li>
+          <li>Name it <b>Eve back office</b>, and set Expiration to the longest it allows.</li>
+          <li>Under <b>Repository access</b>, choose <b>Only select repositories</b> and pick <b>radicalmediaph-del.github.io</b>.</li>
+          <li>Under <b>Permissions → Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
+          <li>Click <b>Generate token</b>, copy it, paste it above and press Connect.</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="ad-setting">
+      <h3>Facebook page <span class="ad-pill" id="fbstate">Not connected</span></h3>
+      <p class="ad-muted">Lets this page post to your Eve Wanderlust page.</p>
+      <div class="ad-row2">
+        <div class="ad-field">
+          <label for="fbpage">Page ID</label>
+          <input id="fbpage" type="text" inputmode="numeric" value="61595647320992">
+        </div>
+        <div class="ad-field">
+          <label for="fbtoken">Page access token</label>
+          <input id="fbtoken" type="password" autocomplete="off" placeholder="EAA…">
+        </div>
+      </div>
+      <div class="ad-btnrow">
+        <button type="button" class="ad-btn ad-btn--sun" id="fbsave">Connect</button>
+        <button type="button" class="ad-btn" id="fbforget">Forget on this device</button>
+      </div>
+      <details class="ad-how">
+        <summary>How to get the page token (once)</summary>
+        <ol>
+          <li>Open <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener">developers.facebook.com/apps</a> and create an app (type <b>Business</b>), named <b>Eve back office</b>.</li>
+          <li>Open <a href="https://developers.facebook.com/tools/explorer" target="_blank" rel="noopener">Graph API Explorer</a>, pick that app, then <b>Get Page Access Token</b> and tick <b>pages_manage_posts</b>, <b>pages_read_engagement</b> and <b>pages_show_list</b>.</li>
+          <li>Choose the <b>Eve Wanderlust</b> page in the "User or Page" box and copy the token.</li>
+          <li>To stop it expiring in an hour, paste it into the <a href="https://developers.facebook.com/tools/debug/accesstoken/" target="_blank" rel="noopener">Access Token Debugger</a> and press <b>Extend Access Token</b>; use the new token.</li>
+          <li>Paste it above and press Connect. The page name appears when it works.</li>
+        </ol>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<div class="ad-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/eve-admin.js"></script>
+</body>
+</html>
