@@ -164,10 +164,11 @@ footer .wrap{padding-block:18px}
 
   function call(payload) {
     payload.pass = pass;
+    // Form-encoded body: a "simple" request (no preflight) and, unlike a raw
+    // JSON body, it survives Apps Script's redirect, so doPost still sees it.
     return fetch(ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },  // keeps it a simple request
-      body: JSON.stringify(payload)
+      body: new URLSearchParams({ payload: JSON.stringify(payload) })
     }).then(function (r) { return r.json(); });
   }
 
