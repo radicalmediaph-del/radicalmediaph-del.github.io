@@ -94,6 +94,28 @@ textarea{min-height:170px;line-height:1.55;font-weight:300;resize:vertical}
 .err{color:var(--bad)}
 .ok{color:var(--good)}
 .empty{color:var(--muted);text-align:center;padding:50px 0}
+/* content queue */
+.compose{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:16px}
+.fld{margin-top:16px}
+.fld label{display:block;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.fld textarea{min-height:88px}
+.fld textarea.cap{min-height:160px}
+.picks{display:flex;gap:8px;flex-wrap:wrap}
+.fld .pick{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:999px;
+  padding:7px 15px;font-size:.88rem;cursor:pointer;user-select:none;
+  text-transform:none;letter-spacing:0;color:var(--text);margin-bottom:0;font-weight:400}
+.pick input{width:auto;padding:0;margin:0;accent-color:var(--gold)}
+.pick.on{border-color:rgba(227,166,47,.6);background:rgba(227,166,47,.1)}
+.drop{border:1px dashed rgba(255,255,255,.22);border-radius:14px;padding:26px 20px;text-align:center;color:var(--muted);cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--gold);background:rgba(227,166,47,.06)}
+.drop b{color:var(--text);font-weight:500;display:block;font-size:1rem}
+.prev{margin-top:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.prev img,.prev video{width:140px;height:140px;object-fit:cover;border-radius:12px;background:#120c1b;display:block}
+.date{max-width:230px}
+.post{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:12px}
+.post .cap{white-space:pre-wrap;font-size:.93rem;background:#1b1328;border-radius:10px;padding:11px 14px;margin:11px 0 0}
+.pill.Queued{color:var(--gold);border-color:rgba(227,166,47,.5)}
+.pill.Posted{color:var(--good);border-color:rgba(74,222,128,.45)}
 footer{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:40px}
 footer .wrap{padding-block:18px}
 @media (max-width:560px){ .when{margin-left:0;width:100%} }
@@ -116,18 +138,15 @@ footer .wrap{padding-block:18px}
       <span class="brand">RadicalMediaPh<span>.</span></span>
       <span class="tag">Back office</span>
       <span class="spacer"></span>
+      <button type="button" class="chipf" data-v="leads" aria-pressed="true">Leads</button>
+      <button type="button" class="chipf" data-v="posts" aria-pressed="false">Content</button>
       <button type="button" id="refresh">Refresh</button>
       <button type="button" id="lock">Lock</button>
     </div>
   </header>
 
   <main class="wrap">
-    <section class="sect">
-      <h2>Accounts you post from</h2>
-      <p class="sub">Your browser holds the logins — this just records which account is yours on each platform, so you confirm before you post as the wrong one.</p>
-      <div class="accounts" id="accounts"></div>
-    </section>
-
+    <div id="viewLeads">
     <div class="stats">
       <div class="stat n"><b id="cNew">0</b><span>Waiting for a reply</span></div>
       <div class="stat r"><b id="cRep">0</b><span>Replied</span></div>
@@ -145,6 +164,62 @@ footer .wrap{padding-block:18px}
     </div>
 
     <div id="list"></div>
+    </div><!-- /viewLeads -->
+
+    <div id="viewPosts" hidden>
+      <section class="sect">
+        <h2>Add a picture or a video</h2>
+        <p class="sub">It goes into the <b>RadicalMediaPh Posts</b> folder in your Google Drive, with the caption and the date saved beside it. Nothing is made public and nothing posts by itself — you still press Post on the platform.</p>
+
+        <div class="compose">
+          <div class="drop" id="drop">
+            <b>Choose a picture or video</b>
+            <span>or drag one here &middot; up to 18 MB</span>
+            <input id="pfile" type="file" accept="image/*,video/*" hidden>
+          </div>
+          <div class="prev" id="prev" hidden></div>
+
+          <div class="fld">
+            <label for="pbrief">What is it? (one or two lines, for the AI)</label>
+            <textarea id="pbrief" placeholder="e.g. the new Mile High IT Support site going live — before and after of their homepage"></textarea>
+          </div>
+
+          <div class="fld">
+            <label>Where is it going?</label>
+            <div class="picks" id="picks"></div>
+          </div>
+
+          <div class="fld">
+            <label for="pwhen">Post it on</label>
+            <input class="date" id="pwhen" type="date">
+          </div>
+
+          <div class="fld">
+            <label for="pcap">Caption</label>
+            <textarea class="cap" id="pcap" placeholder="Write it yourself, or press Write caption with AI."></textarea>
+          </div>
+
+          <div class="acts">
+            <button type="button" id="pai">Write caption with AI</button>
+            <button type="button" class="primary" id="padd">Add to queue</button>
+            <button type="button" id="pclear">Clear</button>
+          </div>
+          <p class="note" id="pmsg"></p>
+        </div>
+      </section>
+
+      <section class="sect">
+        <h2>Queue</h2>
+        <p class="sub">Copy the caption, open the file in Drive, post it, then mark it posted.</p>
+        <div id="plist"><p class="empty">Nothing queued yet.</p></div>
+      </section>
+
+      <section class="sect">
+        <h2>Accounts you post from</h2>
+        <p class="sub">Your browser holds the logins — this just records which account is yours on each platform, so you confirm before you post as the wrong one.</p>
+        <div class="accounts" id="accounts"></div>
+      </section>
+    </div><!-- /viewPosts -->
   </main>
 
   <footer><div class="wrap">Reads your Clients sheet. Replies send from radicalmediaph@gmail.com.</div></footer>
@@ -350,7 +425,9 @@ footer .wrap{padding-block:18px}
   });
   $('pass').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('go').click(); });
 
-  $('refresh').addEventListener('click', load);
+  $('refresh').addEventListener('click', function () {
+    if (view === 'posts') loadPosts(); else load();
+  });
   $('lock').addEventListener('click', function () {
     forget(); pass = ''; leads = [];
     $('app').hidden = true; $('gate').hidden = false; $('pass').value = '';
@@ -405,6 +482,179 @@ footer .wrap{padding-block:18px}
         render();
       });
     }
+  });
+
+  /* ---------- content queue ---------- */
+
+  var posts = [], pending = null, postsLoaded = false, view = 'leads';
+
+  function pmsg(html) { $('pmsg').innerHTML = html; }
+  function mb(n) { return (n / 1048576).toFixed(1); }
+
+  $('picks').innerHTML = Object.keys(LINKS).map(function (p) {
+    return '<label class="pick"><input type="checkbox" value="' + esc(p) + '"><span>' + esc(p) + '</span></label>';
+  }).join('');
+  [].forEach.call(document.querySelectorAll('#picks input'), function (c) {
+    c.addEventListener('change', function () { c.closest('.pick').classList.toggle('on', c.checked); });
+  });
+  function picked() {
+    return [].filter.call(document.querySelectorAll('#picks input'), function (c) { return c.checked; })
+             .map(function (c) { return c.value; });
+  }
+
+  function showPrev(file, dataUrl) {
+    var box = $('prev');
+    box.hidden = false;
+    box.innerHTML = (/^video/.test(file.type)
+        ? '<video src="' + dataUrl + '" muted playsinline controls></video>'
+        : '<img alt="" src="' + dataUrl + '">') +
+      '<span class="note" style="margin:0">' + esc(file.name) + '<br>' + mb(file.size) + ' MB</span>';
+  }
+
+  function takeFile(f) {
+    if (!f) return;
+    if (f.size > 18 * 1048576) {
+      pmsg('<span class="err">' + esc(f.name) + ' is ' + mb(f.size) + ' MB. A web page can only hand Google about 18 MB at once — compress or trim the video, or drop it straight into the Drive folder yourself.</span>');
+      return;
+    }
+    var r = new FileReader();
+    r.onerror = function () { pmsg('<span class="err">Could not read that file.</span>'); };
+    r.onload = function () {
+      var s = String(r.result);
+      pending = { name: f.name, mime: f.type || 'application/octet-stream', data: s.slice(s.indexOf(',') + 1) };
+      showPrev(f, s);
+      pmsg('Ready. Add a caption, then press Add to queue.');
+    };
+    r.readAsDataURL(f);
+  }
+
+  $('drop').addEventListener('click', function () { $('pfile').click(); });
+  $('pfile').addEventListener('change', function () { takeFile(this.files && this.files[0]); });
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    $('drop').addEventListener(ev, function (e) { e.preventDefault(); this.classList.add('over'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    $('drop').addEventListener(ev, function (e) { e.preventDefault(); this.classList.remove('over'); });
+  });
+  $('drop').addEventListener('drop', function (e) {
+    takeFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]);
+  });
+
+  $('pai').addEventListener('click', function () {
+    var btn = this;
+    if (!$('pbrief').value.trim()) { pmsg('<span class="err">Tell it what the picture or video shows first.</span>'); return; }
+    btn.disabled = true; pmsg('Asking Gemini…');
+    call({ action: 'caption', brief: $('pbrief').value, platforms: picked().join(', ') })
+      .then(function (res) {
+        btn.disabled = false;
+        if (!res.ok) { pmsg('<span class="err">' + esc(res.error) + '</span>'); return; }
+        $('pcap').value = res.text;
+        pmsg('Draft caption ready — read it and change anything that is not you.');
+      }).catch(function () { btn.disabled = false; pmsg('<span class="err">Could not reach the engine.</span>'); });
+  });
+
+  $('pclear').addEventListener('click', function () {
+    pending = null;
+    $('pfile').value = ''; $('pbrief').value = ''; $('pcap').value = ''; $('pwhen').value = '';
+    $('prev').hidden = true; $('prev').innerHTML = '';
+    [].forEach.call(document.querySelectorAll('#picks input'), function (c) {
+      c.checked = false; c.closest('.pick').classList.remove('on');
+    });
+    pmsg('');
+  });
+
+  $('padd').addEventListener('click', function () {
+    if (!pending) { pmsg('<span class="err">Choose a picture or a video first.</span>'); return; }
+    var btn = this;
+    btn.disabled = true; pmsg('Saving to your Drive…');
+    call({
+      action: 'savePost', name: pending.name, mime: pending.mime, data: pending.data,
+      caption: $('pcap').value, platforms: picked().join(', '), when: $('pwhen').value
+    }).then(function (res) {
+      btn.disabled = false;
+      if (!res.ok) { pmsg('<span class="err">' + esc(res.error) + '</span>'); return; }
+      pmsg('<span class="ok">Saved. It is in the queue below.</span>');
+      $('pclear').click();
+      $('pmsg').innerHTML = '<span class="ok">Saved to your Drive and added to the queue.</span>';
+      loadPosts();
+    }).catch(function () {
+      btn.disabled = false;
+      pmsg('<span class="err">Upload failed. If it is a video, it is probably too big — try a shorter clip.</span>');
+    });
+  });
+
+  function renderPosts() {
+    var box = $('plist');
+    if (!posts.length) { box.innerHTML = '<p class="empty">Nothing queued yet.</p>'; return; }
+    box.innerHTML = posts.map(function (p) {
+      return '' +
+      '<article class="post" data-prow="' + p.row + '">' +
+        '<div class="row1">' +
+          '<h3>' + esc(p.file) + '</h3>' +
+          '<span class="pill ' + esc(p.status) + '">' + esc(p.status) + '</span>' +
+          '<span class="when">' + (p.when ? 'post on ' + esc(p.when) : 'no date') + '</span>' +
+        '</div>' +
+        '<p class="meta">' + (esc(p.platforms) || 'no platform chosen') + ' &middot; added ' + esc(p.added) + '</p>' +
+        (p.caption ? '<p class="cap">' + esc(p.caption) + '</p>' : '') +
+        '<div class="acts">' +
+          (p.caption ? '<button type="button" data-p="copy">Copy caption</button>' : '') +
+          (p.link ? '<a class="btn" target="_blank" rel="noopener" href="' + esc(p.link) + '">Open the file</a>' : '') +
+          (p.status === 'Posted'
+            ? '<button type="button" data-p="queued">Back to queued</button>'
+            : '<button type="button" class="primary" data-p="posted">Mark posted</button>') +
+        '</div>' +
+        '<p class="note" data-pmsg></p>' +
+      '</article>';
+    }).join('');
+  }
+
+  function loadPosts() {
+    return call({ action: 'posts' }).then(function (res) {
+      if (!res.ok) { $('plist').innerHTML = '<p class="empty err">' + esc(res.error) + '</p>'; return; }
+      posts = res.posts || [];
+      postsLoaded = true;
+      renderPosts();
+    }).catch(function () {
+      $('plist').innerHTML = '<p class="empty err">Could not reach the engine.</p>';
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var v = e.target.closest('[data-v]');
+    if (v) {
+      view = v.getAttribute('data-v');
+      [].forEach.call(document.querySelectorAll('[data-v]'), function (x) {
+        x.setAttribute('aria-pressed', String(x === v));
+      });
+      $('viewLeads').hidden = view !== 'leads';
+      $('viewPosts').hidden = view !== 'posts';
+      if (view === 'posts' && !postsLoaded) loadPosts();
+      return;
+    }
+
+    var a = e.target.closest('[data-p]');
+    if (!a) return;
+    var card = a.closest('.post'), row = Number(card.getAttribute('data-prow'));
+    var note = card.querySelector('[data-pmsg]');
+    var p = posts.filter(function (x) { return x.row === row; })[0];
+    var what = a.getAttribute('data-p');
+
+    if (what === 'copy') {
+      var done = function () { note.innerHTML = '<span class="ok">Caption copied.</span>'; };
+      if (navigator.clipboard) navigator.clipboard.writeText(p.caption).then(done, function () {
+        note.textContent = 'Select the caption above and copy it.';
+      });
+      else note.textContent = 'Select the caption above and copy it.';
+      return;
+    }
+
+    var next = what === 'posted' ? 'Posted' : 'Queued';
+    a.disabled = true;
+    call({ action: 'postStatus', row: row, status: next }).then(function (res) {
+      if (!res || !res.ok) { a.disabled = false; note.innerHTML = '<span class="err">Could not save that.</span>'; return; }
+      if (p) p.status = next;
+      renderPosts();
+    });
   });
 
   var saved = recall();
