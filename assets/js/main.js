@@ -16,7 +16,7 @@
     // Paste your real profile links here. Anything left as "" is simply not
     // shown anywhere on the site, so you can add platforms as you go.
     // These feed the footer on every page AND the Follow Me row on Contact.
-    facebook:  "https://www.facebook.com/profile.php?id=61591158385146",
+      facebook:  "https://www.facebook.com/radicalmediaph",
     // Messenger chat link. Clear this to "" to remove the chat button everywhere.
     messenger: "https://m.me/61591158385146",
     instagram: "https://www.instagram.com/radicalmediaph",
