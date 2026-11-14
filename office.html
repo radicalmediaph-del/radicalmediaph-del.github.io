@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Back Office — RadicalMediaPh</title>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#17101f; --card:#241a33; --card-2:#2b2040; --gold:#e3a62f;
+  --text:#fff; --muted:#b6a9c9; --line:rgba(255,255,255,.09);
+  --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:Outfit,"Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-weight:300;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+
+header{border-bottom:1px solid var(--line);background:rgba(19,12,26,.9);position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}
+header .wrap{display:flex;align-items:center;gap:14px;padding-block:14px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+.brand span{color:var(--gold)}
+.tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+header .spacer{margin-left:auto}
+
+button,.btn{font-family:inherit;font-size:.9rem;font-weight:500;color:var(--text);background:transparent;
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover{border-color:rgba(227,166,47,.6)}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.primary{background:var(--gold);border-color:var(--gold);color:#1a1208;font-weight:600}
+.wa{background:#1f9d55;border-color:#1f9d55;color:#fff;font-weight:600}
+
+/* gate */
+.gate{max-width:420px;margin:12vh auto;padding:30px;background:var(--card);border:1px solid var(--line);border-radius:18px}
+.gate h1{font-size:1.4rem;font-weight:600;margin:0 0 6px}
+.gate p{color:var(--muted);font-size:.93rem;margin:0 0 18px}
+input,textarea{width:100%;background:#1b1328;border:1px solid var(--line);border-radius:12px;
+  color:var(--text);font-family:inherit;font-size:1rem;padding:12px 14px}
+textarea{min-height:170px;line-height:1.55;font-weight:300;resize:vertical}
+.gate button{width:100%;margin-top:14px}
+
+/* accounts */
+.sect{margin:26px 0 0}
+.sect h2{font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.sect .sub{color:var(--muted);font-size:.88rem;margin:0 0 14px}
+.accounts{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:14px}
+.acct{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.acct .top{display:flex;align-items:center;gap:9px}
+.acct .nm{font-weight:600;font-size:.98rem}
+.dot{width:9px;height:9px;border-radius:50%;background:#6b5c85;flex:0 0 9px}
+.dot.on{background:var(--good)}
+.acct input{margin-top:10px;font-size:.93rem;padding:9px 12px}
+.acct .conf{color:var(--muted);font-size:.8rem;margin:8px 0 0}
+.acct .conf.yes{color:var(--good)}
+.acct .btns{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.acct .btns button,.acct .btns a{font-size:.82rem;padding:6px 12px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.stat b{display:block;font-size:1.9rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.84rem}
+.stat.n b{color:var(--gold)}
+.stat.r b{color:var(--good)}
+
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:22px 0 6px}
+.bar .spacer{margin-left:auto}
+.chipf[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#1a1208;font-weight:600}
+
+/* leads */
+.lead{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:14px}
+.lead h3{margin:0;font-size:1.1rem;font-weight:600}
+.row1{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.when{color:var(--muted);font-size:.84rem;margin-left:auto}
+.meta{color:var(--muted);font-size:.9rem;margin:6px 0 0;word-break:break-word}
+.meta a{color:var(--muted)}
+.said{background:#1b1328;border-left:2px solid var(--gold);border-radius:0 10px 10px 0;
+  padding:10px 14px;margin:12px 0 0;font-size:.95rem;white-space:pre-wrap}
+.pill{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:3px 10px;border:1px solid var(--line)}
+.pill.New{color:var(--gold);border-color:rgba(227,166,47,.5)}
+.pill.Replied{color:var(--good);border-color:rgba(74,222,128,.45)}
+.pill.Spam{color:var(--bad);border-color:rgba(248,113,113,.45)}
+.pill.Working{color:var(--warn);border-color:rgba(251,191,36,.45)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.draft{margin-top:14px}
+.draft label{display:block;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.note{color:var(--muted);font-size:.86rem;margin-top:10px}
+.err{color:var(--bad)}
+.ok{color:var(--good)}
+.empty{color:var(--muted);text-align:center;padding:50px 0}
+footer{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:40px}
+footer .wrap{padding-block:18px}
+@media (max-width:560px){ .when{margin-left:0;width:100%} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate">
+  <h1>Back office</h1>
+  <p>Private. Type the passphrase to load your leads.</p>
+  <input id="pass" type="password" autocomplete="current-password" placeholder="Passphrase">
+  <button class="primary" id="go" type="button">Open</button>
+  <p id="gateMsg" class="note" style="margin-top:12px"></p>
+</div>
+
+<div id="app" hidden>
+  <header>
+    <div class="wrap">
+      <span class="brand">RadicalMediaPh<span>.</span></span>
+      <span class="tag">Back office</span>
+      <span class="spacer"></span>
+      <button type="button" id="refresh">Refresh</button>
+      <button type="button" id="lock">Lock</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="sect">
+      <h2>Accounts you post from</h2>
+      <p class="sub">Your browser holds the logins — this just records which account is yours on each platform, so you confirm before you post as the wrong one.</p>
+      <div class="accounts" id="accounts"></div>
+    </section>
+
+    <div class="stats">
+      <div class="stat n"><b id="cNew">0</b><span>Waiting for a reply</span></div>
+      <div class="stat r"><b id="cRep">0</b><span>Replied</span></div>
+      <div class="stat"><b id="cPhone">0</b><span>Left a phone number</span></div>
+      <div class="stat"><b id="cAll">0</b><span>Total signups</span></div>
+    </div>
+
+    <div class="bar">
+      <button type="button" class="chipf" data-f="all" aria-pressed="true">All</button>
+      <button type="button" class="chipf" data-f="New" aria-pressed="false">New</button>
+      <button type="button" class="chipf" data-f="Replied" aria-pressed="false">Replied</button>
+      <button type="button" class="chipf" data-f="Spam" aria-pressed="false">Spam</button>
+      <span class="spacer"></span>
+      <span id="status" class="note"></span>
+    </div>
+
+    <div id="list"></div>
+  </main>
+
+  <footer><div class="wrap">Reads your Clients sheet. Replies send from radicalmediaph@gmail.com.</div></footer>
+</div>
+
+<script>
+(function () {
+  /* The Apps Script web app URL goes here once the engine is deployed. */
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxsU9i_OchqEm-jPYabBM_UNdfv5xq4Xj1jsx2i00ZLfXkXb9ELSdBJ8qMbMOzlDBGgRg/exec';
+
+  var pass = '', leads = [], filter = 'all';
+  var $ = function (id) { return document.getElementById(id); };
+
+  function remember(p) { try { sessionStorage.setItem('rmpass', p); } catch (e) {} }
+  function recall() { try { return sessionStorage.getItem('rmpass') || ''; } catch (e) { return ''; } }
+  function forget() { try { sessionStorage.removeItem('rmpass'); } catch (e) {} }
+
+  function call(payload) {
+    payload.pass = pass;
+    return fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },  // keeps it a simple request
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json(); });
+  }
+
+  function esc(s) {
+    return String(s === undefined || s === null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function waLink(lead) {
+    var first = (lead.name || '').split(' ')[0] || 'there';
+    var msg = 'Hi ' + first + ', this is Ram from RadicalMediaPh. Thanks for getting in touch through the website — happy to talk about what you need.';
+    return 'https://wa.me/' + lead.wa + '?text=' + encodeURIComponent(msg);
+  }
+
+  /* ---------- accounts you post from ---------- */
+
+  var LINKS = {
+    'Facebook':      { open: 'https://www.facebook.com/',          login: 'https://www.facebook.com/login' },
+    'Facebook Page': { open: 'https://business.facebook.com/',     login: 'https://business.facebook.com/' },
+    'Instagram':     { open: 'https://www.instagram.com/',         login: 'https://www.instagram.com/accounts/login/' },
+    'TikTok':        { open: 'https://www.tiktok.com/',            login: 'https://www.tiktok.com/login' },
+    'X':             { open: 'https://x.com/home',                 login: 'https://x.com/login' },
+    'Threads':       { open: 'https://www.threads.net/',           login: 'https://www.threads.net/login' }
+  };
+  var accounts = [];
+
+  function renderAccounts() {
+    $('accounts').innerHTML = accounts.map(function (a) {
+      var L = LINKS[a.platform] || { open: '#', login: '#' };
+      var set = !!a.handle;
+      return '' +
+      '<div class="acct" data-p="' + esc(a.platform) + '">' +
+        '<div class="top"><span class="dot' + (a.confirmed ? ' on' : '') + '"></span>' +
+          '<span class="nm">' + esc(a.platform) + '</span></div>' +
+        '<input type="text" data-handle placeholder="@handle or page name" value="' + esc(a.handle) + '">' +
+        '<p class="conf' + (a.confirmed ? ' yes' : '') + '" data-conf>' +
+          (a.confirmed ? 'Confirmed as yours on ' + esc(a.confirmed)
+                       : (set ? 'Not confirmed yet' : 'No account set')) + '</p>' +
+        '<div class="btns">' +
+          '<a class="btn" target="_blank" rel="noopener" href="' + L.open + '">Open</a>' +
+          '<button type="button" data-ac="confirm">This is me</button>' +
+          '<button type="button" data-ac="switch">Use another account</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function loadAccounts() {
+    return call({ action: 'accounts' }).then(function (res) {
+      if (res.ok) { accounts = res.accounts || []; renderAccounts(); }
+    }).catch(function () {});
+  }
+
+  document.addEventListener('change', function (e) {
+    var inp = e.target.closest('[data-handle]');
+    if (!inp) return;
+    var card = inp.closest('.acct'), p = card.getAttribute('data-p');
+    call({ action: 'setAccount', platform: p, handle: inp.value, confirmed: false }).then(function () {
+      var a = accounts.filter(function (x) { return x.platform === p; })[0];
+      if (a) { a.handle = inp.value.trim(); a.confirmed = ''; }
+      card.querySelector('.dot').classList.remove('on');
+      var c = card.querySelector('[data-conf]');
+      c.className = 'conf'; c.textContent = a && a.handle ? 'Not confirmed yet' : 'No account set';
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ac]');
+    if (!b) return;
+    var card = b.closest('.acct'), p = card.getAttribute('data-p');
+    var inp = card.querySelector('[data-handle]');
+    var conf = card.querySelector('[data-conf]');
+    var L = LINKS[p] || { login: '#' };
+
+    if (b.getAttribute('data-ac') === 'confirm') {
+      if (!inp.value.trim()) { conf.className = 'conf'; conf.textContent = 'Type the account name first.'; inp.focus(); return; }
+      call({ action: 'setAccount', platform: p, handle: inp.value, confirmed: true }).then(function (res) {
+        if (!res.ok) return;
+        card.querySelector('.dot').classList.add('on');
+        conf.className = 'conf yes';
+        conf.textContent = 'Confirmed as yours on ' + new Date().toLocaleDateString();
+        var a = accounts.filter(function (x) { return x.platform === p; })[0];
+        if (a) { a.handle = inp.value.trim(); a.confirmed = new Date().toLocaleDateString(); }
+      });
+      return;
+    }
+
+    /* Use another account: forget the confirmation, open that platform's
+       own sign-in page in a new tab, and wait for the new name. */
+    call({ action: 'setAccount', platform: p, handle: '', confirmed: false }).then(function () {
+      var a = accounts.filter(function (x) { return x.platform === p; })[0];
+      if (a) { a.handle = ''; a.confirmed = ''; }
+      inp.value = '';
+      card.querySelector('.dot').classList.remove('on');
+      conf.className = 'conf';
+      conf.textContent = 'Sign in on the tab that just opened, then type the new account name here.';
+      window.open(L.login, '_blank', 'noopener');
+      inp.focus();
+    });
+  });
+
+  function render() {
+    var box = $('list');
+    var shown = leads.filter(function (l) { return filter === 'all' || l.status === filter; });
+
+    $('cAll').textContent = leads.length;
+    $('cNew').textContent = leads.filter(function (l) { return l.status === 'New'; }).length;
+    $('cRep').textContent = leads.filter(function (l) { return l.status === 'Replied'; }).length;
+    $('cPhone').textContent = leads.filter(function (l) { return !!l.wa; }).length;
+
+    if (!shown.length) {
+      box.innerHTML = '<p class="empty">Nothing here yet.</p>';
+      return;
+    }
+
+    box.innerHTML = shown.map(function (l) {
+      var when = l.when ? new Date(l.when) : null;
+      var whenTxt = when && !isNaN(when) ? when.toLocaleString() : esc(l.when);
+      return '' +
+      '<article class="lead" data-row="' + l.row + '">' +
+        '<div class="row1">' +
+          '<h3>' + (esc(l.name) || 'No name given') + '</h3>' +
+          '<span class="pill ' + esc(l.status) + '">' + esc(l.status) + '</span>' +
+          '<span class="when">' + whenTxt + '</span>' +
+        '</div>' +
+        '<p class="meta">' +
+          (l.email ? '<a href="mailto:' + esc(l.email) + '">' + esc(l.email) + '</a>' : 'no email') +
+          (l.mobile ? ' &middot; ' + esc(l.mobile) : '') +
+          (l.company ? ' &middot; ' + esc(l.company) : '') +
+          (l.form ? ' &middot; via ' + esc(l.form) : '') +
+        '</p>' +
+        (l.concerns ? '<p class="said">' + esc(l.concerns) + '</p>' : '') +
+        '<div class="draft">' +
+          '<label for="d' + l.row + '">Reply</label>' +
+          '<textarea id="d' + l.row + '" placeholder="Press Draft with AI, or write it yourself.">' + esc(l.draft) + '</textarea>' +
+        '</div>' +
+        '<div class="acts">' +
+          '<button type="button" data-a="draft">Draft with AI</button>' +
+          '<button type="button" class="primary" data-a="send"' + (l.email ? '' : ' disabled') + '>' +
+            (l.repliedAt ? 'Already sent' : 'Send email') + '</button>' +
+          (l.wa ? '<a class="btn wa" target="_blank" rel="noopener" href="' + waLink(l) + '">WhatsApp</a>' : '') +
+          '<button type="button" data-a="spam">Mark spam</button>' +
+        '</div>' +
+        '<p class="note" data-msg>' + (l.repliedAt ? 'Replied ' + esc(l.repliedAt) : '') + '</p>' +
+      '</article>';
+    }).join('');
+  }
+
+  function load() {
+    $('status').textContent = 'Loading…';
+    return call({ action: 'list' }).then(function (res) {
+      if (!res.ok) { $('status').innerHTML = '<span class="err">' + esc(res.error) + '</span>'; return false; }
+      leads = res.leads || [];
+      $('status').textContent = leads.length + ' loaded';
+      render();
+      return true;
+    }).catch(function (e) {
+      $('status').innerHTML = '<span class="err">Could not reach the engine.</span>';
+      return false;
+    });
+  }
+
+  $('go').addEventListener('click', function () {
+    pass = $('pass').value.trim();
+    if (!pass) return;
+    $('gateMsg').textContent = 'Checking…';
+    call({ action: 'list' }).then(function (res) {
+      if (!res.ok) { $('gateMsg').innerHTML = '<span class="err">' + esc(res.error) + '</span>'; return; }
+      remember(pass);
+      leads = res.leads || [];
+      $('gate').hidden = true; $('app').hidden = false;
+      render();
+      loadAccounts();
+      $('status').textContent = leads.length + ' loaded';
+    }).catch(function () {
+      $('gateMsg').innerHTML = '<span class="err">Could not reach the engine. Is the web app deployed?</span>';
+    });
+  });
+  $('pass').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('go').click(); });
+
+  $('refresh').addEventListener('click', load);
+  $('lock').addEventListener('click', function () {
+    forget(); pass = ''; leads = [];
+    $('app').hidden = true; $('gate').hidden = false; $('pass').value = '';
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-f]');
+    if (b) {
+      filter = b.getAttribute('data-f');
+      [].forEach.call(document.querySelectorAll('.chipf'), function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      render();
+      return;
+    }
+
+    var act = e.target.closest('[data-a]');
+    if (!act) return;
+    var card = act.closest('.lead'), row = Number(card.getAttribute('data-row'));
+    var msg = card.querySelector('[data-msg]');
+    var area = card.querySelector('textarea');
+    var what = act.getAttribute('data-a');
+
+    if (what === 'draft') {
+      act.disabled = true; msg.textContent = 'Asking Gemini…';
+      call({ action: 'draft', row: row }).then(function (res) {
+        act.disabled = false;
+        if (!res.ok) { msg.innerHTML = '<span class="err">' + esc(res.error) + '</span>'; return; }
+        if (res.skipped) { msg.textContent = 'Looks like spam — marked.'; return; }
+        area.value = res.text; msg.textContent = 'Draft ready. Read it before sending.';
+      });
+    }
+
+    if (what === 'send') {
+      if (!area.value.trim()) { msg.innerHTML = '<span class="err">Nothing to send.</span>'; return; }
+      act.disabled = true; msg.textContent = 'Sending…';
+      call({ action: 'send', row: row, text: area.value }).then(function (res) {
+        if (!res.ok) { act.disabled = false; msg.innerHTML = '<span class="err">' + esc(res.error) + '</span>'; return; }
+        act.textContent = 'Already sent';
+        msg.innerHTML = '<span class="ok">Sent to ' + esc(res.to) + '</span>';
+        var l = leads.filter(function (x) { return x.row === row; })[0];
+        if (l) { l.status = 'Replied'; l.repliedAt = new Date().toISOString(); }
+        card.querySelector('.pill').textContent = 'Replied';
+        card.querySelector('.pill').className = 'pill Replied';
+      });
+    }
+
+    if (what === 'spam') {
+      call({ action: 'status', row: row, status: 'Spam' }).then(function () {
+        var l = leads.filter(function (x) { return x.row === row; })[0];
+        if (l) l.status = 'Spam';
+        render();
+      });
+    }
+  });
+
+  var saved = recall();
+  if (saved) { pass = saved; $('gate').hidden = true; $('app').hidden = false; load(); loadAccounts(); }
+})();
+</script>
+</body>
+</html>
