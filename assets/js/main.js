@@ -678,7 +678,7 @@
       if (!w || !h) return;
       if (!pts) {
         pts = [];
-        var n = w < 640 ? 20 : (w < 1100 ? 32 : 44);
+        var n = Math.max(18, Math.min(80, Math.round(w * h / 19000)));
         for (var i = 0; i < n; i++) {
           pts.push({
             x: Math.random() * w, y: Math.random() * h,
@@ -687,7 +687,7 @@
         }
       }
       ctx.clearRect(0, 0, w, h);
-      var max = w < 640 ? 110 : 155;
+      var max = w < 640 ? 115 : 185;
       var i2, j;
       for (i2 = 0; i2 < pts.length; i2++) {
         var p = pts[i2];
@@ -701,7 +701,7 @@
           var dx = pts[i2].x - pts[j].x, dy = pts[i2].y - pts[j].y;
           var d = Math.sqrt(dx * dx + dy * dy);
           if (d < max) {
-            ctx.strokeStyle = gold(0.15 * (1 - d / max));
+            ctx.strokeStyle = gold(0.2 * (1 - d / max));
             ctx.beginPath();
             ctx.moveTo(pts[i2].x, pts[i2].y);
             ctx.lineTo(pts[j].x, pts[j].y);
@@ -710,9 +710,9 @@
         }
       }
       for (i2 = 0; i2 < pts.length; i2++) {
-        ctx.fillStyle = gold(0.5);
+        ctx.fillStyle = gold(0.6);
         ctx.beginPath();
-        ctx.arc(pts[i2].x, pts[i2].y, 1.7, 0, 6.2832);
+        ctx.arc(pts[i2].x, pts[i2].y, 1.8, 0, 6.2832);
         ctx.fill();
       }
     }
