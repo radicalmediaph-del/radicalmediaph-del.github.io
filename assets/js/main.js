@@ -61,7 +61,7 @@
     { id: "portfolio",   label: "Portfolio",   href: "portfolio.html" },
     { id: "reviews",     label: "Reviews",     href: "reviews.html" },
     { id: "faq",         label: "FAQ",         href: "faq.html" },
-    { id: "ebook",       label: "Ebook",       href: "ebook.html" }
+    { id: "ebook",       label: "Ebook",       href: "ebook.html", newTab: true }
   ];
 
   var ICON = {
@@ -193,7 +193,8 @@
 
     var links = NAV.map(function (item) {
       var active = item.id === current ? ' class="is-active" aria-current="page"' : "";
-      return '<li><a href="' + item.href + '"' + active + ">" + item.label + "</a></li>";
+      var tgt = item.newTab ? ' target="_blank" rel="noopener"' : "";
+      return '<li><a href="' + item.href + '"' + tgt + active + ">" + item.label + "</a></li>";
     }).join("");
 
     mount.outerHTML =
