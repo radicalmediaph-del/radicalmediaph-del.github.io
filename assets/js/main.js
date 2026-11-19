@@ -57,7 +57,10 @@
   var NAV = [
     { id: "about",       label: "About",       href: "about.html" },
     { id: "services",    label: "Services",    href: "services.html" },
+    { id: "how-we-work", label: "How we work", href: "how-we-work.html" },
     { id: "portfolio",   label: "Portfolio",   href: "portfolio.html" },
+    { id: "reviews",     label: "Reviews",     href: "reviews.html" },
+    { id: "faq",         label: "FAQ",         href: "faq.html" },
     { id: "ebook",       label: "Ebook",       href: "ebook.html" }
   ];
 
@@ -199,7 +202,7 @@
           '<a class="brand" href="index.html">RadicalMediaPh<span>.</span></a>' +
           '<nav aria-label="Main"><ul class="nav-links" id="navLinks">' + links + "</ul></nav>" +
           '<div class="nav-cta">' +
-            '<a class="btn btn--gold" href="contact.html">Let\'s Talk</a>' +
+            '<a class="btn btn--gold" href="contact.html">Get a free quote</a>' +
             '<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">' + ICON.menu + "</button>" +
           "</div>" +
         "</div>" +
