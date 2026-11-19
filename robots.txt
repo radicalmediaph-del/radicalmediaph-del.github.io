@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /office.html
+
+Sitemap: https://radicalmediaph.com/sitemap.xml

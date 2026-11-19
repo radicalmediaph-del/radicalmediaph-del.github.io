@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client Reviews — Leave a Review for RadicalMediaPh</title>
+<meta name="description" content="Worked with Ram Duculan of RadicalMediaPh on a website, lead generation or automation project? Leave a review. Honest feedback from real clients, published with permission.">
+<link rel="canonical" href="https://radicalmediaph.com/reviews.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RadicalMediaPh">
+<meta property="og:title" content="Client Reviews — RadicalMediaPh">
+<meta property="og:description" content="Honest feedback from real clients, published with permission. Worked with me? Leave a review.">
+<meta property="og:url" content="https://radicalmediaph.com/reviews.html">
+<meta property="og:image" content="https://radicalmediaph.com/assets/img/ram-portrait.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.consent{display:flex;gap:12px;align-items:flex-start;margin-top:18px;color:var(--muted);font-size:.93rem;line-height:1.5}
+.consent input{width:18px;height:18px;margin-top:3px;flex:0 0 18px;accent-color:var(--gold)}
+.empty-reviews{border:1px dashed var(--line);border-radius:16px;padding:40px 28px;text-align:center;color:var(--muted)}
+.empty-reviews strong{display:block;color:var(--text);font-size:1.05rem;margin-bottom:8px}
+</style>
+</head>
+<body data-page="reviews">
+
+<div data-header>
+  <div class="container fallback-nav">
+    <a href="index.html">RadicalMediaPh</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="how-we-work.html">How we work</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Get a free quote</a>
+  </div>
+</div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Reviews</span>
+      <h1>Worked with me? Leave a review</h1>
+      <p class="breadcrumbs"><a href="index.html">Home</a> / Reviews</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split" style="align-items:start">
+
+      <div class="reveal">
+        <h2>What clients say</h2>
+        <p class="lead">Published with permission, in the client's own words.</p>
+
+        <div class="empty-reviews" style="margin-top:28px">
+          <strong>No published reviews yet.</strong>
+          Reviews appear here as clients send them in. I'd rather this space stay empty than fill it with testimonials I wrote myself.
+        </div>
+
+        <h2 style="margin-top:52px">Why I ask</h2>
+        <p style="color:var(--muted)">Choosing someone to build your website is mostly a trust problem. You can see the work on the <a href="portfolio.html">portfolio page</a> and read exactly how I work on the <a href="how-we-work.html">process page</a> &mdash; but the people who've actually paid me will tell you things I can't tell you about myself.</p>
+        <p style="color:var(--muted)">If something went wrong on your project, say that too. I'd rather read it than have you tell everyone else.</p>
+      </div>
+
+      <div class="form-card reveal">
+        <h2 style="margin-top:0">Write a review</h2>
+        <p style="color:var(--muted);font-size:.95rem">Takes about a minute. Nothing is published without your permission.</p>
+
+        <form data-form data-subject="Client review" novalidate style="margin-top:20px">
+          <div class="form-row">
+            <div class="field">
+              <label for="r-name">Your name</label>
+              <input id="r-name" name="name" type="text" placeholder="Juan Dela Cruz" required>
+              <span class="error"></span>
+            </div>
+            <div class="field">
+              <label for="r-business">Business name</label>
+              <input id="r-business" name="business" type="text" placeholder="Dela Cruz Aircon Services">
+              <span class="error"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="r-email">Email</label>
+              <input id="r-email" name="email" type="email" placeholder="juan@example.com" required>
+              <span class="error"></span>
+            </div>
+            <div class="field">
+              <label for="r-rating">Rating</label>
+              <select id="r-rating" name="rating" required>
+                <option value="">Choose&hellip;</option>
+                <option value="5 - Excellent">5 &mdash; Excellent</option>
+                <option value="4 - Good">4 &mdash; Good</option>
+                <option value="3 - Okay">3 &mdash; Okay</option>
+                <option value="2 - Poor">2 &mdash; Poor</option>
+                <option value="1 - Bad">1 &mdash; Bad</option>
+              </select>
+              <span class="error"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="r-work">What did I build for you?</label>
+            <input id="r-work" name="work" type="text" placeholder="Website, lead generation, automation&hellip;">
+            <span class="error"></span>
+          </div>
+
+          <div class="field">
+            <label for="r-review">Your review</label>
+            <textarea id="r-review" name="review" placeholder="What was it like to work together? What changed for your business? Anything you'd want a future client to know." required></textarea>
+            <span class="error"></span>
+          </div>
+
+          <label class="consent" for="r-consent">
+            <input id="r-consent" name="permission" type="checkbox" value="Yes - may be published">
+            <span>You may publish this review, with my name and business, on the RadicalMediaPh website and social media.</span>
+          </label>
+
+          <button class="btn btn--gold btn--lg btn--block" type="submit" style="margin-top:22px">Send my review</button>
+          <div class="form-success" role="status"></div>
+          <p class="form-note">Leave the box unticked and your feedback stays private between us.</p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container narrow center reveal">
+      <h2>Not a client yet?</h2>
+      <p class="lead">Start with a call. No charge, and no obligation to book anything.</p>
+      <p style="margin-top:28px">
+        <a class="btn btn--gold btn--lg" href="contact.html">Get a free quote</a>
+        <a class="btn btn--ghost btn--lg" href="faq.html" style="margin-left:10px">Read the FAQ</a>
+      </p>
+    </div>
+  </section>
+</main>
+
+<div data-footer>
+  <div class="container fallback-nav" style="border:0;border-top:1px solid var(--line);text-align:center">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
