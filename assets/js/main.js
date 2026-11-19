@@ -200,7 +200,7 @@
     mount.outerHTML =
       '<header class="site-header" id="top">' +
         '<div class="container nav">' +
-          '<a class="brand" href="index.html">RadicalMediaPh<span>.</span></a>' +
+          '<a class="brand" href="index.html"><img class="rm-mark" src="assets/img/rm-logo.svg" alt="" width="34" height="34"><span class="rm-wm">RadicalMediaPh<span>.</span></span></a>' +
           '<nav aria-label="Main"><ul class="nav-links" id="navLinks">' + links + "</ul></nav>" +
           '<div class="nav-cta">' +
             '<a class="btn btn--gold" href="contact.html">Get a free quote</a>' +
@@ -242,7 +242,7 @@
     mount.outerHTML =
       '<footer class="site-footer">' +
         '<div class="container">' +
-          '<a class="brand" href="index.html">RadicalMediaPh<span>.</span></a>' +
+          '<a class="brand" href="index.html"><img class="rm-mark" src="assets/img/rm-logo.svg" alt="" width="34" height="34"><span class="rm-wm">RadicalMediaPh<span>.</span></span></a>' +
           '<div class="socials socials--footer" data-socials></div>' +
           '<ul class="footer-links">' +
             '<li><a href="privacy.html">Privacy Policy</a></li>' +
@@ -641,6 +641,10 @@
 
   var style = document.createElement("style");
   style.textContent =
+    ".brand{display:inline-flex;align-items:center;gap:11px;border:0;padding:0}" +
+    ".brand .rm-mark{width:34px;height:34px;flex:0 0 34px;display:block;border-radius:5px}" +
+    ".brand .rm-wm{color:var(--text);line-height:1}" +
+    ".site-footer .brand .rm-mark{width:30px;height:30px;flex:0 0 30px}" +
     ".hero::before,.page-hero::before{display:none !important}" +
     ".hero,.page-hero{position:relative;isolation:isolate}" +
     ".hero > .container,.page-hero > .container{position:relative;z-index:1}" +
