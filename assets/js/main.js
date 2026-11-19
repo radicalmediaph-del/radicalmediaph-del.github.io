@@ -18,7 +18,7 @@
     // These feed the footer on every page AND the Follow Me row on Contact.
       facebook:  "https://www.facebook.com/radicalmediaph",
     // Messenger chat link. Clear this to "" to remove the chat button everywhere.
-    messenger: "https://m.me/61591158385146",
+    messenger: "https://www.facebook.com/radicalmediaph/",
     instagram: "https://www.instagram.com/radicalmediaph",
     tiktok:    "",
     youtube:   "",
