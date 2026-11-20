@@ -148,7 +148,7 @@
 
     if (!cards.length) {
       mount.innerHTML =
-        '<div class="card" style="border-color:rgba(227,166,47,.45)">' +
+        '<div class="card" style="border-color:rgba(53,182,255,.45)">' +
           "<h3>Payment details not set yet</h3>" +
           '<p style="margin:0">Open <code>assets/js/main.js</code> and fill in the <code>payment</code> ' +
           "block near the top with your GCash / Maya / bank details. They will appear here " +
@@ -666,7 +666,7 @@
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var w = 0, h = 0, pts = null, raf = 0;
 
-    function gold(a) { return "rgba(227,166,47," + a + ")"; }
+    function gold(a) { return "rgba(53,182,255," + a + ")"; }
 
     function resize() {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
