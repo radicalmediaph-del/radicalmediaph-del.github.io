@@ -14,7 +14,7 @@
 <style>
 :root{
   --ink:#0d0b16; --ink-2:#17132a; --card:#1d1836; --line:rgba(255,255,255,.12);
-  --gold:#e8b04b; --gold-2:#f7cd7c; --violet:#8b5cf6;
+  --gold:#35b6ff; --gold-2:#6fcbff; --violet:#8b5cf6;
   --txt:#ece9f5; --soft:#a79fc4; --faint:#7d759b; --ok:#34d399; --bad:#ff6b81;
   --display:"Sora","Poppins",system-ui,sans-serif; --sans:"Inter",system-ui,sans-serif; --r:16px;
 }
@@ -26,11 +26,11 @@ h1,h2,h3{font-family:var(--display);line-height:1.12;margin:0;letter-spacing:-.0
 a{color:var(--gold)}
 .gold{color:var(--gold)}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
-  background:rgba(232,176,75,.1);border:1px solid rgba(232,176,75,.3);padding:6px 14px;border-radius:999px}
+  background:rgba(53,182,255,.1);border:1px solid rgba(53,182,255,.3);padding:6px 14px;border-radius:999px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.02rem;
-  background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#1a1206;border:0;border-radius:12px;padding:16px 26px;cursor:pointer;text-decoration:none;
-  box-shadow:0 10px 30px rgba(232,176,75,.25);transition:transform .15s ease,box-shadow .15s ease}
-.btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(232,176,75,.35)}
+  background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#04151f;border:0;border-radius:12px;padding:16px 26px;cursor:pointer;text-decoration:none;
+  box-shadow:0 10px 30px rgba(53,182,255,.25);transition:transform .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(53,182,255,.35)}
 .btn[disabled]{opacity:.6;cursor:wait;transform:none}
 
 /* top bar */
@@ -43,7 +43,7 @@ a{color:var(--gold)}
 
 /* hero */
 .hero{position:relative;padding:64px 0 70px;
-  background:radial-gradient(900px 480px at 10% -10%,rgba(232,176,75,.16),transparent 62%),
+  background:radial-gradient(900px 480px at 10% -10%,rgba(53,182,255,.16),transparent 62%),
              radial-gradient(800px 520px at 100% 0%,rgba(139,92,246,.2),transparent 60%),
              linear-gradient(180deg,#0d0b16,#17132a)}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
@@ -56,15 +56,15 @@ a{color:var(--gold)}
 .pill{font-size:.85rem;color:var(--soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;background:rgba(255,255,255,.03)}
 
 /* form card */
-.card{background:linear-gradient(180deg,#221c3f,#1a1530);border:1px solid rgba(232,176,75,.35);border-radius:22px;padding:30px;
-  box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 6px rgba(232,176,75,.05)}
+.card{background:linear-gradient(180deg,#221c3f,#1a1530);border:1px solid rgba(53,182,255,.35);border-radius:22px;padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 6px rgba(53,182,255,.05)}
 .card h2{font-size:1.5rem}
 .card .sub{color:var(--soft);font-size:.95rem;margin:8px 0 22px}
 .field{margin-bottom:16px}
 .field label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px;color:#ddd6f3}
 .field input,.field select{width:100%;font:inherit;font-size:1rem;color:var(--txt);background:#120f22;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;outline:none;transition:border-color .15s,box-shadow .15s}
 .field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23e8b04b' stroke-width='2'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(232,176,75,.15)}
+.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(53,182,255,.15)}
 .field.bad input{border-color:var(--bad)}
 .field .err{display:block;color:var(--bad);font-size:.8rem;min-height:0;margin-top:5px}
 .card .btn{width:100%;margin-top:6px}
@@ -86,7 +86,7 @@ section{padding:84px 0}
 .box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
 .box h3{font-size:1.15rem;margin:14px 0 8px}
 .box p{color:var(--soft);margin:0;font-size:.97rem}
-.ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:rgba(232,176,75,.12);border:1px solid rgba(232,176,75,.3)}
+.ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:rgba(53,182,255,.12);border:1px solid rgba(53,182,255,.3)}
 .ico svg{width:24px;height:24px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pain .box{border-color:rgba(255,107,129,.25)}
 .pain .ico{background:rgba(255,107,129,.1);border-color:rgba(255,107,129,.3)}
@@ -94,7 +94,7 @@ section{padding:84px 0}
 
 .offer{border-radius:22px;padding:34px;position:relative;overflow:hidden}
 .offer.web{background:linear-gradient(160deg,#241d44,#1a1530);border:1px solid rgba(139,92,246,.4)}
-.offer.ghl{background:linear-gradient(160deg,#2d2312,#1a1530);border:1px solid rgba(232,176,75,.45)}
+.offer.ghl{background:linear-gradient(160deg,#123046,#1a1530);border:1px solid rgba(53,182,255,.45)}
 .offer .tag{font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .offer.web .tag{color:#b9a2ff}.offer.ghl .tag{color:var(--gold)}
 .offer h3{font-size:1.6rem;margin:10px 0 8px}
@@ -112,8 +112,8 @@ section{padding:84px 0}
 .me span{font-size:.88rem;color:var(--soft);line-height:1.45}
 .meet{display:grid;grid-template-columns:.85fr 1.15fr;gap:52px;align-items:center}
 .meet .photo{position:relative}
-.meet .photo img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:24px;border:1px solid rgba(232,176,75,.4);box-shadow:0 30px 70px rgba(0,0,0,.45),0 0 0 8px rgba(232,176,75,.06);display:block}
-.meet .badge{position:absolute;right:-14px;bottom:24px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#1a1206;font-family:var(--display);font-weight:700;font-size:.9rem;padding:10px 16px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.meet .photo img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:24px;border:1px solid rgba(53,182,255,.4);box-shadow:0 30px 70px rgba(0,0,0,.45),0 0 0 8px rgba(53,182,255,.06);display:block}
+.meet .badge{position:absolute;right:-14px;bottom:24px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#04151f;font-family:var(--display);font-weight:700;font-size:.9rem;padding:10px 16px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
 .meet h2{font-size:clamp(1.8rem,3.4vw,2.5rem);margin:14px 0 16px}
 .meet p{color:var(--soft);margin:0 0 14px}
 .creds{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 26px}
@@ -129,7 +129,7 @@ section{padding:84px 0}
 
 .steps3{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .steps3 .box{position:relative;padding-top:34px}
-.steps3 .num{position:absolute;top:-18px;left:26px;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#1a1206;font-family:var(--display);font-weight:700;display:grid;place-items:center}
+.steps3 .num{position:absolute;top:-18px;left:26px;width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#04151f;font-family:var(--display);font-weight:700;display:grid;place-items:center}
 
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:12px}
 summary{cursor:pointer;font-family:var(--display);font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
@@ -138,7 +138,7 @@ summary::after{content:"+";color:var(--gold);font-size:1.3rem;line-height:1}
 details[open] summary::after{content:"–"}
 details p{color:var(--soft);margin:12px 0 0}
 
-.final{text-align:center;background:radial-gradient(700px 300px at 50% 0%,rgba(232,176,75,.18),transparent 70%),var(--ink-2)}
+.final{text-align:center;background:radial-gradient(700px 300px at 50% 0%,rgba(53,182,255,.18),transparent 70%),var(--ink-2)}
 .final h2{font-size:clamp(1.9rem,3.6vw,2.7rem);max-width:760px;margin:0 auto 14px}
 .final p{color:var(--soft);max-width:600px;margin:0 auto 28px}
 
@@ -179,9 +179,9 @@ footer a{color:var(--soft);text-decoration:none;margin-left:16px}
       <h1>A website that <span class="gold">wins clients</span>, and a system that <span class="gold">follows up for you.</span></h1>
       <p class="lead">I design your website and set up GoHighLevel behind it, so every lead is captured, followed up and booked on your calendar. You don't have to chase anyone.</p>
       <ul class="ticks">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#e8b04b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="M7 12.5l3.2 3L17 9"/></svg><span>A modern, mobile-friendly website built to turn visitors into inquiries</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#e8b04b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="M7 12.5l3.2 3L17 9"/></svg><span>Every lead saved in one GoHighLevel CRM, never lost in your inbox</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#e8b04b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="M7 12.5l3.2 3L17 9"/></svg><span>Automatic SMS and email follow-ups, plus online booking</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="#35b6ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="M7 12.5l3.2 3L17 9"/></svg><span>A modern, mobile-friendly website built to turn visitors into inquiries</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="#35b6ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="M7 12.5l3.2 3L17 9"/></svg><span>Every lead saved in one GoHighLevel CRM, never lost in your inbox</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="#35b6ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="M7 12.5l3.2 3L17 9"/></svg><span>Automatic SMS and email follow-ups, plus online booking</span></li>
       </ul>
       <div class="pill-row"><span class="pill">Free strategy call</span><span class="pill">No tech skills needed</span><span class="pill">Done for you</span></div>
       <div class="me"><img src="assets/img/ram-profile.jpg" alt="Ram Duculan"><div><b>Hi, I'm Ram 👋</b><span>Web developer and marketing strategist. I'll personally build your website and GHL system.</span></div></div>
