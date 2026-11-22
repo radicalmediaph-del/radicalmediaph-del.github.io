@@ -216,13 +216,13 @@
       return;
     }
     var consent = document.getElementById("r-consent");
+    var didConsent = !!(consent && consent.checked);
     var body = new URLSearchParams({
       token: TOK, kind: "review", subject: "Client review",
       name: name, business: val("r-business"), email: email,
       rating: rating, work: work, review: review,
       permission: didConsent ? "Yes" : "No"
     });
-    var didConsent = !!(consent && consent.checked);
     if (btn) { btn.disabled = true; btn.textContent = "Sending\u2026"; }
     fetch(EP, { method: "POST", body: body, mode: "no-cors", keepalive: true })
       .catch(function () {})
@@ -230,7 +230,7 @@
         form.reset();
         if (btn) { btn.disabled = false; btn.textContent = "Send my review"; }
         if (note) {
-          note.textContent = (consent && consent.checked)
+          note.textContent = didConsent
             ? "Thank you \u2014 I have your review. I will read it myself, and it will appear on this page once I have published it."
             : "Thank you \u2014 I have your feedback, and it stays private between us.";
           note.style.display = "block";
