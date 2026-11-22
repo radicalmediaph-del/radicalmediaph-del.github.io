@@ -23,6 +23,13 @@
 .consent input{width:18px;height:18px;margin-top:3px;flex:0 0 18px;accent-color:var(--gold)}
 .empty-reviews{border:1px dashed var(--line);border-radius:16px;padding:40px 28px;text-align:center;color:var(--muted)}
 .empty-reviews strong{display:block;color:var(--text);font-size:1.05rem;margin-bottom:8px}
+.review-card{border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:var(--card);margin-bottom:16px}
+.review-card .stars{color:var(--gold);letter-spacing:2px;font-size:.95rem}
+.review-card blockquote{margin:12px 0 0;font-size:1.02rem;line-height:1.7;color:var(--text)}
+.review-card .who{margin-top:16px;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
+.review-card .who b{font-weight:600}
+.review-card .who span{color:var(--muted);font-size:.9rem}
+.review-card .what{font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted-2);margin-top:4px}
 </style>
 </head>
 <body data-page="reviews">
@@ -56,7 +63,8 @@
         <h2>What clients say</h2>
         <p class="lead">Published with permission, in the client's own words.</p>
 
-        <div class="empty-reviews" style="margin-top:28px">
+        <div id="review-list"></div>
+        <div class="empty-reviews" id="review-empty" style="margin-top:28px">
           <strong>No published reviews yet.</strong>
           Reviews appear here as clients send them in. I'd rather this space stay empty than fill it with testimonials I wrote myself.
         </div>
@@ -151,5 +159,35 @@
   </div>
 </div>
 <script src="assets/js/main.js?v=3"></script>
+
+<script>
+(function () {
+  var EP = "https://script.google.com/macros/s/AKfycbxLVRllqXiSZi6I5LkUnVzlfoM1I6uI3DE-esFeosN-wP6lk5lZj0Sjm4WBHZVFudhy/exec";
+  var list = document.getElementById("review-list");
+  var empty = document.getElementById("review-empty");
+  if (!list || !EP) return;
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function stars(r) { var n = parseInt(String(r), 10); if (!(n >= 1 && n <= 5)) return ""; return "\u2605".repeat(n) + "\u2606".repeat(5 - n); }
+  fetch(EP + "?action=reviews&t=" + Date.now(), { cache: "no-store" })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d || !d.ok || !d.reviews || !d.reviews.length) return;
+      list.innerHTML = d.reviews.map(function (v) {
+        var s = stars(v.rating);
+        return "<article class=\"review-card\">"
+          + (s ? "<div class=\"stars\">" + s + "</div>" : "")
+          + "<blockquote>" + esc(v.text) + "</blockquote>"
+          + "<div class=\"who\"><b>" + esc(v.name) + "</b>"
+          + (v.business ? "<span>" + esc(v.business) + "</span>" : "")
+          + (v.when ? "<span>\u00b7 " + esc(v.when) + "</span>" : "")
+          + "</div>"
+          + (v.work ? "<div class=\"what\">" + esc(v.work) + "</div>" : "")
+          + "</article>";
+      }).join("");
+      if (empty) empty.hidden = true;
+    })
+    .catch(function () { /* leave the honest empty state in place */ });
+})();
+</script>
 </body>
 </html>
