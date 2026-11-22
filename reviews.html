@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=3">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
 <style>
 .consent{display:flex;gap:12px;align-items:flex-start;margin-top:18px;color:var(--muted);font-size:.93rem;line-height:1.5}
 .consent input{width:18px;height:18px;margin-top:3px;flex:0 0 18px;accent-color:var(--gold)}
@@ -78,7 +78,7 @@
         <h2 style="margin-top:0">Write a review</h2>
         <p style="color:var(--muted);font-size:.95rem">Takes about a minute. Nothing is published without your permission.</p>
 
-        <form data-form data-subject="Client review" novalidate style="margin-top:20px">
+        <form id="review-form" novalidate style="margin-top:20px">
           <div class="form-row">
             <div class="field">
               <label for="r-name">Your name</label>
@@ -102,19 +102,28 @@
               <label for="r-rating">Rating</label>
               <select id="r-rating" name="rating" required>
                 <option value="">Choose&hellip;</option>
-                <option value="5 - Excellent">5 &mdash; Excellent</option>
-                <option value="4 - Good">4 &mdash; Good</option>
-                <option value="3 - Okay">3 &mdash; Okay</option>
-                <option value="2 - Poor">2 &mdash; Poor</option>
-                <option value="1 - Bad">1 &mdash; Bad</option>
+                <option value="5">5 &mdash; Fully satisfied</option>
+                <option value="4">4 &mdash; Happy, small things to improve</option>
+                <option value="3">3 &mdash; It was okay</option>
+                <option value="2">2 &mdash; Not what I hoped for</option>
+                <option value="1">1 &mdash; Not happy</option>
               </select>
               <span class="error"></span>
             </div>
           </div>
 
           <div class="field">
-            <label for="r-work">What did I build for you?</label>
-            <input id="r-work" name="work" type="text" placeholder="Website, lead generation, automation&hellip;">
+            <label for="r-work">What did I do for you?</label>
+            <select id="r-work" name="work" required>
+              <option value="">Choose&hellip;</option>
+              <option value="Website services">Website services</option>
+              <option value="Funnel services">Funnel services (GoHighLevel)</option>
+              <option value="Marketing services">Marketing services</option>
+              <option value="Lead generation">Lead generation</option>
+              <option value="AI automation">AI automation</option>
+              <option value="Virtual assistant support">Virtual assistant support</option>
+              <option value="Something else">Something else</option>
+            </select>
             <span class="error"></span>
           </div>
 
@@ -187,6 +196,46 @@
       if (empty) empty.hidden = true;
     })
     .catch(function () { /* leave the honest empty state in place */ });
+})();
+</script>
+
+<script>
+(function () {
+  var EP = "https://script.google.com/macros/s/AKfycbxLVRllqXiSZi6I5LkUnVzlfoM1I6uI3DE-esFeosN-wP6lk5lZj0Sjm4WBHZVFudhy/exec", TOK = "rmph-2026-web";
+  var form = document.getElementById("review-form");
+  if (!form) return;
+  var note = form.querySelector(".form-success");
+  var btn = form.querySelector("button[type=submit]");
+  function val(id) { var e = document.getElementById(id); return e ? String(e.value || "").trim() : ""; }
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var name = val("r-name"), email = val("r-email");
+    var rating = val("r-rating"), work = val("r-work"), review = val("r-review");
+    if (!name || !email || !rating || !review) {
+      if (note) { note.textContent = "Please fill in your name, email, rating and review."; note.style.display = "block"; }
+      return;
+    }
+    var consent = document.getElementById("r-consent");
+    var body = new URLSearchParams({
+      token: TOK, kind: "review", subject: "Client review",
+      name: name, business: val("r-business"), email: email,
+      rating: rating, work: work, review: review,
+      permission: (consent && consent.checked) ? "Yes" : "No"
+    });
+    if (btn) { btn.disabled = true; btn.textContent = "Sending\u2026"; }
+    fetch(EP, { method: "POST", body: body, mode: "no-cors", keepalive: true })
+      .catch(function () {})
+      .then(function () {
+        form.reset();
+        if (btn) { btn.disabled = false; btn.textContent = "Send my review"; }
+        if (note) {
+          note.textContent = (consent && consent.checked)
+            ? "Thank you \u2014 I have your review. I will read it myself, and it will appear on this page once I have published it."
+            : "Thank you \u2014 I have your feedback, and it stays private between us.";
+          note.style.display = "block";
+        }
+      });
+  });
 })();
 </script>
 </body>
