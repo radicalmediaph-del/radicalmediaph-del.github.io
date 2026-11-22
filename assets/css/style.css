@@ -187,10 +187,7 @@ button,input,textarea,select{font-family:inherit}
 
 /* ---------- stats + trust strip ---------- */
 
-.stats{
-  display:flex;flex-wrap:wrap;gap:44px;margin-top:40px;
-  padding-top:28px;border-top:1px solid var(--line);
-}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 30px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
 .stat b{
   display:block;font-family:var(--display);font-weight:700;color:var(--gold);
   font-size:clamp(1.9rem,3.4vw,2.5rem);line-height:1;
@@ -515,3 +512,16 @@ button,input,textarea,select{font-family:inherit}
 }
 .hp-live{color:var(--good);display:inline-flex;align-items:center;gap:6px}
 .hp-live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--good)}
+
+/* ---------- hero proof card ---------- */
+.hero-proof{min-width:0}
+.hero-proof-card{display:block;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);box-shadow:0 24px 60px rgba(0,0,0,.45);transition:transform .25s var(--ease),border-color .25s var(--ease)}
+.hero-proof-card:hover{transform:translateY(-3px);border-color:rgba(53,182,255,.45)}
+.hero-proof-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:var(--card-2);border-bottom:1px solid var(--line)}
+.hero-proof-bar i{width:9px;height:9px;border-radius:50%;background:var(--line);flex:0 0 9px}
+.hero-proof-bar span{font-family:var(--mono);font-size:.7rem;color:var(--muted-2);margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hero-proof-card img{display:block;width:100%;height:auto}
+.hero-proof-cap{display:flex;flex-direction:column;gap:3px;margin:14px 2px 0}
+.hero-proof-cap b{font-weight:600;font-size:.97rem;color:var(--text)}
+.hero-proof-cap span{font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted-2)}
+@media (max-width:960px){.hero-proof{margin-top:8px}}
