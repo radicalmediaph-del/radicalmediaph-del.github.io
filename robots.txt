@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /office.html
+Disallow: /hiring.html
 
 # AI answer engines are welcome here. A plain-language brief for them
 # lives at https://radicalmediaph.com/llms.txt
