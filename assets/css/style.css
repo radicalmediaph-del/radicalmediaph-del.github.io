@@ -525,3 +525,7 @@ button,input,textarea,select{font-family:inherit}
 .hero-proof-cap b{font-weight:600;font-size:.97rem;color:var(--text)}
 .hero-proof-cap span{font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted-2)}
 @media (max-width:960px){.hero-proof{margin-top:8px}}
+
+/* portfolio: text-only thumbnail for projects with no shareable screenshot */
+.project-thumb--name{display:grid;place-items:center;background:linear-gradient(140deg,var(--card-2),var(--bg-deep))}
+.project-thumb--name span{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.1rem);letter-spacing:.02em;text-transform:uppercase;color:var(--text);text-align:center;padding:0 18px}
